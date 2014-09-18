@@ -14,5 +14,6 @@
     <string name="Transparency">Transparency</string>
     <string name="Height">Height</string>
     <string name="Area">Area</string>
+    <string name="ColorImageIs">Color</string>
 
 </resources>
