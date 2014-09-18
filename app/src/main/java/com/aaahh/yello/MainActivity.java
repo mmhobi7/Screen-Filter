@@ -3,6 +3,7 @@ package com.aaahh.yello;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,7 +25,14 @@ public class MainActivity extends Activity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+        if (Common.boot) {
+            moveTaskToBack(true);
+        }
+        MainActivity mThis = this;
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+
     }
+
 
 
     @Override
@@ -43,7 +51,6 @@ public class MainActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-
             return true;
         }
 
