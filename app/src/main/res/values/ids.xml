@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="textViewPer1" type="id" />
+    <item name="textViewPer" type="id" />
+</resources>
