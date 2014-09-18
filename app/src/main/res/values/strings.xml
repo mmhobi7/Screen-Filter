@@ -4,5 +4,15 @@
     <string name="app_name">Screen Filter</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="ToggleOne">ScreenFilter</string>
+    <string name="ScreenFilter">Screen Filter </string>
+    <string name="Gradient">Gradient</string>
+    <string name="ToggleTwo">Gradient</string>
+    <string name="ColorSelectButton">Select a Color...</string>
+    <string name="Color">Color</string>
+    <string name="TransparencyPercent">50%</string>
+    <string name="Transparency">Transparency</string>
+    <string name="Height">Height</string>
+    <string name="Area">Area</string>
 
 </resources>
