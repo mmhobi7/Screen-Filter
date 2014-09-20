@@ -3,8 +3,12 @@ package com.aaahh.yello;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +17,7 @@ import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
@@ -32,7 +37,25 @@ public class MainActivity extends Activity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
-        if (Common.boot) {
+        DatabaseActivity db = new DatabaseActivity(this);
+        Cursor c = db.getTitle(1);
+        if (c.moveToFirst()) {
+            Toast.makeText(this,
+                    "id: " + c.getString(0) + "\n" +
+                            "ISBN: " + c.getString(1) + "\n" +
+                            "TITLE: " + c.getString(2) + "\n" +
+                            "PUBLISHER:  " + c.getString(3),
+                    Toast.LENGTH_LONG).show();
+        } else {
+            //Root...
+            db.open();
+            db.insertTitle(
+                    "1",
+                    "First",
+                    "A");
+        }
+        db.close();
+        if (Common.boot.contains("1")) {
             moveTaskToBack(true);
         }
         MainActivity mThis = this;
@@ -41,6 +64,7 @@ public class MainActivity extends Activity {
         ToggleButton1 = ((ToggleButton) findViewById(R.id.toggleButton));
         ToggleButton2 = ((ToggleButton) findViewById(R.id.toggleButton2));
         SelectButton = ((Button) findViewById(R.id.button));
+        //Common.boot = mDbHelper.getData(db, "FilterYN");
     }
 
 
@@ -100,7 +124,7 @@ public class MainActivity extends Activity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return rootView;
         }
