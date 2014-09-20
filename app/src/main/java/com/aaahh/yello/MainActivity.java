@@ -1,7 +1,9 @@
 package com.aaahh.yello;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -98,7 +100,6 @@ public class MainActivity extends Activity {
         Sliderb = ((SeekBar) findViewById(R.id.seekBar4));
         Sliderc = ((SeekBar) findViewById(R.id.seekBar5));
         ColorView = ((ImageView) findViewById(R.id.textureView));
-        Log.d("pi", String.valueOf(findViewById(R.id.toggleButton)));
         Cursor c2 = db.getTitle(2);
         Common.FilterYN = c2.getString(3);
         Cursor c3 = db.getTitle(3);
@@ -228,27 +229,73 @@ public class MainActivity extends Activity {
     }
 
     public void StartToggle(View view) {
-        if (ToggleButton1.isActivated()) {
-
+        Log.d("1", "!");
+        if (ToggleButton1.isChecked()) {
+            ToggleButton2.setEnabled(false);
         } else {
-
+            ToggleButton2.setEnabled(true);
         }
     }
 
     public void GradientToggle(View view) {
-        if (ToggleButton2.isActivated()) {
-
-        } else {
-
+        if (ToggleButton2.isChecked()) {
+            Log.d("e", Common.GradientType);
+            final DatabaseActivity db = new DatabaseActivity(this);
+            db.open();
+            if (ToggleButton2.isChecked()) {
+                db.updateTitle(3,
+                        "3",
+                        "GradientYN",
+                        "Y");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String[] Lists = {"Top only", "All", "Bottom only"};
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("Where")
+                                .setItems(Lists, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        if (i == 0) {
+                                            Common.GradientType = String.valueOf(1);
+                                            db.updateTitle(3,
+                                                    "4",
+                                                    "GradientType",
+                                                    "1");
+                                        } else {
+                                            if (i == 1) {
+                                                Common.GradientType = String.valueOf(2);
+                                                db.updateTitle(3,
+                                                        "4",
+                                                        "GradientType",
+                                                        "2");
+                                            } else {
+                                                if (i == 2) {
+                                                    Common.GradientType = String.valueOf(3);
+                                                    db.updateTitle(3,
+                                                            "4",
+                                                            "GradientType",
+                                                            "3");
+                                                }
+                                            }
+                                        }
+                                    }
+                                })
+                                .show();
+                    }
+                });
+            } else {
+                db.updateTitle(3,
+                        "3",
+                        "GradientYN",
+                        "Y");
+                db.close();
+            }
         }
     }
 
     public void ColorPicker(View view) {
-        if (SelectButton.isActivated()) {
-
-        } else {
-
-        }
+//Color
     }
 
 
@@ -268,6 +315,7 @@ public class MainActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            //settings
             return true;
         }
 

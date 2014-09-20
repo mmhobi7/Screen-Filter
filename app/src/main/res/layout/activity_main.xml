@@ -23,6 +23,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_toEndOf="@+id/textView"
+            android:onClick="StartToggle"
             android:text="@string/ToggleOne" />
 
         <TextView
@@ -63,6 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/toggleButton2"
             android:layout_toEndOf="@+id/textView"
+            android:onClick="GradientToggle"
             android:text="@string/ToggleTwo" />
 
         <Button
@@ -72,6 +74,7 @@
             android:layout_alignBottom="@+id/textureView"
             android:layout_alignStart="@+id/toggleButton"
             android:minLines="1"
+            android:onClick="ColorPicker"
             android:text="@string/ColorSelectButton" />
 
         <ImageView
