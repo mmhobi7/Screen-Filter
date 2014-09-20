@@ -2,14 +2,17 @@ package com.aaahh.yello;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +23,7 @@ public class MainActivity extends Activity {
 
     private TextView TextPercent;
     private TextView ToggleButton1;
-    private ToggleButton ToggleButton2;
+    public ToggleButton ToggleButton2;
     private Button SelectButton;
 
     @Override
@@ -44,12 +47,41 @@ public class MainActivity extends Activity {
                     Toast.LENGTH_LONG).show();
         } else {
             //Root...
-            db.insertTitle(
+            long id;
+            id = db.insertTitle(
+                    "2",
+                    "FilterYN",
+                    "N");
+            id = db.insertTitle(
+                    "3",
+                    "GradientYN",
+                    "N");
+            id = db.insertTitle(
+                    "4",
+                    "GradientType",
+                    "1");
+            id = db.insertTitle(
+                    "5",
+                    "BgColor",
+                    "#000000");
+            id = db.insertTitle(
+                    "6",
+                    "a",
+                    "50");
+            id = db.insertTitle(
+                    "7",
+                    "Height",
+                    "50");
+            id = db.insertTitle(
+                    "8",
+                    "Area",
+                    "0");
+            id = db.insertTitle(
                     "1",
                     "First",
-                    "A");
+                    "1");
         }
-        db.close();
+       // db.close();
         if (Common.boot.contains("1")) {
             moveTaskToBack(true);
         }
@@ -59,7 +91,30 @@ public class MainActivity extends Activity {
         ToggleButton1 = ((ToggleButton) findViewById(R.id.toggleButton));
         ToggleButton2 = ((ToggleButton) findViewById(R.id.toggleButton2));
         SelectButton = ((Button) findViewById(R.id.button));
-        //Common.boot = mDbHelper.getData(db, "FilterYN");
+        Cursor c2 = db.getTitle(2);
+        Common.FilterYN = c2.getString(2);
+        Cursor c3 = db.getTitle(3);
+        Common.GradientYN = c3.getString(3);
+        //Cursor c4 = db.getTitle(4);
+        //Common.GradientType = c4.getString(4);
+        //Cursor c5 = db.getTitle(5);
+        //Common.BgColor = c5.getString(5);
+        Cursor c6 = db.getTitle(6);
+        //
+//        int a = Integer.parseInt(c6.getString(6));
+        //
+    //    TextPercent.setText(a + "%");
+     //   Common.Alpha = (200- a *2);
+        Cursor c8 = db.getTitle(8);
+//        int b = Integer.parseInt(c8.getString(8));
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
+        float screenHeight = displaymetrics.heightPixels;
+     //   Common.Height = (int) ((b/100f)*screenHeight);
+        Cursor c9 = db.getTitle(9);
+//        int q = Integer.parseInt(c9.getString(9));
+      //  Common.Area = (int) ((((q - 50) * 2) / 100f) * (screenHeight / 2) * -1);
+//        ToggleButton2.setChecked(false);
     }
 
 
