@@ -1,20 +1,15 @@
 package com.aaahh.yello;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +33,7 @@ public class MainActivity extends Activity {
                     .commit();
         }
         DatabaseActivity db = new DatabaseActivity(this);
+        db.open();
         Cursor c = db.getTitle(1);
         if (c.moveToFirst()) {
             Toast.makeText(this,
@@ -48,7 +44,6 @@ public class MainActivity extends Activity {
                     Toast.LENGTH_LONG).show();
         } else {
             //Root...
-            db.open();
             db.insertTitle(
                     "1",
                     "First",
