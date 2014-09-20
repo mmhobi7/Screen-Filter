@@ -1,20 +1,15 @@
 package com.aaahh.yello;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.transition.Slide;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,27 +18,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.util.zip.Inflater;
+
 
 public class MainActivity extends Activity {
 
     public ToggleButton ToggleButton2;
-    private TextView TextPercent;
-    private ToggleButton ToggleButton1;
-    private Button SelectButton;
-    private SeekBar Slider;
-    private SeekBar Sliderb;
-    private SeekBar Sliderc;
-    private ImageView ColorView;
+    public TextView TextPercent;
+    public ToggleButton ToggleButton1;
+    public Button SelectButton;
+    public SeekBar Slider;
+    public SeekBar Sliderb;
+    public SeekBar Sliderc;
+    public ImageView ColorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
         DatabaseActivity db = new DatabaseActivity(this);
         db.open();
         Cursor c = db.getTitle(1);
@@ -54,6 +46,7 @@ public class MainActivity extends Activity {
                             "TITLE: " + c.getString(2) + "\n" +
                             "PUBLISHER:  " + c.getString(3),
                     Toast.LENGTH_LONG).show();
+            Common.passedonce = "1";
         } else {
             //Root...
             long id;
@@ -96,14 +89,16 @@ public class MainActivity extends Activity {
         }
         MainActivity mThis = this;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-        TextPercent = ((TextView) findViewById(R.id.textView));
-        ToggleButton1 = ((ToggleButton) findViewById(R.id.toggleButton));
-        ToggleButton2 = ((ToggleButton) findViewById(R.id.toggleButton2));
+        Inflater inflater;
+        TextPercent = ((TextView) findViewById(R.id.textViewPer));
+        ToggleButton1 = ((ToggleButton) findViewById(R.id.toggleButton2));
+        ToggleButton2 = ((ToggleButton) findViewById(R.id.toggleButton));
         SelectButton = ((Button) findViewById(R.id.button));
         Slider = ((SeekBar) findViewById(R.id.seekBar));
         Sliderb = ((SeekBar) findViewById(R.id.seekBar4));
         Sliderc = ((SeekBar) findViewById(R.id.seekBar5));
         ColorView = ((ImageView) findViewById(R.id.textureView));
+        Log.d("pi", String.valueOf(findViewById(R.id.toggleButton)));
         Cursor c2 = db.getTitle(2);
         Common.FilterYN = c2.getString(3);
         Cursor c3 = db.getTitle(3);
@@ -116,7 +111,7 @@ public class MainActivity extends Activity {
         //
         String a = (c6.getString(3));
         //
-        TextPercent.setText(a + "%");
+//        TextPercent.setText(a + "%");
         // Common.Alpha = (200- a *2);
         Cursor c8 = db.getTitle(8);
         int b = Integer.parseInt(c8.getString(3));
@@ -125,27 +120,27 @@ public class MainActivity extends Activity {
         float screenHeight = displaymetrics.heightPixels;
         Common.Height = (int) ((b / 100f) * screenHeight);
         Cursor c9 = db.getTitle(9);
-        int q = Integer.parseInt(c9.getString(3));
-        Common.Area = (int) ((((q - 50) * 2) / 100f) * (screenHeight / 2) * -1);
-        this.ToggleButton2.setChecked(false);
+//        int q = Integer.parseInt(c9.getString(3));
+        //     Common.Area = (int) ((((q - 50) * 2) / 100f) * (screenHeight / 2) * -1);
+        // ToggleButton2.setChecked(false);
         if (Common.FilterYN.equals("Y")) {
-            this.ToggleButton1.setChecked(true);
-            this.ToggleButton2.setEnabled(false);
+            ToggleButton1.setChecked(true);
+            ToggleButton2.setEnabled(false);
             Common.Receiver = true;
         }
         if (Common.GradientYN.equals("Y")) {
-            this.ToggleButton2.setChecked(true);
+            ToggleButton2.setChecked(true);
         } else {
-            this.ToggleButton2.setChecked(false);
+            ToggleButton2.setChecked(false);
         }
-        //int j = Common.converToDecimalFromHex(Common.BgColor);
-        // ColorView.setBackgroundColor(j);
+        //   int j = Common.converToDecimalFromHex(Common.BgColor);
+        //   ColorView.setBackgroundColor(j);
         ToggleButton2.setChecked(false);
         Slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
-                MainActivity.this.TextPercent.setText(paramAnonymousInt + "%");
+                TextPercent.setText(paramAnonymousInt + "%");
                 Common.Alpha = 200 - paramAnonymousInt * 2;
-                //MainActivity.this.rService.setAlpha(Common.Alpha);
+                //rService.setAlpha(Common.Alpha);
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -154,11 +149,11 @@ public class MainActivity extends Activity {
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
                 try {
                     int a = paramAnonymousSeekBar.getProgress();
-                    MainActivity.this.TextPercent.setText(a + "%");
-                    // SQLiteDatabase localSQLiteDatabase = MainActivity.mDBHelper.getWritableDatabase();
+                    TextPercent.setText(a + "%");
+                    // SQLiteDatabase localSQLiteDatabase = mDBHelper.getWritableDatabase();
                     Common.Alpha = 200 - a * 2;
-                    //  MainActivity.mDBHelper.putKeyData(localSQLiteDatabase, "Alpha", (Integer.toString(a)));
-                    //  MainActivity.this.rService.setAlpha(Common.Alpha);
+                    //  mDBHelper.putKeyData(localSQLiteDatabase, "Alpha", (Integer.toString(a)));
+                    //  rService.setAlpha(Common.Alpha);
                 } catch (IllegalStateException ignored) {
                 }
             }
@@ -169,8 +164,8 @@ public class MainActivity extends Activity {
             Sliderb.setProgress(b);
         } else {
             Sliderb.setProgress(50);
-            //localSQLiteDatabase = MainActivity.mDBHelper.getWritableDatabase();
-            // MainActivity.mDBHelper.putKeyData(localSQLiteDatabase, "passedonce", ("Y"));
+            //localSQLiteDatabase = mDBHelper.getWritableDatabase();
+            // mDBHelper.putKeyData(localSQLiteDatabase, "passedonce", ("Y"));
         }
         Sliderb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
@@ -178,7 +173,7 @@ public class MainActivity extends Activity {
                 ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
                 float screenHeight = displaymetrics.heightPixels;
                 Common.Height = (int) ((paramAnonymousInt / 100f) * screenHeight);
-                //  MainActivity.this.rService.setHeight(Common.Height);
+                //  rService.setHeight(Common.Height);
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -187,24 +182,24 @@ public class MainActivity extends Activity {
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
                 try {
                     int b = paramAnonymousSeekBar.getProgress();
-                    //SQLiteDatabase localSQLiteDatabase = MainActivity.mDBHelper.getWritableDatabase();
-                    //MainActivity.mDBHelper.putKeyData(localSQLiteDatabase, "Height", (Integer.toString(b)));
+                    //SQLiteDatabase localSQLiteDatabase = mDBHelper.getWritableDatabase();
+                    //mDBHelper.putKeyData(localSQLiteDatabase, "Height", (Integer.toString(b)));
                     DisplayMetrics displaymetrics = new DisplayMetrics();
                     ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
                     float screenHeight = displaymetrics.heightPixels;
                     Common.Height = (int) ((b / 100f) * screenHeight);
-                    //  MainActivity.this.rService.setHeight(Common.Height);
+                    //  rService.setHeight(Common.Height);
                 } catch (IllegalStateException ignored) {
                 }
             }
         });
         Sliderc.setMax(100);
         if (Common.passedonce.equals("Y")) {
-            Sliderc.setProgress(q);
+            //    Sliderc.setProgress(q);
         } else {
             Sliderc.setProgress(50);
-            //  localSQLiteDatabase = MainActivity.mDBHelper.getWritableDatabase();
-            // MainActivity.mDBHelper.putKeyData(localSQLiteDatabase, "passedonce", ("Y"));
+            //  localSQLiteDatabase = mDBHelper.getWritableDatabase();
+            // mDBHelper.putKeyData(localSQLiteDatabase, "passedonce", ("Y"));
         }
         Sliderc.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
@@ -212,7 +207,7 @@ public class MainActivity extends Activity {
                 ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
                 float screenHeight = displaymetrics.heightPixels;
                 Common.Area = (int) ((((paramAnonymousInt - 50) * 2) / 100f) * (screenHeight / 2) * -1);
-                //MainActivity.this.rService.setArea(Common.Area);
+                //rService.setArea(Common.Area);
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -220,24 +215,16 @@ public class MainActivity extends Activity {
 
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
                 int c = paramAnonymousSeekBar.getProgress();
-                //SQLiteDatabase localSQLiteDatabase = MainActivity.mDBHelper.getWritableDatabase();
-                // MainActivity.mDBHelper.putKeyData(localSQLiteDatabase, "Area", (Integer.toString(c)));
+                //SQLiteDatabase localSQLiteDatabase = mDBHelper.getWritableDatabase();
+                // mDBHelper.putKeyData(localSQLiteDatabase, "Area", (Integer.toString(c)));
                 DisplayMetrics displaymetrics = new DisplayMetrics();
                 ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
                 float screenHeight = displaymetrics.heightPixels;
                 Common.Area = (int) ((((c - 50) * 2) / 100f) * (screenHeight / 2) * -1);
-                // MainActivity.this.rService.setArea(Common.Area);
+                // rService.setArea(Common.Area);
             }
         });
-        MainActivity.this.TextPercent.setText(Slider.getProgress() + "%");
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        TextPercent.setText(Slider.getProgress() + "%");
     }
 
     public void StartToggle(View view) {
@@ -264,6 +251,14 @@ public class MainActivity extends Activity {
         }
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -277,21 +272,5 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
     }
 }

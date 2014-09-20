@@ -9,7 +9,7 @@ public class Common {
     public static int Height = 50;
     public static int Area = 0;
     public static String GradientType = String.valueOf(1);
-    public static String passedonce;
+    public static String passedonce = "0";
     public static boolean Notif = false;
     public static boolean Receiver = false;
     public static String toboot = "N";
