@@ -2,11 +2,16 @@ package com.aaahh.yello;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
@@ -20,8 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import java.util.zip.Inflater;
-
 
 public class MainActivity extends Activity {
 
@@ -34,6 +37,23 @@ public class MainActivity extends Activity {
     public SeekBar Sliderb;
     public SeekBar Sliderc;
     public ImageView ColorView;
+    FilterService rService;
+
+    private final ServiceConnection rConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            FilterService.LocalBinder localLocalBinder = (FilterService.LocalBinder) iBinder;
+            MainActivity.this.rService = localLocalBinder.getService();
+            if ((Common.FilterYN.equals("Y")) && (FilterService.vw == null)) {
+                MainActivity.this.startService(new Intent(MainActivity.mThis, FilterService.class));
+                MainActivity.this.rService.addView();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +118,6 @@ public class MainActivity extends Activity {
         }
         MainActivity mThis = this;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-        Inflater inflater;
         TextPercent = ((TextView) findViewById(R.id.textViewPer));
         ToggleButton1 = ((ToggleButton) findViewById(R.id.toggleButton2));
         ToggleButton2 = ((ToggleButton) findViewById(R.id.toggleButton));
@@ -231,8 +250,32 @@ public class MainActivity extends Activity {
     public void StartToggle(View view) {
         if (ToggleButton1.isChecked()) {
             ToggleButton2.setEnabled(false);
+            Common.Receiver = true;
+            this.rService.startNotification();
+            DatabaseActivity db = new DatabaseActivity(this);
+            db.open();
+            db.updateTitle(2,
+                    "2",
+                    "FilterYN",
+                    "Y");
+            db.close();
+            startService(new Intent(this, FilterService.class));
+            this.rService.addView();
         } else {
             ToggleButton2.setEnabled(true);
+            Common.Receiver = false;
+            ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancelAll();
+            this.rService.endNotification();
+            Common.Notif = false;
+            DatabaseActivity db = new DatabaseActivity(this);
+            db.open();
+            db.updateTitle(2,
+                    "2",
+                    "FilterYN",
+                    "N");
+            db.close();
+            this.rService.removeView();
+            stopService(new Intent(this, FilterService.class));
         }
     }
 
@@ -294,7 +337,7 @@ public class MainActivity extends Activity {
     }
 
     public void ColorPicker(View view) {
-//Color
+        startActivity(new Intent(mThis, Color.class));
     }
 
 
