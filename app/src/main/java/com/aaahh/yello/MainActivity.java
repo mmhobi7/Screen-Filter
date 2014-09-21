@@ -25,6 +25,7 @@ import java.util.zip.Inflater;
 
 public class MainActivity extends Activity {
 
+    public static MainActivity mThis;
     public ToggleButton ToggleButton2;
     public TextView TextPercent;
     public ToggleButton ToggleButton1;
@@ -48,7 +49,8 @@ public class MainActivity extends Activity {
                             "TITLE: " + c.getString(2) + "\n" +
                             "PUBLISHER:  " + c.getString(3),
                     Toast.LENGTH_LONG).show();
-            Common.passedonce = "1";
+            Common.passedonce = "Y";
+            // Sliderc.setProgress(q);
         } else {
             //Root...
             long id;
@@ -79,13 +81,18 @@ public class MainActivity extends Activity {
             id = db.insertTitle(
                     "8",
                     "Area",
-                    "0");
+                    "50");
+            id = db.insertTitle(
+                    "9",
+                    "Alpha",
+                    "50");
             id = db.insertTitle(
                     "1",
                     "First",
                     "1");
+            Sliderc.setProgress(50);
         }
-       // db.close();
+        // db.close();
         if (Common.boot.contains("1")) {
             moveTaskToBack(true);
         }
@@ -121,9 +128,9 @@ public class MainActivity extends Activity {
         float screenHeight = displaymetrics.heightPixels;
         Common.Height = (int) ((b / 100f) * screenHeight);
         Cursor c9 = db.getTitle(9);
-//        int q = Integer.parseInt(c9.getString(3));
-        //     Common.Area = (int) ((((q - 50) * 2) / 100f) * (screenHeight / 2) * -1);
-        // ToggleButton2.setChecked(false);
+//        String q = c9.getString(3);
+        //   Common.Area = (int) ((((q - 50) * 2) / 100f) * (screenHeight / 2) * -1);
+        ToggleButton2.setChecked(false);
         if (Common.FilterYN.equals("Y")) {
             ToggleButton1.setChecked(true);
             ToggleButton2.setEnabled(false);
@@ -195,13 +202,6 @@ public class MainActivity extends Activity {
             }
         });
         Sliderc.setMax(100);
-        if (Common.passedonce.equals("Y")) {
-            //    Sliderc.setProgress(q);
-        } else {
-            Sliderc.setProgress(50);
-            //  localSQLiteDatabase = mDBHelper.getWritableDatabase();
-            // mDBHelper.putKeyData(localSQLiteDatabase, "passedonce", ("Y"));
-        }
         Sliderc.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -229,7 +229,6 @@ public class MainActivity extends Activity {
     }
 
     public void StartToggle(View view) {
-        Log.d("1", "!");
         if (ToggleButton1.isChecked()) {
             ToggleButton2.setEnabled(false);
         } else {

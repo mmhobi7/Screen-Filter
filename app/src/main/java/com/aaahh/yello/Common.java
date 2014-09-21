@@ -4,6 +4,7 @@ package com.aaahh.yello;
  * Created by aaahh on 9/18/14...
  */
 public class Common {
+    public static int O = 0;
     public static String boot = "0";
     public static int Alpha = 50;
     public static int Height = 50;
