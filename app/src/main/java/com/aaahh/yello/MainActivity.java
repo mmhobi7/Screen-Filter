@@ -25,11 +25,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.io.IOException;
+import java.util.logging.Filter;
+
 
 public class MainActivity extends Activity {
 
     public static MainActivity mThis;
-    public ToggleButton ToggleButton2;
+    public static ToggleButton ToggleButton2;
     public TextView TextPercent;
     public ToggleButton ToggleButton1;
     public Button SelectButton;
@@ -70,53 +73,51 @@ public class MainActivity extends Activity {
                             "PUBLISHER:  " + c.getString(3),
                     Toast.LENGTH_LONG).show();
             Common.passedonce = "Y";
-            // Sliderc.setProgress(q);
+//            Sliderc.setProgress(q);
         } else {
             //Root...
-            long id;
-            id = db.insertTitle(
+            db.insertTitle(
                     "2",
                     "FilterYN",
                     "N");
-            id = db.insertTitle(
+            db.insertTitle(
                     "3",
                     "GradientYN",
                     "N");
-            id = db.insertTitle(
+            db.insertTitle(
                     "4",
                     "GradientType",
                     "1");
-            id = db.insertTitle(
+            db.insertTitle(
                     "5",
                     "BgColor",
                     "#000000");
-            id = db.insertTitle(
+            db.insertTitle(
                     "6",
                     "a",
                     "50");
-            id = db.insertTitle(
+            db.insertTitle(
                     "7",
                     "Height",
                     "50");
-            id = db.insertTitle(
+            db.insertTitle(
                     "8",
                     "Area",
                     "50");
-            id = db.insertTitle(
+            db.insertTitle(
                     "9",
                     "Alpha",
                     "50");
-            id = db.insertTitle(
+            db.insertTitle(
                     "1",
                     "First",
                     "1");
-            Sliderc.setProgress(50);
+//            Sliderc.setProgress(50);
         }
         // db.close();
         if (Common.boot.contains("1")) {
             moveTaskToBack(true);
         }
-        MainActivity mThis = this;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         TextPercent = ((TextView) findViewById(R.id.textViewPer));
         ToggleButton1 = ((ToggleButton) findViewById(R.id.toggleButton2));
@@ -133,7 +134,7 @@ public class MainActivity extends Activity {
         Cursor c4 = db.getTitle(4);
         Common.GradientType = c4.getString(3);
         Cursor c5 = db.getTitle(5);
-        Common.BgColor = c5.getString(3);
+        Common.BgColor = Integer.parseInt(c5.getString(3));
         Cursor c6 = db.getTitle(6);
         //
         String a = (c6.getString(3));
@@ -186,14 +187,6 @@ public class MainActivity extends Activity {
             }
         });
         Sliderb.setMax(100);
-        Log.d("r", String.valueOf(Common.passedonce));
-        if (Common.passedonce.equals("Y")) {
-            Sliderb.setProgress(b);
-        } else {
-            Sliderb.setProgress(50);
-            //localSQLiteDatabase = mDBHelper.getWritableDatabase();
-            // mDBHelper.putKeyData(localSQLiteDatabase, "passedonce", ("Y"));
-        }
         Sliderb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -251,7 +244,7 @@ public class MainActivity extends Activity {
         if (ToggleButton1.isChecked()) {
             ToggleButton2.setEnabled(false);
             Common.Receiver = true;
-            this.rService.startNotification();
+            rService.startNotification();
             DatabaseActivity db = new DatabaseActivity(this);
             db.open();
             db.updateTitle(2,
@@ -337,9 +330,28 @@ public class MainActivity extends Activity {
     }
 
     public void ColorPicker(View view) {
-        startActivity(new Intent(mThis, Color.class));
+        Intent intent = new Intent(this, Color.class);
+        this.startActivity(intent);
     }
 
+    public void onDestroy() {
+        super.onDestroy();
+        Common.Receiver = false;
+        unbindService(rConnection);
+    }
+
+    public void onPause() {
+        super.onPause();
+    }
+
+    public void onResume() {
+        super.onResume();
+    }
+
+    protected void onStart() {
+        super.onStart();
+        bindService(new Intent(this, FilterService.class), this.rConnection, BIND_AUTO_CREATE);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -357,6 +369,11 @@ public class MainActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            try {
+                Runtime.getRuntime().exec("su");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             //settings
             return true;
         }
