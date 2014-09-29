@@ -70,8 +70,10 @@ public class FilterService extends Service {
         //TODO: fix this \/
         int i = Common.BgColor;
         String hexColor = String.format("#%06X", (0xFFFFFF & i));
-        String fade = hexColor.replace("#", "#00");
-        // Log.d("MANGO!", fade);
+        // String fade = hexColor.replace("#", "#00");
+        String fade = hexColor;
+        Log.d("MANGO!", fade);
+        Log.d("MANGO!2", String.valueOf(Common.BgColor));
         if (MainActivity.ToggleButton2.isChecked()) {
             int b = (Color.parseColor(fade));
             gt = new GradientDrawable();
@@ -198,9 +200,8 @@ public class FilterService extends Service {
                 }
                 vw.setBackground(gt);
             } else {
-
                 vw.setBackgroundColor(i);
-                //}
+            }
             }
             if (Common.O == 1) {
                 Common.Height = (int) (((Integer.parseInt(H.getString(3))) / 100f) * screenHeight);
@@ -298,7 +299,6 @@ public class FilterService extends Service {
             vw.getBackground().setAlpha(Common.Alpha);
             db.close();
         }
-    }
 
     public void startNotification() {
         Intent localIntent = new Intent(getApplicationContext(), MainActivity.class);

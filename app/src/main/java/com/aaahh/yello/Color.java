@@ -26,6 +26,7 @@ import com.larswerkman.holocolorpicker.ValueBar;
  */
 public class Color extends Activity {
     public static Color mThis;
+    public static ColorPicker picker;
 
     public void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
@@ -34,35 +35,21 @@ public class Color extends Activity {
         final ColorPicker picker = (ColorPicker) findViewById(R.id.picker);
         mThis = this;
         getWindow().setFlags(4, 4);
+        Log.d("b", String.valueOf(Common.BgColor));
         picker.setColor(Common.BgColor);
         Common.OColor = Common.BgColor;
-        Log.d("1", "2");
         SaturationBar saturationBar = (SaturationBar) findViewById(R.id.saturationbar);
         ValueBar valueBar = (ValueBar) findViewById(R.id.valuebar);
         picker.addSaturationBar(saturationBar);
         picker.addValueBar(valueBar);
 //        picker.setOldCenterColor(picker.getColor());
+        picker.setShowOldCenterColor(false);
         picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
             @Override
             public void onColorChanged(int color) {
+                Common.FgColor = String.valueOf(picker.getColor());
                 Common.BgColor = picker.getColor();
-                Common.Color = picker.getColor();
-                Log.d("l", "p");
-            }
-        });
-        picker.setShowOldCenterColor(false);
-        valueBar.setOnValueChangedListener(new ValueBar.OnValueChangedListener() {
-            @Override
-            public void onValueChanged(int value) {
-                Common.BgColor = picker.getColor();
-                Common.Color = picker.getColor();
-            }
-        });
-        saturationBar.setOnSaturationChangedListener(new SaturationBar.OnSaturationChangedListener() {
-            @Override
-            public void onSaturationChanged(int saturation) {
-                Common.BgColor = picker.getColor();
-                Common.Color = picker.getColor();
+                Log.d("co", String.valueOf(Common.BgColor));
             }
         });
     }
@@ -73,7 +60,9 @@ public class Color extends Activity {
     }
 
     public void setOkay(View view) {
-        Common.BgColor = Common.Color;
+        // Common.BgColor = Common.Color;
+        Log.d("a", String.valueOf(Common.BgColor));
+        FilterService.mThis.setConfig();
         this.finish();
     }
 }

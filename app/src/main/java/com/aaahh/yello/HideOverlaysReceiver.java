@@ -47,7 +47,6 @@ public abstract class HideOverlaysReceiver extends BroadcastReceiver {
         Log.d("!!!!!!!!!", "piepiepie2");
         if (intent.hasExtra(EXTRA_HIDE_OVERLAYS)) {
             Log.d("!!!!!!!!!", "piepiepie");
-
             onHideOverlays(intent.getBooleanExtra(EXTRA_HIDE_OVERLAYS, false));
         }
     }

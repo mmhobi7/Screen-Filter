@@ -14,9 +14,10 @@ public class Common {
     public static boolean Notif = false;
     public static boolean Receiver = false;
     public static String toboot = "N";
-    public static int BgColor = 0;
+    public static int BgColor = 16772609;
     public static int OColor = 0;
     public static int Color = 0;
+    public static int tmp = 0;
     public static String FgColor = "#000000";
     public static String FilterYN = "N";
     public static String GradientYN = "N";

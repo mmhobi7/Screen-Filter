@@ -41,6 +41,7 @@ public class MainActivity extends Activity {
     public SeekBar Sliderc;
     public ImageView ColorView;
     FilterService rService;
+    public boolean first;
 
     private final ServiceConnection rConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -62,6 +63,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mThis = this;
         DatabaseActivity db = new DatabaseActivity(this);
         db.open();
         Cursor c = db.getTitle(1);
@@ -73,6 +75,7 @@ public class MainActivity extends Activity {
                             "PUBLISHER:  " + c.getString(3),
                     Toast.LENGTH_LONG).show();
             Common.passedonce = "Y";
+            first = false;
 //            Sliderc.setProgress(q);
         } else {
             //Root...
@@ -112,7 +115,7 @@ public class MainActivity extends Activity {
                     "1",
                     "First",
                     "1");
-//            Sliderc.setProgress(50);
+            first = true;
         }
         // db.close();
         if (Common.boot.contains("1")) {
@@ -127,6 +130,18 @@ public class MainActivity extends Activity {
         Sliderb = ((SeekBar) findViewById(R.id.seekBar4));
         Sliderc = ((SeekBar) findViewById(R.id.seekBar5));
         ColorView = ((ImageView) findViewById(R.id.textureView));
+        if (first) {
+            Slider.setProgress(50);
+            Sliderb.setProgress(50);
+            Sliderc.setProgress(50);
+        } else {
+            Cursor c7 = db.getTitle(7);
+            Slider.setProgress(Integer.parseInt(c7.getString(3)));
+            Cursor c8 = db.getTitle(8);
+            Sliderb.setProgress(Integer.parseInt(c8.getString(3)));
+            Cursor c9 = db.getTitle(9);
+            Sliderc.setProgress(Integer.parseInt(c9.getString(3)));
+        }
         Cursor c2 = db.getTitle(2);
         Common.FilterYN = c2.getString(3);
         Cursor c3 = db.getTitle(3);
@@ -168,7 +183,7 @@ public class MainActivity extends Activity {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 TextPercent.setText(paramAnonymousInt + "%");
                 Common.Alpha = 200 - paramAnonymousInt * 2;
-                //rService.setAlpha(Common.Alpha);
+                rService.setAlpha(Common.Alpha);
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -178,10 +193,15 @@ public class MainActivity extends Activity {
                 try {
                     int a = paramAnonymousSeekBar.getProgress();
                     TextPercent.setText(a + "%");
-                    // SQLiteDatabase localSQLiteDatabase = mDBHelper.getWritableDatabase();
+                    DatabaseActivity db = new DatabaseActivity(mThis);
+                    db.open();
                     Common.Alpha = 200 - a * 2;
-                    //  mDBHelper.putKeyData(localSQLiteDatabase, "Alpha", (Integer.toString(a)));
-                    //  rService.setAlpha(Common.Alpha);
+                    db.updateTitle(2,
+                            "9",
+                            "Alpha",
+                            Integer.toString(a));
+                    db.close();
+                    rService.setAlpha(Common.Alpha);
                 } catch (IllegalStateException ignored) {
                 }
             }
@@ -193,7 +213,7 @@ public class MainActivity extends Activity {
                 ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
                 float screenHeight = displaymetrics.heightPixels;
                 Common.Height = (int) ((paramAnonymousInt / 100f) * screenHeight);
-                //  rService.setHeight(Common.Height);
+                rService.setHeight(Common.Height);
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -202,13 +222,18 @@ public class MainActivity extends Activity {
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
                 try {
                     int b = paramAnonymousSeekBar.getProgress();
-                    //SQLiteDatabase localSQLiteDatabase = mDBHelper.getWritableDatabase();
-                    //mDBHelper.putKeyData(localSQLiteDatabase, "Height", (Integer.toString(b)));
+                    DatabaseActivity db = new DatabaseActivity(mThis);
+                    db.open();
+                    db.updateTitle(2,
+                            "9",
+                            "Height",
+                            Integer.toString(b));
+                    db.close();
                     DisplayMetrics displaymetrics = new DisplayMetrics();
                     ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
                     float screenHeight = displaymetrics.heightPixels;
                     Common.Height = (int) ((b / 100f) * screenHeight);
-                    //  rService.setHeight(Common.Height);
+                    rService.setHeight(Common.Height);
                 } catch (IllegalStateException ignored) {
                 }
             }
@@ -220,7 +245,7 @@ public class MainActivity extends Activity {
                 ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
                 float screenHeight = displaymetrics.heightPixels;
                 Common.Area = (int) ((((paramAnonymousInt - 50) * 2) / 100f) * (screenHeight / 2) * -1);
-                //rService.setArea(Common.Area);
+                rService.setArea(Common.Area);
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -228,13 +253,18 @@ public class MainActivity extends Activity {
 
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
                 int c = paramAnonymousSeekBar.getProgress();
-                //SQLiteDatabase localSQLiteDatabase = mDBHelper.getWritableDatabase();
-                // mDBHelper.putKeyData(localSQLiteDatabase, "Area", (Integer.toString(c)));
+                DatabaseActivity db = new DatabaseActivity(mThis);
+                db.open();
+                db.updateTitle(2,
+                        "9",
+                        "Area",
+                        Integer.toString(c));
+                db.close();
                 DisplayMetrics displaymetrics = new DisplayMetrics();
                 ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
                 float screenHeight = displaymetrics.heightPixels;
                 Common.Area = (int) ((((c - 50) * 2) / 100f) * (screenHeight / 2) * -1);
-                // rService.setArea(Common.Area);
+                rService.setArea(Common.Area);
             }
         });
         TextPercent.setText(Slider.getProgress() + "%");
@@ -339,18 +369,15 @@ public class MainActivity extends Activity {
         Common.Receiver = false;
         unbindService(rConnection);
     }
-
     public void onPause() {
         super.onPause();
     }
-
     public void onResume() {
         super.onResume();
     }
-
     protected void onStart() {
         super.onStart();
-        bindService(new Intent(this, FilterService.class), this.rConnection, BIND_AUTO_CREATE);
+        bindService(new Intent(this, FilterService.class), this.rConnection, 0);
     }
 
     @Override
