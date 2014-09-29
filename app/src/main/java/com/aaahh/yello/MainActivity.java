@@ -377,7 +377,7 @@ public class MainActivity extends Activity {
     }
     protected void onStart() {
         super.onStart();
-        bindService(new Intent(this, FilterService.class), this.rConnection, 0);
+        bindService(new Intent(this, FilterService.class), this.rConnection, BIND_AUTO_CREATE);
     }
 
     @Override
