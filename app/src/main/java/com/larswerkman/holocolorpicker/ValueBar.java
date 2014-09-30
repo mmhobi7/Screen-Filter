@@ -145,11 +145,6 @@ public class ValueBar extends View {
     private boolean mOrientation;
 
     /**
-     * Sets the start color for the gradient of the bar. Defaults to black.
-     */
-    private int mGradientStartColor;
-
-    /**
      * Interface and listener so that changes in ValueBar are sent
      * to the host activity/fragment
      */
@@ -206,8 +201,6 @@ public class ValueBar extends View {
                 b.getDimensionPixelSize(R.dimen.bar_pointer_halo_radius));
         mOrientation = a.getBoolean(
                 R.styleable.ColorBars_bar_orientation_horizontal, ORIENTATION_DEFAULT);
-        mGradientStartColor = a.getColor(R.styleable.ColorBars_bar_gradient_start_color,
-                Color.BLACK);
 
         a.recycle();
 
@@ -290,12 +283,12 @@ public class ValueBar extends View {
         if (!isInEditMode()) {
             shader = new LinearGradient(mBarPointerHaloRadius, 0,
                     x1, y1,
-                    new int[]{Color.HSVToColor(0xFF, mHSVColor), mGradientStartColor},
+                    new int[]{Color.HSVToColor(0xFF, mHSVColor), Color.BLACK},
                     null, Shader.TileMode.CLAMP);
         } else {
             shader = new LinearGradient(mBarPointerHaloRadius, 0,
                     x1, y1,
-                    new int[]{0xff81ff00, mGradientStartColor}, null,
+                    new int[]{0xff81ff00, Color.BLACK}, null,
                     Shader.TileMode.CLAMP);
             Color.colorToHSV(0xff81ff00, mHSVColor);
         }
@@ -428,7 +421,7 @@ public class ValueBar extends View {
         Color.colorToHSV(color, mHSVColor);
         shader = new LinearGradient(mBarPointerHaloRadius, 0,
                 x1, y1, new int[]{
-                color, mGradientStartColor}, null, Shader.TileMode.CLAMP);
+                color, Color.BLACK}, null, Shader.TileMode.CLAMP);
         mBarPaint.setShader(shader);
         calculateColor(mBarPointerPosition);
         mBarPointerPaint.setColor(mColor);
@@ -491,7 +484,7 @@ public class ValueBar extends View {
      * is added to the ColorPicker
      *
      * @param picker
-     * @see ColorPicker#addSVBar(com.larswerkman.holocolorpicker.SVBar)
+     * @see com.larswerkman.holocolorpicker.ColorPicker#addSVBar(com.larswerkman.holocolorpicker.SVBar)
      */
     public void setColorPicker(ColorPicker picker) {
         mPicker = picker;

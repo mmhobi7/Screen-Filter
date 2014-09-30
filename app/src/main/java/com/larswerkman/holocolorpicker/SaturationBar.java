@@ -33,6 +33,7 @@ import android.view.View;
 
 import com.aaahh.yello.R;
 
+
 public class SaturationBar extends View {
 
     /*
@@ -468,9 +469,8 @@ public class SaturationBar extends View {
         } else if (coord > mBarLength) {
             coord = mBarLength;
         }
-        mColor = Color.HSVToColor(new float[]{mHSVColor[0],
-                (float) ((mPosToSatFactor * coord)),
-                1f});
+        mColor = Color.HSVToColor(
+                new float[]{mHSVColor[0], (mPosToSatFactor * coord), 1f});
     }
 
     /**

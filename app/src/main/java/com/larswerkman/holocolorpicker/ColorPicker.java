@@ -53,11 +53,6 @@ public class ColorPicker extends View {
 
     /**
      * Colors to construct the color wheel using {@link android.graphics.SweepGradient}.
-     * <p/>
-     * <p>
-     * these exact values. Be aware that {@link #setColor(int)} might break if
-     * you change this array.
-     * </p>
      */
     private static final int[] COLORS = new int[]{0xFFFF0000, 0xFFFF00FF,
             0xFF0000FF, 0xFF00FFFF, 0xFF00FF00, 0xFFFFFF00, 0xFFFF0000};
@@ -219,6 +214,13 @@ public class ColorPicker extends View {
      * {@code SaturationBar} instance used to control the Saturation bar.
      */
     private SaturationBar mSaturationBar = null;
+
+    /**
+     * {@code TouchAnywhereOnColorWheelEnabled} instance used to control <br>
+     * if the color wheel accepts input anywhere on the wheel or just <br>
+     * on the halo.
+     */
+    private boolean mTouchAnywhereOnColorWheelEnabled = true;
 
     /**
      * {@code ValueBar} instance used to control the Value bar.
@@ -519,7 +521,6 @@ public class ColorPicker extends View {
     public void setColor(int color) {
         mAngle = colorToAngle(color);
         mPointerColor.setColor(calculateColor(mAngle));
-        mCenterNewPaint.setColor(calculateColor(mAngle));
 
         // check of the instance isn't null
         if (mOpacityBar != null) {
@@ -539,7 +540,7 @@ public class ColorPicker extends View {
             // Here will be checked which we shall use.
             if (mHSV[1] < mHSV[2]) {
                 mSVbar.setSaturation(mHSV[1]);
-            } else { // if (mHSV[1] > mHSV[2]) {
+            } else if (mHSV[1] > mHSV[2]) {
                 mSVbar.setValue(mHSV[2]);
             }
         }
@@ -558,8 +559,7 @@ public class ColorPicker extends View {
             Color.colorToHSV(color, mHSV);
             mValueBar.setValue(mHSV[2]);
         }
-
-        invalidate();
+        setNewCenterColor(color);
     }
 
     /**
@@ -603,6 +603,13 @@ public class ColorPicker extends View {
                         && mShowCenterOldColor) {
                     mCenterHaloPaint.setAlpha(0x50);
                     setColor(getOldCenterColor());
+                    invalidate();
+                }
+                // Check whether the user pressed anywhere on the wheel.
+                else if (Math.sqrt(x * x + y * y) <= mColorWheelRadius + mColorPointerHaloRadius
+                        && Math.sqrt(x * x + y * y) >= mColorWheelRadius - mColorPointerHaloRadius
+                        && mTouchAnywhereOnColorWheelEnabled) {
+                    mUserIsMovingPointer = true;
                     invalidate();
                 }
                 // If user did not press pointer or center, report event not handled
@@ -858,5 +865,13 @@ public class ColorPicker extends View {
         int currentColor = calculateColor(mAngle);
         mPointerColor.setColor(currentColor);
         setNewCenterColor(currentColor);
+    }
+
+    public void setTouchAnywhereOnColorWheelEnabled(boolean TouchAnywhereOnColorWheelEnabled) {
+        mTouchAnywhereOnColorWheelEnabled = TouchAnywhereOnColorWheelEnabled;
+    }
+
+    public boolean getTouchAnywhereOnColorWheel() {
+        return mTouchAnywhereOnColorWheelEnabled;
     }
 }

@@ -79,6 +79,10 @@ public class MainActivity extends Activity {
             //Root...
             db.insertTitle(
                     "2",
+                    "First",
+                    "P");
+            db.insertTitle(
+                    "1",
                     "FilterYN",
                     "N");
             db.insertTitle(
@@ -96,19 +100,15 @@ public class MainActivity extends Activity {
             db.insertTitle(
                     "7",
                     "Height",
-                    "50");
+                    "90");
             db.insertTitle(
                     "8",
                     "Area",
-                    "50");
+                    "20");
             db.insertTitle(
                     "6",
                     "Alpha",
-                    "50");
-            db.insertTitle(
-                    "1",
-                    "First",
-                    "1");
+                    "70");
             first = true;
         }
         // db.close();
@@ -147,7 +147,7 @@ public class MainActivity extends Activity {
         Cursor c4 = db.getTitle(4);
         Common.GradientType = c4.getString(3);
         Cursor c5 = db.getTitle(5);
-        Common.Color = Integer.parseInt(c5.getString(3));
+        // Common.Color = Integer.parseInt(c5.getString(3));
         // Cursor c6 = db.getTitle(6);
         //
         //  String a = (c6.getString(3));

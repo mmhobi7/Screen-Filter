@@ -424,7 +424,7 @@ public class SVBar extends View {
      */
     public void setColor(int color) {
         int x1, y1;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        if (mOrientation) {
             x1 = (mBarLength + mBarPointerHaloRadius);
             y1 = mBarThickness;
         } else {
@@ -434,8 +434,7 @@ public class SVBar extends View {
 
         Color.colorToHSV(color, mHSVColor);
         shader = new LinearGradient(mBarPointerHaloRadius, 0,
-                x1, y1, new int[]{
-                0xffffffff, color, 0xff000000}, null,
+                x1, y1, new int[]{Color.WHITE, color, Color.BLACK}, null,
                 Shader.TileMode.CLAMP);
         mBarPaint.setShader(shader);
         calculateColor(mBarPointerPosition);
@@ -455,27 +454,22 @@ public class SVBar extends View {
      */
     private void calculateColor(int coord) {
         coord = coord - mBarPointerHaloRadius;
-        if (coord < 0) {
-            coord = 0;
-        } else if (coord > mBarLength) {
-            coord = mBarLength;
-        }
-
-        if (coord > (mBarPointerHaloRadius + (mBarLength / 2))
-                && coord < (mBarPointerHaloRadius + mBarLength)) {
+        if (coord > (mBarLength / 2) && (coord < mBarLength)) {
             mColor = Color
                     .HSVToColor(new float[]{
-                            mHSVColor[0],
-                            1f,
-                            (float) (1 - (mPosToSVFactor * (coord - (mBarPointerHaloRadius + (mBarLength / 2)))))});
-        } else if (coord > mBarPointerHaloRadius
-                && coord < (mBarPointerHaloRadius + mBarLength)) {
-            mColor = Color.HSVToColor(new float[]{mHSVColor[0],
-                    (float) ((mPosToSVFactor * (coord - mBarPointerHaloRadius))),
-                    1f});
-        } else if (coord == mBarPointerHaloRadius) {
+                            mHSVColor[0], 1f, 1 - (mPosToSVFactor * (coord - (mBarLength / 2)))
+                    });
+        } else if (coord > 0 && coord < mBarLength) {
+            mColor = Color.HSVToColor(new float[]{
+                    mHSVColor[0], (mPosToSVFactor * coord), 1f
+            });
+        } else if (coord == (mBarLength / 2)) {
+            mColor = Color.HSVToColor(new float[]{
+                    mHSVColor[0], 1f, 1f
+            });
+        } else if (coord <= 0) {
             mColor = Color.WHITE;
-        } else if (coord == mBarPointerHaloRadius + mBarLength) {
+        } else if (coord >= mBarLength) {
             mColor = Color.BLACK;
         }
     }
@@ -496,7 +490,7 @@ public class SVBar extends View {
      * is added to the ColorPicker
      *
      * @param picker
-     * @see ColorPicker#addSVBar(com.larswerkman.holocolorpicker.SVBar)
+     * @see com.larswerkman.holocolorpicker.ColorPicker#addSVBar(SVBar)
      */
     public void setColorPicker(ColorPicker picker) {
         mPicker = picker;
@@ -516,7 +510,6 @@ public class SVBar extends View {
         } else {
             state.putFloat(STATE_VALUE, hsvColor[2]);
         }
-        state.putBoolean(STATE_ORIENTATION, mOrientation);
 
         return state;
     }
@@ -534,6 +527,5 @@ public class SVBar extends View {
         } else {
             setValue(savedState.getFloat(STATE_VALUE));
         }
-        mOrientation = savedState.getBoolean(STATE_ORIENTATION, ORIENTATION_DEFAULT);
     }
 }
