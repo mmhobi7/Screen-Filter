@@ -26,7 +26,6 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.io.IOException;
-import java.util.logging.Filter;
 
 
 public class MainActivity extends Activity {
@@ -76,7 +75,6 @@ public class MainActivity extends Activity {
                     Toast.LENGTH_LONG).show();
             Common.passedonce = "Y";
             first = false;
-//            Sliderc.setProgress(q);
         } else {
             //Root...
             db.insertTitle(
@@ -96,10 +94,6 @@ public class MainActivity extends Activity {
                     "BgColor",
                     "#000000");
             db.insertTitle(
-                    "6",
-                    "a",
-                    "50");
-            db.insertTitle(
                     "7",
                     "Height",
                     "50");
@@ -108,7 +102,7 @@ public class MainActivity extends Activity {
                     "Area",
                     "50");
             db.insertTitle(
-                    "9",
+                    "6",
                     "Alpha",
                     "50");
             db.insertTitle(
@@ -135,12 +129,16 @@ public class MainActivity extends Activity {
             Sliderb.setProgress(50);
             Sliderc.setProgress(50);
         } else {
+            Log.d("e", "2");
             Cursor c7 = db.getTitle(7);
-            Slider.setProgress(Integer.parseInt(c7.getString(3)));
+            Cursor c6 = db.getTitle(6);
             Cursor c8 = db.getTitle(8);
+            Slider.setProgress(Integer.parseInt(c7.getString(3)));
             Sliderb.setProgress(Integer.parseInt(c8.getString(3)));
-            Cursor c9 = db.getTitle(9);
-            Sliderc.setProgress(Integer.parseInt(c9.getString(3)));
+            Sliderc.setProgress(Integer.parseInt(c6.getString(3)));
+            Log.d("1", String.valueOf(Integer.parseInt(c6.getString(3))));
+            Log.d("2", String.valueOf(Integer.parseInt(c8.getString(3))));
+            Log.d("3", String.valueOf(Integer.parseInt(c7.getString(3))));
         }
         Cursor c2 = db.getTitle(2);
         Common.FilterYN = c2.getString(3);
@@ -149,10 +147,10 @@ public class MainActivity extends Activity {
         Cursor c4 = db.getTitle(4);
         Common.GradientType = c4.getString(3);
         Cursor c5 = db.getTitle(5);
-        Common.BgColor = Integer.parseInt(c5.getString(3));
-        Cursor c6 = db.getTitle(6);
+        Common.Color = Integer.parseInt(c5.getString(3));
+        // Cursor c6 = db.getTitle(6);
         //
-        String a = (c6.getString(3));
+        //  String a = (c6.getString(3));
         //
 //        TextPercent.setText(a + "%");
         // Common.Alpha = (200- a *2);
@@ -162,7 +160,7 @@ public class MainActivity extends Activity {
         ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
         float screenHeight = displaymetrics.heightPixels;
         Common.Height = (int) ((b / 100f) * screenHeight);
-        Cursor c9 = db.getTitle(9);
+        // Cursor c9 = db.getTitle(9);
 //        String q = c9.getString(3);
         //   Common.Area = (int) ((((q - 50) * 2) / 100f) * (screenHeight / 2) * -1);
         ToggleButton2.setChecked(false);
@@ -197,7 +195,7 @@ public class MainActivity extends Activity {
                     db.open();
                     Common.Alpha = 200 - a * 2;
                     db.updateTitle(2,
-                            "9",
+                            "7",
                             "Alpha",
                             Integer.toString(a));
                     db.close();
@@ -225,7 +223,7 @@ public class MainActivity extends Activity {
                     DatabaseActivity db = new DatabaseActivity(mThis);
                     db.open();
                     db.updateTitle(2,
-                            "9",
+                            "8",
                             "Height",
                             Integer.toString(b));
                     db.close();
@@ -256,7 +254,7 @@ public class MainActivity extends Activity {
                 DatabaseActivity db = new DatabaseActivity(mThis);
                 db.open();
                 db.updateTitle(2,
-                        "9",
+                        "6",
                         "Area",
                         Integer.toString(c));
                 db.close();
@@ -378,6 +376,11 @@ public class MainActivity extends Activity {
     protected void onStart() {
         super.onStart();
         bindService(new Intent(this, FilterService.class), this.rConnection, BIND_AUTO_CREATE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Stop closes on back button.
     }
 
     @Override

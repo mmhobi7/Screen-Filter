@@ -35,34 +35,39 @@ public class Color extends Activity {
         final ColorPicker picker = (ColorPicker) findViewById(R.id.picker);
         mThis = this;
         getWindow().setFlags(4, 4);
-        Log.d("b", String.valueOf(Common.BgColor));
-        picker.setColor(Common.BgColor);
-        Common.OColor = Common.BgColor;
+        Common.OColor = Common.Color;
         SaturationBar saturationBar = (SaturationBar) findViewById(R.id.saturationbar);
         ValueBar valueBar = (ValueBar) findViewById(R.id.valuebar);
         picker.addSaturationBar(saturationBar);
         picker.addValueBar(valueBar);
 //        picker.setOldCenterColor(picker.getColor());
         picker.setShowOldCenterColor(false);
+        picker.setColor(Common.Color);
         picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
             @Override
             public void onColorChanged(int color) {
-                Common.FgColor = String.valueOf(picker.getColor());
-                Common.BgColor = picker.getColor();
-                Log.d("co", String.valueOf(Common.BgColor));
+                Common.Color = picker.getColor();
+                FilterService.mThis.setColor();
             }
         });
     }
 
     public void setCancel(View view) {
-        Common.BgColor = Common.OColor;
+        Common.Color = Common.OColor;
+        FilterService.mThis.setColor();
         this.finish();
     }
 
     public void setOkay(View view) {
         // Common.BgColor = Common.Color;
-        Log.d("a", String.valueOf(Common.BgColor));
-        FilterService.mThis.setConfig();
+        FilterService.mThis.setColor();
+        DatabaseActivity db = new DatabaseActivity(this);
+        db.open();
+        db.updateTitle(2,
+                "5",
+                "BgColor",
+                String.valueOf(Common.Color));
+        db.close();
         this.finish();
     }
 }
