@@ -15,10 +15,10 @@
     <string name="Height">Height</string>
     <string name="Area">Area</string>
     <string name="ColorImageIs">Color</string>
-    <string name="preference_first_key">Yes</string>
+    <string name="preference_first_key">0</string>
     <string name="preference_FilterYN_key">N</string>
     <string name="preference_GradientType_key">0</string>
-    <string name="preference_Color_key">50</string>
+    <string name="preference_Color_key">8454400</string>
     <string name="preference_Height_key">50</string>
     <string name="preference_Area_key">50</string>
     <string name="preference_Alpha_key">50</string>

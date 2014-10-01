@@ -41,22 +41,22 @@ public class FilterService extends Service {
     public WindowManager localWindowManager;
 
     public void addView() {
-        DatabaseActivity db = new DatabaseActivity(this);
-        db.open();
-        Cursor A = db.getTitle(8);
-        A.moveToFirst();
-        Cursor H = db.getTitle(6);
-        H.moveToFirst();
-        Cursor Ar = db.getTitle(7);
-        Ar.moveToFirst();
-        Log.d("lololoololololol", A.getString(3));
+//        DatabaseActivity db = new DatabaseActivity(this);
+        //      db.open();
+        //    Cursor A = db.getTitle(8);
+        //  A.moveToFirst();
+        //Cursor H = db.getTitle(6);
+        //moveToFirst();
+        // Cursor Ar = db.getTitle(7);
+        //Ar.moveToFirst();
+        //Log.d("lololoololololol", A.getString(3));
         DisplayMetrics displaymetrics = new DisplayMetrics();
         ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
         int screenWidth = displaymetrics.widthPixels;
         float screenHeight = displaymetrics.heightPixels;
-        Common.Height = (int) (((Integer.parseInt(H.getString(3))) / 100f) * screenHeight);
-        Common.Area = (int) ((((((Integer.parseInt(Ar.getString(3))) - 50) * 2) / 100f)) * (screenHeight / 2) * -1);
-        db.close();
+        //    Common.Height = (int) (((Integer.parseInt(H.getString(3))) / 100f) * screenHeight);
+        //  Common.Area = (int) ((((((Integer.parseInt(Ar.getString(3))) - 50) * 2) / 100f)) * (screenHeight / 2) * -1);
+        //  db.close();
         vw = new View(this);
         localLayoutParams = new WindowManager.LayoutParams(screenWidth, (int) screenHeight, 2006, 1288, -3);
         localWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);

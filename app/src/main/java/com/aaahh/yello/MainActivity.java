@@ -64,61 +64,17 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mThis = this;
-        // Cursor c = db.getTitle(1);
-        // if (c.moveToFirst()) {
-        //   Toast.makeText(this,
-        //         "id: " + c.getString(0) + "\n" +
-        //               "ISBN: " + c.getString(1) + "\n" +
-        //             "TITLE: " + c.getString(2) + "\n" +
-        //         "PUBLISHER:  " + c.getString(3),
-        //   Toast.LENGTH_LONG).show();
-            Common.passedonce = "Y";
-            first = false;
+        Common.passedonce = "Y";
         SharedPreferences sharedPref = this.getSharedPreferences(
-                getString(R.string.preference_first_key), Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.preference_first_key), "1");
-        editor.commit();
-        String highScore = sharedPref.getString(getString(R.string.preference_first_key), "a");
-        ///} else {
-            /*//Root...
-            db.insertTitle(
-                    "2",
-                    "First",
-                    "P");
-            db.insertTitle(
-                    "1",
-                    "FilterYN",
-                    "N");
-            db.insertTitle(
-                    "3",
-                    "GradientYN",
-                    "N");
-            db.insertTitle(
-                    "4",
-                    "GradientType",
-                    "1");
-            db.insertTitle(
-                    "5",
-                    "BgColor",
-                    "#000000");
-            db.insertTitle(
-                    "7",
-                    "Height",
-                    "90");
-            db.insertTitle(
-                    "8",
-                    "Area",
-                    "20");
-            db.insertTitle(
-                    "6",
-                    "Alpha",
-                    "70");
-                    */
+                getString(R.string.preference_first_key), Context.MODE_WORLD_WRITEABLE);
+        if ((sharedPref.getString(getString(R.string.preference_first_key), "a").contains("1"))) {
             first = true;
-        //}
-        // db.close();
+        } else {
+            first = false;
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString(getString(R.string.preference_first_key), "1");
+            editor.apply();
+        }
         if (Common.boot.contains("1")) {
             moveTaskToBack(true);
         }
@@ -200,14 +156,10 @@ public class MainActivity extends Activity {
                 try {
                     int a = paramAnonymousSeekBar.getProgress();
                     TextPercent.setText(a + "%");
-                    DatabaseActivity db = new DatabaseActivity(mThis);
-                    db.open();
                     Common.Alpha = 200 - a * 2;
-                    db.updateTitle(2,
-                            "7",
-                            "Alpha",
-                            Integer.toString(a));
-                    db.close();
+                    //  "7",
+                    //    "Alpha",
+                    //      Integer.toString(a));
                     rService.setAlpha(Common.Alpha);
                 } catch (IllegalStateException ignored) {
                 }
@@ -229,13 +181,10 @@ public class MainActivity extends Activity {
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
                 try {
                     int b = paramAnonymousSeekBar.getProgress();
-                    DatabaseActivity db = new DatabaseActivity(mThis);
-                    db.open();
-                    db.updateTitle(2,
-                            "8",
-                            "Height",
-                            Integer.toString(b));
-                    db.close();
+
+                    //  "8",
+                    //    "Height",
+                    // Integer.toString(b));
                     DisplayMetrics displaymetrics = new DisplayMetrics();
                     ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
                     float screenHeight = displaymetrics.heightPixels;
@@ -260,13 +209,12 @@ public class MainActivity extends Activity {
 
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
                 int c = paramAnonymousSeekBar.getProgress();
-                DatabaseActivity db = new DatabaseActivity(mThis);
-                db.open();
-                db.updateTitle(2,
-                        "6",
-                        "Area",
-                        Integer.toString(c));
-                db.close();
+                //   DatabaseActivity db = new DatabaseActivity(mThis);
+                // db.open();
+                // / db.updateTitle(2,
+                //      "6",
+                //        "Area",
+                //    Integer.toString(c));
                 DisplayMetrics displaymetrics = new DisplayMetrics();
                 ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
                 float screenHeight = displaymetrics.heightPixels;
@@ -282,13 +230,9 @@ public class MainActivity extends Activity {
             ToggleButton2.setEnabled(false);
             Common.Receiver = true;
             rService.startNotification();
-            DatabaseActivity db = new DatabaseActivity(this);
-            db.open();
-            db.updateTitle(2,
-                    "2",
-                    "FilterYN",
-                    "Y");
-            db.close();
+//                    "2",
+            //                  "FilterYN",
+            //                "Y");
             startService(new Intent(this, FilterService.class));
             this.rService.addView();
         } else {
@@ -297,13 +241,9 @@ public class MainActivity extends Activity {
             ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancelAll();
             this.rService.endNotification();
             Common.Notif = false;
-            DatabaseActivity db = new DatabaseActivity(this);
-            db.open();
-            db.updateTitle(2,
-                    "2",
-                    "FilterYN",
-                    "N");
-            db.close();
+            //          "2",
+            //         "FilterYN",
+            //       "N");
             this.rService.removeView();
             stopService(new Intent(this, FilterService.class));
         }
@@ -312,13 +252,10 @@ public class MainActivity extends Activity {
     public void GradientToggle(View view) {
         if (ToggleButton2.isChecked()) {
             Log.d("e", Common.GradientType);
-            final DatabaseActivity db = new DatabaseActivity(this);
-            db.open();
             if (ToggleButton2.isChecked()) {
-                db.updateTitle(3,
-                        "3",
-                        "GradientYN",
-                        "Y");
+//                        "3",
+                //                       "GradientYN",
+                //                     "Y");
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -330,24 +267,23 @@ public class MainActivity extends Activity {
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         if (i == 0) {
                                             Common.GradientType = String.valueOf(1);
-                                            db.updateTitle(3,
-                                                    "4",
-                                                    "GradientType",
-                                                    "1");
+//                                                    "4",
+                                            //                                                  "GradientType",
+                                            //                                                "1");
                                         } else {
                                             if (i == 1) {
                                                 Common.GradientType = String.valueOf(2);
-                                                db.updateTitle(3,
-                                                        "4",
-                                                        "GradientType",
-                                                        "2");
+                                                //               db.updateTitle(3,
+                                                //                     "4",
+                                                //                   "GradientType",
+                                                //                 "2");
                                             } else {
                                                 if (i == 2) {
                                                     Common.GradientType = String.valueOf(3);
-                                                    db.updateTitle(3,
-                                                            "4",
-                                                            "GradientType",
-                                                            "3");
+                                                    //           db.updateTitle(3,
+                                                    //                 "4",
+                                                    //               "GradientType",
+                                                    //             "3");
                                                 }
                                             }
                                         }
@@ -357,11 +293,11 @@ public class MainActivity extends Activity {
                     }
                 });
             } else {
-                db.updateTitle(3,
-                        "3",
-                        "GradientYN",
-                        "Y");
-                db.close();
+                //     db.updateTitle(3,
+                //           "3",
+                //         "GradientYN",
+                //       "Y");
+                //db.close();
             }
         }
     }

@@ -50,13 +50,9 @@ public class Color extends Activity {
     public void setOkay(View view) {
         // Common.BgColor = Common.Color;
         FilterService.mThis.setColor();
-        DatabaseActivity db = new DatabaseActivity(this);
-        db.open();
-        db.updateTitle(2,
-                "5",
-                "BgColor",
-                String.valueOf(Common.Color));
-        db.close();
+        // "5",
+        //   "BgColor",
+        //     String.valueOf(Common.Color));
         this.finish();
     }
 }
