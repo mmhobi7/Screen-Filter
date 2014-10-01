@@ -84,7 +84,7 @@
             android:layout_below="@+id/textView2"
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/button"
-            android:background="#ff000000"
+            android:background="#19BB7C"
             android:contentDescription="@string/ColorImageIs" />
 
         <TextView

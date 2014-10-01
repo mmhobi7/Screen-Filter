@@ -6,28 +6,59 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+import android.provider.BaseColumns;
 
 public class DatabaseActivity {
-    public static final String KEY_ROWID = "_id";
-    public static final String KEY_ISBN = "isbn";
-    public static final String KEY_TITLE = "title";
-    public static final String KEY_PUBLISHER = "publisher";
-    private static final String TAG = "DatabaseActivity";
-
-    private static final String DATABASE_NAME = "books";
-    private static final String DATABASE_TABLE = "titles";
-    private static final int DATABASE_VERSION = 1;
-
-    private static final String DATABASE_CREATE =
-            "create table titles (_id integer primary key autoincrement, "
-                    + "isbn text not null, title text not null, "
-                    + "publisher text not null);";
 
     private final Context context;
 
     private DatabaseHelper DBHelper;
     private SQLiteDatabase db;
+
+    /* Inner class that defines the table contents */
+    public static abstract class FeedEntry implements BaseColumns {
+        public static final String TABLE_NAME = "entry";
+        public static final String COLUMN_NAME_ENTRY_ID = "entryid";
+        public static final String COLUMN_NAME_TITLE = "title";
+        public static final String COLUMN_NAME_SUBTITLE = "subtitle";
+
+        private static final String TEXT_TYPE = " TEXT";
+        private static final String COMMA_SEP = ",";
+        private static final String SQL_CREATE_ENTRIES =
+                "CREATE TABLE " + FeedEntry.TABLE_NAME + " (" +
+                        FeedEntry._ID + " INTEGER PRIMARY KEY," +
+                        FeedEntry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
+                        FeedEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
+                        " )";
+
+        private static final String SQL_DELETE_ENTRIES =
+                "DROP TABLE IF EXISTS " + FeedEntry.TABLE_NAME;
+    }
+
+    public static class DatabaseHelper extends SQLiteOpenHelper {
+        // If you change the database schema, you must increment the database version.
+        public static final int DATABASE_VERSION = 1;
+        public static final String DATABASE_NAME = "FeedReader.db";
+
+        public DatabaseHelper(Context context) {
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        }
+
+        public void onCreate(SQLiteDatabase db) {
+            db.execSQL(FeedEntry.SQL_CREATE_ENTRIES);
+        }
+
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            // This database is only a cache for online data, so its upgrade policy is
+            // to simply to discard the data and start over
+            db.execSQL(FeedEntry.SQL_DELETE_ENTRIES);
+            onCreate(db);
+        }
+
+        public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            onUpgrade(db, oldVersion, newVersion);
+        }
+    }
 
     public DatabaseActivity(Context ctx) {
         this.context = ctx;
@@ -35,8 +66,8 @@ public class DatabaseActivity {
     }
 
     //---opens the database---
-    public DatabaseActivity open() throws SQLException {
-        db = DBHelper.getWritableDatabase();
+    public DatabaseActivity open() {
+        SQLiteDatabase db = DBHelper.getWritableDatabase();
         return this;
     }
 
@@ -46,44 +77,34 @@ public class DatabaseActivity {
     }
 
     //---insert a title into the database---
-    public long insertTitle(String isbn, String title, String publisher) {
-        ContentValues initialValues = new ContentValues();
-        initialValues.put(KEY_ISBN, isbn);
-        initialValues.put(KEY_TITLE, title);
-        initialValues.put(KEY_PUBLISHER, publisher);
-        return db.insert(DATABASE_TABLE, null, initialValues);
+    public void insertTitle(String isbn, String title, String content) {
+        ContentValues values = new ContentValues();
+        values.put(FeedEntry.COLUMN_NAME_ENTRY_ID, isbn);
+        values.put(FeedEntry.COLUMN_NAME_TITLE, title);
+        // Insert the new row, returning the primary key value of the new row
+        long newRowId;
+        newRowId = db.insert(
+                FeedEntry.TABLE_NAME,
+                null,
+                values);
     }
 
     //---deletes a particular title---
     public boolean deleteTitle(long rowId) {
-        return db.delete(DATABASE_TABLE, KEY_ROWID +
+        return db.delete(FeedEntry.TABLE_NAME, FeedEntry.COLUMN_NAME_ENTRY_ID +
                 "=" + rowId, null) > 0;
     }
 
-    //---retrieves all the titles---
-    public Cursor getAllTitles() {
-        return db.query(DATABASE_TABLE, new String[]{
-                        KEY_ROWID,
-                        KEY_ISBN,
-                        KEY_TITLE,
-                        KEY_PUBLISHER},
-                null,
-                null,
-                null,
-                null,
-                null);
-    }
 
     //---retrieves a particular title---
     public Cursor getTitle(long rowId) throws SQLException {
         Cursor mCursor =
-                db.query(true, DATABASE_TABLE, new String[]{
-                                KEY_ROWID,
-                                KEY_ISBN,
-                                KEY_TITLE,
-                                KEY_PUBLISHER
+                db.query(true, FeedEntry.TABLE_NAME, new String[]{
+                                FeedEntry.COLUMN_NAME_ENTRY_ID,
+                                FeedEntry.COLUMN_NAME_TITLE,
+                                FeedEntry.COLUMN_NAME_SUBTITLE
                         },
-                        KEY_ROWID + "=" + rowId,
+                        FeedEntry.COLUMN_NAME_ENTRY_ID + "=" + rowId,
                         null,
                         null,
                         null,
@@ -99,31 +120,11 @@ public class DatabaseActivity {
     public boolean updateTitle(long rowId, String isbn,
                                String title, String publisher) {
         ContentValues args = new ContentValues();
-        args.put(KEY_ISBN, isbn);
-        args.put(KEY_TITLE, title);
-        args.put(KEY_PUBLISHER, publisher);
-        return db.update(DATABASE_TABLE, args,
-                KEY_ROWID + "=" + rowId, null) > 0;
+        args.put(FeedEntry.COLUMN_NAME_ENTRY_ID, isbn);
+        args.put(FeedEntry.COLUMN_NAME_TITLE, title);
+        args.put(FeedEntry.COLUMN_NAME_SUBTITLE, publisher);
+        return db.update(FeedEntry.COLUMN_NAME_TITLE, args,
+                FeedEntry.COLUMN_NAME_ENTRY_ID + "=" + rowId, null) > 0;
     }
 
-    private static class DatabaseHelper extends SQLiteOpenHelper {
-        DatabaseHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL(DATABASE_CREATE);
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion,
-                              int newVersion) {
-            Log.w(TAG, "Upgrading database from version " + oldVersion
-                    + " to "
-                    + newVersion + ", which will destroy all old data");
-            db.execSQL("DROP TABLE IF EXISTS titles");
-            onCreate(db);
-        }
-    }
 }

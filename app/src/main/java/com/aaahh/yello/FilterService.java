@@ -43,11 +43,11 @@ public class FilterService extends Service {
     public void addView() {
         DatabaseActivity db = new DatabaseActivity(this);
         db.open();
-        Cursor A = db.getTitle(9);
+        Cursor A = db.getTitle(8);
         A.moveToFirst();
-        Cursor H = db.getTitle(7);
+        Cursor H = db.getTitle(6);
         H.moveToFirst();
-        Cursor Ar = db.getTitle(8);
+        Cursor Ar = db.getTitle(7);
         Ar.moveToFirst();
         Log.d("lololoololololol", A.getString(3));
         DisplayMetrics displaymetrics = new DisplayMetrics();

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -63,20 +64,25 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mThis = this;
-        DatabaseActivity db = new DatabaseActivity(this);
-        db.open();
-        Cursor c = db.getTitle(1);
-        if (c.moveToFirst()) {
-            Toast.makeText(this,
-                    "id: " + c.getString(0) + "\n" +
-                            "ISBN: " + c.getString(1) + "\n" +
-                            "TITLE: " + c.getString(2) + "\n" +
-                            "PUBLISHER:  " + c.getString(3),
-                    Toast.LENGTH_LONG).show();
+        // Cursor c = db.getTitle(1);
+        // if (c.moveToFirst()) {
+        //   Toast.makeText(this,
+        //         "id: " + c.getString(0) + "\n" +
+        //               "ISBN: " + c.getString(1) + "\n" +
+        //             "TITLE: " + c.getString(2) + "\n" +
+        //         "PUBLISHER:  " + c.getString(3),
+        //   Toast.LENGTH_LONG).show();
             Common.passedonce = "Y";
             first = false;
-        } else {
-            //Root...
+        SharedPreferences sharedPref = this.getSharedPreferences(
+                getString(R.string.preference_first_key), Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.preference_first_key), "1");
+        editor.commit();
+        String highScore = sharedPref.getString(getString(R.string.preference_first_key), "a");
+        ///} else {
+            /*//Root...
             db.insertTitle(
                     "2",
                     "First",
@@ -109,8 +115,9 @@ public class MainActivity extends Activity {
                     "6",
                     "Alpha",
                     "70");
+                    */
             first = true;
-        }
+        //}
         // db.close();
         if (Common.boot.contains("1")) {
             moveTaskToBack(true);
@@ -124,14 +131,14 @@ public class MainActivity extends Activity {
         Sliderb = ((SeekBar) findViewById(R.id.seekBar4));
         Sliderc = ((SeekBar) findViewById(R.id.seekBar5));
         ColorView = ((ImageView) findViewById(R.id.textureView));
-        if (first) {
+        /*if (first) {
             Slider.setProgress(50);
             Sliderb.setProgress(50);
             Sliderc.setProgress(50);
         } else {
             Log.d("e", "2");
             Cursor c7 = db.getTitle(7);
-            Cursor c6 = db.getTitle(6);
+           .// Cursor c6 = db.getTitle(6);
             Cursor c8 = db.getTitle(8);
             Slider.setProgress(Integer.parseInt(c7.getString(3)));
             Sliderb.setProgress(Integer.parseInt(c8.getString(3)));
@@ -140,6 +147,7 @@ public class MainActivity extends Activity {
             Log.d("2", String.valueOf(Integer.parseInt(c8.getString(3))));
             Log.d("3", String.valueOf(Integer.parseInt(c7.getString(3))));
         }
+
         Cursor c2 = db.getTitle(2);
         Common.FilterYN = c2.getString(3);
         Cursor c3 = db.getTitle(3);
@@ -156,10 +164,11 @@ public class MainActivity extends Activity {
         // Common.Alpha = (200- a *2);
         Cursor c8 = db.getTitle(8);
         int b = Integer.parseInt(c8.getString(3));
+        */
         DisplayMetrics displaymetrics = new DisplayMetrics();
         ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
         float screenHeight = displaymetrics.heightPixels;
-        Common.Height = (int) ((b / 100f) * screenHeight);
+        //Common.Height = (int) ((b / 100f) * screenHeight);
         // Cursor c9 = db.getTitle(9);
 //        String q = c9.getString(3);
         //   Common.Area = (int) ((((q - 50) * 2) / 100f) * (screenHeight / 2) * -1);
