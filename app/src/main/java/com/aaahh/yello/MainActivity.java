@@ -65,19 +65,27 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         mThis = this;
         Common.passedonce = "Y";
-        SharedPreferences sharedPref = this.getSharedPreferences(
-                getString(R.string.preference_first_key), Context.MODE_WORLD_WRITEABLE);
-        if ((sharedPref.getString(getString(R.string.preference_first_key), "a").contains("1"))) {
+        SharedPreferences prefs = this.getSharedPreferences(
+                getString(R.string.preference_first_key, R.string.preference_Height_key, R.string.preference_Height_key, R.string.preference_Boot_key, R.string.preference_Alpha_key), Context.MODE_WORLD_WRITEABLE);
+        //     R.string.preference_Area_key),
+        //    getString(R.string.preference_Color_key),
+        //  getString(R.string.preference_FilterYN_key),
+        //getString(R.string.preference_first_key), Context.MODE_WORLD_WRITEABLE);
+
+        if (prefs.getString(getString(R.string.preference_first_key), "a").contains("1")) {
             first = true;
         } else {
             first = false;
-            SharedPreferences.Editor editor = sharedPref.edit();
+            SharedPreferences.Editor editor = prefs.edit();
             editor.putString(getString(R.string.preference_first_key), "1");
             editor.apply();
         }
-        if (Common.boot.contains("1")) {
-            moveTaskToBack(true);
+        if (prefs.getString(getString(R.string.preference_Boot_key), "a").contains("1")) {
+            //moveTaskToBack(true);
+        } else {
         }
+        Log.d("o", prefs.getString(getString(R.string.preference_Boot_key), "a"));
+        Log.d("p", prefs.getString(getString(R.string.preference_Height_key), "a"));
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         TextPercent = ((TextView) findViewById(R.id.textViewPer));
         ToggleButton1 = ((ToggleButton) findViewById(R.id.toggleButton2));
@@ -168,10 +176,7 @@ public class MainActivity extends Activity {
         Sliderb.setMax(100);
         Sliderb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
-                DisplayMetrics displaymetrics = new DisplayMetrics();
-                ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
-                float screenHeight = displaymetrics.heightPixels;
-                Common.Height = (int) ((paramAnonymousInt / 100f) * screenHeight);
+                Common.Height = paramAnonymousInt;
                 rService.setHeight(Common.Height);
             }
 
@@ -185,10 +190,7 @@ public class MainActivity extends Activity {
                     //  "8",
                     //    "Height",
                     // Integer.toString(b));
-                    DisplayMetrics displaymetrics = new DisplayMetrics();
-                    ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
-                    float screenHeight = displaymetrics.heightPixels;
-                    Common.Height = (int) ((b / 100f) * screenHeight);
+                    Common.Height = b;
                     rService.setHeight(Common.Height);
                 } catch (IllegalStateException ignored) {
                 }
@@ -197,10 +199,7 @@ public class MainActivity extends Activity {
         Sliderc.setMax(100);
         Sliderc.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
-                DisplayMetrics displaymetrics = new DisplayMetrics();
-                ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
-                float screenHeight = displaymetrics.heightPixels;
-                Common.Area = (int) ((((paramAnonymousInt - 50) * 2) / 100f) * (screenHeight / 2) * -1);
+                Common.Area = paramAnonymousInt;
                 rService.setArea(Common.Area);
             }
 
@@ -215,10 +214,7 @@ public class MainActivity extends Activity {
                 //      "6",
                 //        "Area",
                 //    Integer.toString(c));
-                DisplayMetrics displaymetrics = new DisplayMetrics();
-                ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
-                float screenHeight = displaymetrics.heightPixels;
-                Common.Area = (int) ((((c - 50) * 2) / 100f) * (screenHeight / 2) * -1);
+                Common.Area = c;
                 rService.setArea(Common.Area);
             }
         });

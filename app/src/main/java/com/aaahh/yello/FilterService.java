@@ -32,7 +32,7 @@ public class FilterService extends Service {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equalsIgnoreCase("android.intent.action.CONFIGURATION_CHANGED")) {
                 Common.O = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
-                FilterService.mThis.setConfi2();
+                FilterService.mThis.setRotation();
             }
         }
     };
@@ -52,17 +52,18 @@ public class FilterService extends Service {
         //Log.d("lololoololololol", A.getString(3));
         DisplayMetrics displaymetrics = new DisplayMetrics();
         ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
-        int screenWidth = displaymetrics.widthPixels;
+        float screenWidth = displaymetrics.widthPixels;
         float screenHeight = displaymetrics.heightPixels;
-        //    Common.Height = (int) (((Integer.parseInt(H.getString(3))) / 100f) * screenHeight);
-        //  Common.Area = (int) ((((((Integer.parseInt(Ar.getString(3))) - 50) * 2) / 100f)) * (screenHeight / 2) * -1);
+        //    Common.Height = ;
+        //  Common.Area = (;
         //  db.close();
         vw = new View(this);
-        localLayoutParams = new WindowManager.LayoutParams(screenWidth, (int) screenHeight, 2006, 1288, -3);
+        localLayoutParams = new WindowManager.LayoutParams((int) screenWidth, (int) screenHeight, 2006, 1288, -3);
         localWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-        localLayoutParams.height = Common.Height;
-        localLayoutParams.y = Common.Area;
-        localLayoutParams.format = (PixelFormat.RGBA_8888);
+        localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
+        localLayoutParams.width = (int) screenWidth;
+        localLayoutParams.y = (int) ((((((Common.Area) * 2) / 100f)) * (screenHeight / 2)) * -1);
+        localLayoutParams.x = 0;
         //TODO: fix this \/
         int i = Common.Color;
         String hexColor = String.format("#%06X", (0xFFFFFF & i));
@@ -133,153 +134,23 @@ public class FilterService extends Service {
 
     public void setHeight(int paramInt) {
         if (!(vw == null)) {
-            localLayoutParams.height = (paramInt);
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
+            float screenHeight = displaymetrics.heightPixels;
+            localLayoutParams.height = ((int) ((paramInt / 100f) * screenHeight));
             localWindowManager.updateViewLayout(vw, localLayoutParams);
         }
     }
 
     public void setArea(int paramInt) {
         if (!(vw == null)) {
-            localLayoutParams.y = (paramInt);
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
+            float screenHeight = displaymetrics.heightPixels;
+            localLayoutParams.y = (int) ((((paramInt - 50) * 2) / 100f) * (screenHeight / 2) * -1);
             localWindowManager.updateViewLayout(vw, localLayoutParams);
         }
     }
-
-    public void setConfi2() {
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
-        float screenHeight = displaymetrics.heightPixels;
-        float screenWidth = displaymetrics.widthPixels;
-        //TODO: fix this \/
-        int i = Common.Color;
-        String hexColor = String.format("#%06X", (0xFFFFFF & i));
-        String fade = hexColor.replace("#", "#00");
-        Log.d("2", String.valueOf(i));
-        Log.d("h", String.valueOf(Common.O));
-        if (Common.O == 0) {
-            Common.Height = (int) ((Common.Height / 100f) * screenHeight);
-            Common.Area = (int) (((((Common.Area - 50) * 2) / 100f)) * (screenHeight / 2) * -1);
-            localLayoutParams.width = (int) screenWidth;
-            localLayoutParams.height = (Common.Height);
-            localLayoutParams.x = 0;
-            localLayoutParams.y = (Common.Area);
-            if (MainActivity.ToggleButton2.isChecked()) {
-                int b = (Color.parseColor(fade));
-                gt = new GradientDrawable();
-                if (Common.GradientType.contains("1")) {
-                    int colors[] = {b, i};
-                    gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
-                    gt.setColors(colors);
-                }
-                if (Common.GradientType.contains("2")) {
-                    int colors[] = {b, i, b};
-                    gt.setColors(colors);
-                }
-                if (Common.GradientType.contains("3")) {
-                    int colors[] = {b, i};
-                    gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
-                    gt.setColors(colors);
-                }
-                vw.setBackground(gt);
-            } else {
-                vw.setBackgroundColor(i);
-            }
-        }
-            if (Common.O == 1) {
-                Common.Height = (int) ((Common.Height / 100f) * screenHeight);
-                Common.Area = (int) (((((Common.Area - 50) * 2) / 100f)) * (screenHeight / 2) * -1);
-                localLayoutParams.height = (Common.Height);
-                localLayoutParams.width = (int) screenWidth;
-                localLayoutParams.x = (Common.Area);
-                localLayoutParams.y = 0;
-
-                if (MainActivity.mThis.ToggleButton2.isChecked()) {
-                    int b = (Color.parseColor(fade));
-                    gt = new GradientDrawable();
-                    if (Common.GradientType.contains("1")) {
-                        int colors[] = {b, i};
-                        gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
-                        gt.setColors(colors);
-                    }
-                    if (Common.GradientType.contains("2")) {
-                        int colors[] = {b, i, b};
-                        gt.setColors(colors);
-                        gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
-                    }
-                    if (Common.GradientType.contains("3")) {
-                        int colors[] = {b, i};
-                        gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
-                        gt.setColors(colors);
-                    }
-                    vw.setBackground(gt);
-                } else {
-                    vw.setBackgroundColor(i);
-                }
-            }
-            if (Common.O == 2) {
-                Common.Height = (int) ((Common.Height / 100f) * screenHeight);
-                Common.Area = (int) (((((Common.Area - 50) * 2) / 100f)) * (screenHeight / 2) * -1);
-                localLayoutParams.height = (Common.Height);
-                localLayoutParams.width = (int) screenWidth;
-                localLayoutParams.x = 0;
-                localLayoutParams.y = ((Common.Area) * -1);
-
-                if (MainActivity.mThis.ToggleButton2.isChecked()) {
-                    int b = (Color.parseColor(fade));
-                    gt = new GradientDrawable();
-                    if (Common.GradientType.contains("1")) {
-                        int colors[] = {b, i};
-                        gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
-                        gt.setColors(colors);
-                    }
-                    if (Common.GradientType.contains("2")) {
-                        int colors[] = {b, i, b};
-                        gt.setColors(colors);
-                    }
-                    if (Common.GradientType.contains("3")) {
-                        int colors[] = {b, i};
-                        gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
-                        gt.setColors(colors);
-                    }
-                    vw.setBackground(gt);
-                } else {
-                    vw.setBackgroundColor(i);
-                }
-            }
-            if (Common.O == 3) {
-                Common.Height = (int) ((Common.Height / 100f) * screenWidth);
-                Common.Area = (int) (((((Common.Area - 50) * 2) / 100f)) * (screenHeight / 2) * -1);
-                localLayoutParams.height = (Common.Height);
-                localLayoutParams.width = (int) screenWidth;
-                localLayoutParams.x = ((Common.Area) * -1);
-                localLayoutParams.y = 0;
-                if (MainActivity.ToggleButton2.isChecked()) {
-                    int b = (Color.parseColor(fade));
-                    gt = new GradientDrawable();
-                    if (Common.GradientType.contains("1")) {
-                        int colors[] = {b, i};
-                        gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
-                        gt.setColors(colors);
-                    }
-                    if (Common.GradientType.contains("2")) {
-                        int colors[] = {b, i, b};
-                        gt.setColors(colors);
-                        gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
-                    }
-                    if (Common.GradientType.contains("3")) {
-                        int colors[] = {b, i};
-                        gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
-                        gt.setColors(colors);
-                    }
-                    vw.setBackground(gt);
-                } else {
-                    vw.setBackgroundColor(i);
-
-                }
-            }
-            localWindowManager.updateViewLayout(vw, localLayoutParams);
-            vw.getBackground().setAlpha(Common.Alpha);
-        }
 
     public void setColor() {
         if (vw == null) {
@@ -315,30 +186,132 @@ public class FilterService extends Service {
     public void setRotation() {
         if (vw == null) {
         } else {
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
+            float screenWidth = displaymetrics.widthPixels;
+            float screenHeight = displaymetrics.heightPixels;
+            //TODO: fix this \/
             int i = Common.Color;
             String hexColor = String.format("#%06X", (0xFFFFFF & i));
             String fade = hexColor.replace("#", "#00");
-            if (MainActivity.ToggleButton2.isChecked()) {
-                int b = (Color.parseColor(fade));
-                if (Common.GradientType.contains("1")) {
-                    int colors[] = {b, i};
-                    gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
-                    gt.setColors(colors);
+            Log.d("2", String.valueOf(i));
+            Log.d("h", String.valueOf(Common.O));
+            if (Common.O == 0) {
+                localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
+                localLayoutParams.width = (int) screenWidth;
+                localLayoutParams.y = (int) ((((((Common.Area) * 2) / 100f)) * (screenHeight / 2)) * -1);
+                localLayoutParams.x = 0;
+
+                if (MainActivity.ToggleButton2.isChecked()) {
+                    int b = (Color.parseColor(fade));
+                    gt = new GradientDrawable();
+                    if (Common.GradientType.contains("1")) {
+                        int colors[] = {b, i};
+                        gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
+                        gt.setColors(colors);
+                    }
+                    if (Common.GradientType.contains("2")) {
+                        int colors[] = {b, i, b};
+                        gt.setColors(colors);
+                    }
+                    if (Common.GradientType.contains("3")) {
+                        int colors[] = {b, i};
+                        gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
+                        gt.setColors(colors);
+                    }
+                    vw.setBackground(gt);
+                } else {
+                    vw.setBackgroundColor(i);
                 }
-                if (Common.GradientType.contains("2")) {
-                    int colors[] = {b, i, b};
-                    gt.setColors(colors);
-                    gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
-                }
-                if (Common.GradientType.contains("3")) {
-                    int colors[] = {b, i};
-                    gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
-                    gt.setColors(colors);
-                }
-                vw.setBackground(gt);
-            } else {
-                vw.setBackgroundColor(i);
             }
+            if (Common.O == 1) {
+                localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
+                localLayoutParams.height = (int) screenWidth;
+                localLayoutParams.x = (int) ((((((Common.Area) * 2) / 100f)) * (screenHeight / 2)) * -1);
+                localLayoutParams.y = 0;
+
+                if (MainActivity.ToggleButton2.isChecked()) {
+                    int b = (Color.parseColor(fade));
+                    gt = new GradientDrawable();
+                    if (Common.GradientType.contains("1")) {
+                        int colors[] = {b, i};
+                        gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
+                        gt.setColors(colors);
+                    }
+                    if (Common.GradientType.contains("2")) {
+                        int colors[] = {b, i, b};
+                        gt.setColors(colors);
+                        gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
+                    }
+                    if (Common.GradientType.contains("3")) {
+                        int colors[] = {b, i};
+                        gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
+                        gt.setColors(colors);
+                    }
+                    vw.setBackground(gt);
+                } else {
+                    vw.setBackgroundColor(i);
+                }
+            }
+            if (Common.O == 2) {
+                localLayoutParams.height = ((int) ((Common.Height / 100f) * screenHeight) * -1);
+                localLayoutParams.width = (int) screenWidth;
+                localLayoutParams.x = 0;
+                localLayoutParams.y = (int) (((((Common.Area) * 2) / 100f)) * (screenHeight / 2) * -1);
+
+                if (MainActivity.ToggleButton2.isChecked()) {
+                    int b = (Color.parseColor(fade));
+                    gt = new GradientDrawable();
+                    if (Common.GradientType.contains("1")) {
+                        int colors[] = {b, i};
+                        gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
+                        gt.setColors(colors);
+                    }
+                    if (Common.GradientType.contains("2")) {
+                        int colors[] = {b, i, b};
+                        gt.setColors(colors);
+                    }
+                    if (Common.GradientType.contains("3")) {
+                        int colors[] = {b, i};
+                        gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
+                        gt.setColors(colors);
+                    }
+                    vw.setBackground(gt);
+                } else {
+                    vw.setBackgroundColor(i);
+                }
+            }
+            if (Common.O == 3) {
+                localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
+                localLayoutParams.height = (int) screenWidth;
+                localLayoutParams.x = (int) (((((Common.Area) * 2) / 100f)) * (screenHeight / 2));
+                localLayoutParams.y = 0;
+                Log.d("m", String.valueOf(screenHeight));
+                if (MainActivity.ToggleButton2.isChecked()) {
+                    int b = (Color.parseColor(fade));
+                    gt = new GradientDrawable();
+                    if (Common.GradientType.contains("1")) {
+                        int colors[] = {b, i};
+                        gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
+                        gt.setColors(colors);
+                    }
+                    if (Common.GradientType.contains("2")) {
+                        int colors[] = {b, i, b};
+                        gt.setColors(colors);
+                        gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
+                    }
+                    if (Common.GradientType.contains("3")) {
+                        int colors[] = {b, i};
+                        gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
+                        gt.setColors(colors);
+                    }
+                    vw.setBackground(gt);
+                } else {
+                    vw.setBackgroundColor(i);
+
+                }
+            }
+            localWindowManager.updateViewLayout(vw, localLayoutParams);
             vw.getBackground().setAlpha(Common.Alpha);
         }
     }

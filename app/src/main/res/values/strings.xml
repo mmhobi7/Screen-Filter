@@ -22,4 +22,5 @@
     <string name="preference_Height_key">50</string>
     <string name="preference_Area_key">50</string>
     <string name="preference_Alpha_key">50</string>
+    <string name="preference_Boot_key">0</string>
 </resources>
