@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
@@ -23,7 +22,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.io.IOException;
@@ -40,9 +38,8 @@ public class MainActivity extends Activity {
     public SeekBar Sliderb;
     public SeekBar Sliderc;
     public ImageView ColorView;
-    FilterService rService;
     public boolean first;
-
+    FilterService rService;
     private final ServiceConnection rConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             FilterService.LocalBinder localLocalBinder = (FilterService.LocalBinder) iBinder;
@@ -65,27 +62,31 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         mThis = this;
         Common.passedonce = "Y";
-        SharedPreferences prefs = this.getSharedPreferences(
-                getString(R.string.preference_first_key, R.string.preference_Height_key, R.string.preference_Height_key, R.string.preference_Boot_key, R.string.preference_Alpha_key), Context.MODE_WORLD_WRITEABLE);
+        //CAN NOT INTERWEAVE WITH OTHER \/
+        // SharedPreferences fp = this.getSharedPreferences(getString(R.string.preference_first_key), 0);
+        // SharedPreferences bp = this.getSharedPreferences(getString(R.string.preference_Boot_key), 0);
         //     R.string.preference_Area_key),
         //    getString(R.string.preference_Color_key),
         //  getString(R.string.preference_FilterYN_key),
         //getString(R.string.preference_first_key), Context.MODE_WORLD_WRITEABLE);
+        //  SharedPreferences.Editor editor = bp.edit();
+        //  editor.putString(getString(R.string.preference_Boot_key), "0");
+        //   editor.commit();
+        //   if (fp.getString(getString(R.string.preference_first_key), "a").contains("1")) {
+        //     first = true;
+        // } else {
+        //     first = false;
+        //SharedPreferences.Editor editor2 = fp.edit();
+        //  editor2.putString(getString(R.string.preference_first_key), "1");
+        //editor2.commit();
+        //  }
 
-        if (prefs.getString(getString(R.string.preference_first_key), "a").contains("1")) {
-            first = true;
-        } else {
-            first = false;
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString(getString(R.string.preference_first_key), "1");
-            editor.apply();
+        SharedPreferences bp = this.getSharedPreferences(getString(R.string.preference_Boot_key), 0);
+        if (bp.getString(getString(R.string.preference_Boot_key), "a").contains("1")) {
+            moveTaskToBack(true);
         }
-        if (prefs.getString(getString(R.string.preference_Boot_key), "a").contains("1")) {
-            //moveTaskToBack(true);
-        } else {
-        }
-        Log.d("o", prefs.getString(getString(R.string.preference_Boot_key), "a"));
-        Log.d("p", prefs.getString(getString(R.string.preference_Height_key), "a"));
+        Log.d("o", bp.getString(getString(R.string.preference_Boot_key), "a"));
+        //   Log.d("p", fp.getString(getString(R.string.preference_Height_key), "a"));
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         TextPercent = ((TextView) findViewById(R.id.textViewPer));
         ToggleButton1 = ((ToggleButton) findViewById(R.id.toggleButton2));
@@ -308,12 +309,15 @@ public class MainActivity extends Activity {
         Common.Receiver = false;
         unbindService(rConnection);
     }
+
     public void onPause() {
         super.onPause();
     }
+
     public void onResume() {
         super.onResume();
     }
+
     protected void onStart() {
         super.onStart();
         bindService(new Intent(this, FilterService.class), this.rConnection, BIND_AUTO_CREATE);

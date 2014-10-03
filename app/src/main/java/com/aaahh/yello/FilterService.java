@@ -9,9 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.PixelFormat;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Binder;
 import android.os.IBinder;
@@ -162,17 +160,17 @@ public class FilterService extends Service {
                 int b = (Color.parseColor(fade));
                 if (Common.GradientType.contains("1")) {
                     int colors[] = {b, i};
-                    gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
+                    gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
                     gt.setColors(colors);
                 }
                 if (Common.GradientType.contains("2")) {
                     int colors[] = {b, i, b};
                     gt.setColors(colors);
-                    gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
+                    gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
                 }
                 if (Common.GradientType.contains("3")) {
                     int colors[] = {b, i};
-                    gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
+                    gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
                     gt.setColors(colors);
                 }
                 vw.setBackground(gt);
@@ -345,6 +343,7 @@ public class FilterService extends Service {
     public class LocalBinder extends Binder {
         public LocalBinder() {
         }
+
         FilterService getService() {
             return FilterService.this;
         }

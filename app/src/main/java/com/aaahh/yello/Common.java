@@ -15,7 +15,7 @@ public class Common {
     public static boolean Receiver = false;
     public static String toboot = "N";
     public static int OColor = 0;
-    public static int Color = 0;
+    public static int Color = -8257792;
     public static int tmp = 0;
     public static String FgColor = "#000000";
     public static String FilterYN = "N";
