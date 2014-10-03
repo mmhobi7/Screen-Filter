@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -12,12 +11,10 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -108,32 +105,10 @@ public class MainActivity extends Activity {
             Log.d("1", String.valueOf(Integer.parseInt(c6.getString(3))));
             Log.d("2", String.valueOf(Integer.parseInt(c8.getString(3))));
             Log.d("3", String.valueOf(Integer.parseInt(c7.getString(3))));
+            set Common.Area Hieght and Alpha
+            //        TextPercent.setText(a + "%");
         }
-
-        Cursor c2 = db.getTitle(2);
-        Common.FilterYN = c2.getString(3);
-        Cursor c3 = db.getTitle(3);
-        Common.GradientYN = c3.getString(3);
-        Cursor c4 = db.getTitle(4);
-        Common.GradientType = c4.getString(3);
-        Cursor c5 = db.getTitle(5);
-        // Common.Color = Integer.parseInt(c5.getString(3));
-        // Cursor c6 = db.getTitle(6);
-        //
-        //  String a = (c6.getString(3));
-        //
-//        TextPercent.setText(a + "%");
-        // Common.Alpha = (200- a *2);
-        Cursor c8 = db.getTitle(8);
-        int b = Integer.parseInt(c8.getString(3));
         */
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
-        //float screenHeight = displaymetrics.heightPixels;
-        //Common.Height = (int) ((b / 100f) * screenHeight);
-        // Cursor c9 = db.getTitle(9);
-//        String q = c9.getString(3);
-        //   Common.Area = (int) ((((q - 50) * 2) / 100f) * (screenHeight / 2) * -1);
         ToggleButton2.setChecked(false);
         if (Common.FilterYN.equals("Y")) {
             ToggleButton1.setChecked(true);
@@ -145,8 +120,6 @@ public class MainActivity extends Activity {
         } else {
             ToggleButton2.setChecked(false);
         }
-        //   int j = Common.converToDecimalFromHex(Common.BgColor);
-        //   ColorView.setBackgroundColor(j);
         ToggleButton2.setChecked(false);
         Slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {

@@ -14,7 +14,6 @@ import com.larswerkman.holocolorpicker.ValueBar;
  */
 public class Color extends Activity {
     public static Color mThis;
-    public static ColorPicker picker;
 
     public void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);

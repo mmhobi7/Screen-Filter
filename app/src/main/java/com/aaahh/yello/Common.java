@@ -1,7 +1,8 @@
 package com.aaahh.yello;
 
 /**
- * Created by aaahh on 9/18/14...
+ * Created by aaahh on 9/18/14.
+ * Fix Boot
  */
 public class Common {
     public static int O = 0;
@@ -13,11 +14,8 @@ public class Common {
     public static String passedonce = "0";
     public static boolean Notif = false;
     public static boolean Receiver = false;
-    public static String toboot = "N";
     public static int OColor = 0;
     public static int Color = -8257792;
-    public static int tmp = 0;
-    public static String FgColor = "#000000";
     public static String FilterYN = "N";
     public static String GradientYN = "N";
 }
