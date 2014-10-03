@@ -17,7 +17,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
 /**
  * Created by aaahh on 8/26/14. Edited 9/13/14
@@ -152,8 +151,7 @@ public class FilterService extends Service {
     }
 
     public void setColor() {
-        if (vw == null) {
-        } else {
+        if (!(vw == null)) {
             int i = Common.Color;
             String hexColor = String.format("#%06X", (0xFFFFFF & i));
             String fade = hexColor.replace("#", "#00");
@@ -184,8 +182,7 @@ public class FilterService extends Service {
     }
 
     public void setRotation() {
-        if (vw == null) {
-        } else {
+        if (!(vw == null)) {
             DisplayMetrics displaymetrics = new DisplayMetrics();
             ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
             float screenWidth = displaymetrics.widthPixels;

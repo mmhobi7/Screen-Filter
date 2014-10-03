@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -37,7 +36,6 @@ public class MainActivity extends Activity {
     public SeekBar Slider;
     public SeekBar Sliderb;
     public SeekBar Sliderc;
-    public ImageView ColorView;
     public boolean first;
     FilterService rService;
     private final ServiceConnection rConnection = new ServiceConnection() {
@@ -131,7 +129,7 @@ public class MainActivity extends Activity {
         */
         DisplayMetrics displaymetrics = new DisplayMetrics();
         ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
-        float screenHeight = displaymetrics.heightPixels;
+        //float screenHeight = displaymetrics.heightPixels;
         //Common.Height = (int) ((b / 100f) * screenHeight);
         // Cursor c9 = db.getTitle(9);
 //        String q = c9.getString(3);
@@ -185,12 +183,11 @@ public class MainActivity extends Activity {
 
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
                 try {
-                    int b = paramAnonymousSeekBar.getProgress();
 
                     //  "8",
                     //    "Height",
                     // Integer.toString(b));
-                    Common.Height = b;
+                    Common.Height = paramAnonymousSeekBar.getProgress();
                     rService.setHeight(Common.Height);
                 } catch (IllegalStateException ignored) {
                 }
@@ -207,14 +204,13 @@ public class MainActivity extends Activity {
             }
 
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
-                int c = paramAnonymousSeekBar.getProgress();
                 //   DatabaseActivity db = new DatabaseActivity(mThis);
                 // db.open();
                 // / db.updateTitle(2,
                 //      "6",
                 //        "Area",
                 //    Integer.toString(c));
-                Common.Area = c;
+                Common.Area = paramAnonymousSeekBar.getProgress();
                 rService.setArea(Common.Area);
             }
         });
