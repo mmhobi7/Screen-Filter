@@ -61,7 +61,7 @@ public class FilterService extends Service {
         localWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
         localLayoutParams.width = (int) screenWidth;
-        localLayoutParams.y = (int) ((((((Common.Area) * 2) / 100f)) * (screenHeight / 2)) * -1);
+        localLayoutParams.y = (int) ((((((Common.Area - 50) * 2) / 100f)) * (screenHeight / 2)) * -1);
         localLayoutParams.x = 0;
         //TODO: fix this \/
         int i = Common.Color;
@@ -199,7 +199,7 @@ public class FilterService extends Service {
             if (Common.O == 0) {
                 localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
                 localLayoutParams.width = (int) screenWidth;
-                localLayoutParams.y = (int) ((((((Common.Area) * 2) / 100f)) * (screenHeight / 2)) * -1);
+                localLayoutParams.y = (int) ((((((Common.Area - 50) * 2) / 100f)) * (screenHeight / 2)) * -1);
                 localLayoutParams.x = 0;
 
                 if (MainActivity.ToggleButton2.isChecked()) {
@@ -226,8 +226,8 @@ public class FilterService extends Service {
             }
             if (Common.O == 1) {
                 localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
-                localLayoutParams.height = (int) screenWidth;
-                localLayoutParams.x = (int) ((((((Common.Area) * 2) / 100f)) * (screenHeight / 2)) * -1);
+                localLayoutParams.height = (int) screenHeight;
+                localLayoutParams.x = (int) ((((((Common.Area - 50) * 2) / 100f)) * (screenWidth / 2)) * -1);
                 localLayoutParams.y = 0;
 
                 if (MainActivity.ToggleButton2.isChecked()) {
@@ -254,10 +254,10 @@ public class FilterService extends Service {
                 }
             }
             if (Common.O == 2) {
-                localLayoutParams.height = ((int) ((Common.Height / 100f) * screenHeight) * -1);
+                localLayoutParams.height = ((int) ((Common.Height / 100f) * screenHeight));
                 localLayoutParams.width = (int) screenWidth;
                 localLayoutParams.x = 0;
-                localLayoutParams.y = (int) (((((Common.Area) * 2) / 100f)) * (screenHeight / 2) * -1);
+                localLayoutParams.y = (int) (((((Common.Area - 50) * 2) / 100f)) * (screenHeight / 2) * -1);
 
                 if (MainActivity.ToggleButton2.isChecked()) {
                     int b = (Color.parseColor(fade));
@@ -283,8 +283,8 @@ public class FilterService extends Service {
             }
             if (Common.O == 3) {
                 localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
-                localLayoutParams.height = (int) screenWidth;
-                localLayoutParams.x = (int) (((((Common.Area) * 2) / 100f)) * (screenHeight / 2));
+                localLayoutParams.height = (int) screenHeight;
+                localLayoutParams.x = (int) ((((((Common.Area - 50) * 2) / 100f)) * (screenWidth / 2)));
                 localLayoutParams.y = 0;
                 Log.d("m", String.valueOf(screenHeight));
                 if (MainActivity.ToggleButton2.isChecked()) {
