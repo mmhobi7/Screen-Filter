@@ -3,7 +3,7 @@
 
     <string name="app_name">Screen Filter</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Anti-Tapjack</string>
     <string name="ToggleOne">ScreenFilter</string>
     <string name="ScreenFilter">Screen Filter </string>
     <string name="Gradient">Gradient</string>

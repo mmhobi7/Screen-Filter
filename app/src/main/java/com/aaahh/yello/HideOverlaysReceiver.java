@@ -19,43 +19,25 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.WindowManager;
 
-/**
- * <p>
- * Base receiver to extend to catch notifications when overlays should be
- * hidden.
- * </p>
- * <p>
- * Tapjacking protection in SuperSU prevents some dialogs from receiving user
- * input when overlays are present. For security reasons this notification is
- * only sent to apps that have previously been granted root access, so even if
- * your app does not <em>require</em> root, you still need to <em>request</em>
- * it, and the user must grant it.
- * </p>
- * <p>
- * Note that the word overlay as used here should be interpreted as "any view or
- * window possibly obscuring SuperSU dialogs".
- * </p>
- */
-public abstract class HideOverlaysReceiver extends BroadcastReceiver {
+public class HideOverlaysReceiver extends BroadcastReceiver {
     public static final String ACTION_HIDE_OVERLAYS = "eu.chainfire.supersu.action.HIDE_OVERLAYS";
     public static final String CATEGORY_HIDE_OVERLAYS = Intent.CATEGORY_INFO;
     public static final String EXTRA_HIDE_OVERLAYS = "eu.chainfire.supersu.extra.HIDE";
 
     @Override
     public final void onReceive(Context context, Intent intent) {
-        Log.d("!!!!!!!!!", "piepiepie2");
-        if (intent.hasExtra(EXTRA_HIDE_OVERLAYS)) {
-            Log.d("!!!!!!!!!", "piepiepie");
-            onHideOverlays(intent.getBooleanExtra(EXTRA_HIDE_OVERLAYS, false));
+        Log.d("Screen-Filter", "anti-tapkjack");
+        if (Common.FilterYN.contains("Y")) {
+            Log.d("Screen-Filter", "Overlay for anti-tapkjack");
+            FilterService.setAlpha(0);
+            try {
+                Thread.sleep(15000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            FilterService.setAlpha(Common.Alpha);
         }
     }
-
-    /**
-     * Called when overlays <em>should</em> be hidden or <em>may</em> be shown
-     * again.
-     *
-     * @param hide Should overlays be hidden?
-     */
-    public abstract void onHideOverlays(boolean hide);
 }

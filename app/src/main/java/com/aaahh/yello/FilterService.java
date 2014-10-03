@@ -123,7 +123,7 @@ public class FilterService extends Service {
         vw = null;
     }
 
-    public void setAlpha(int paramInt) {
+    public static void setAlpha(int paramInt) {
         if (vw == null) {
             return;
         }
