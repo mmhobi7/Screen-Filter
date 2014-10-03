@@ -95,7 +95,6 @@ public class MainActivity extends Activity {
         Slider = ((SeekBar) findViewById(R.id.seekBar));
         Sliderb = ((SeekBar) findViewById(R.id.seekBar4));
         Sliderc = ((SeekBar) findViewById(R.id.seekBar5));
-        ColorView = ((ImageView) findViewById(R.id.textureView));
         /*if (first) {
             Slider.setProgress(50);
             Sliderb.setProgress(50);

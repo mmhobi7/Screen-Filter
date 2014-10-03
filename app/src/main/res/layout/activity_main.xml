@@ -71,13 +71,13 @@
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textureView"
-            android:layout_alignStart="@+id/toggleButton"
             android:minLines="1"
             android:onClick="ColorPicker"
-            android:text="@string/ColorSelectButton" />
+            android:text="@string/ColorSelectButton"
+            android:layout_below="@+id/toggleButton"
+            android:layout_alignStart="@+id/toggleButton" />
 
-        <ImageView
+        ImageView
             android:id="@+id/textureView"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -85,37 +85,34 @@
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/button"
             android:background="#19BB7C"
-            android:contentDescription="@string/ColorImageIs" />
+        android:contentDescription="@string/ColorImageIs" /
 
         <TextView
-            android:id="@+id/textView32"
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/button"
-            android:layout_alignEnd="@+id/textureView"
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/button"
             android:layout_gravity="center"
-            android:layout_toStartOf="@+id/textureView"
             android:gravity="start|center"
             android:paddingEnd="50dp"
             android:paddingStart="10dp"
             android:singleLine="true"
             android:text="@string/Color"
             android:textAlignment="center"
-            android:textAppearance="?android:textAppearanceMedium" />
+            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_below="@+id/textView2"
+            android:layout_alignParentStart="true"
+            android:layout_above="@id/textViewPer" />
 
         <TextView
             android:id="@id/textViewPer"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/button"
-            android:layout_marginTop="40dp"
             android:gravity="center"
             android:padding="3.0dip"
             android:text="@string/TransparencyPercent"
-            android:textSize="38.0pt" />
+            android:textSize="38.0pt"
+            android:layout_below="@+id/button"
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/textView5"

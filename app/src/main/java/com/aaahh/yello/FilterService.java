@@ -17,6 +17,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 /**
  * Created by aaahh on 8/26/14. Edited 9/13/14
@@ -179,6 +180,7 @@ public class FilterService extends Service {
             }
             vw.getBackground().setAlpha(Common.Alpha);
         }
+        // ImageView imageView = (ImageView) getResources(R.id.textureView);
     }
 
     public void setRotation() {
