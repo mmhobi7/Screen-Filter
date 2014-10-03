@@ -18,26 +18,29 @@ package com.aaahh.yello;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
-import android.view.WindowManager;
+import android.widget.Toast;
 
 public class HideOverlaysReceiver extends BroadcastReceiver {
     public static final String ACTION_HIDE_OVERLAYS = "eu.chainfire.supersu.action.HIDE_OVERLAYS";
     public static final String CATEGORY_HIDE_OVERLAYS = Intent.CATEGORY_INFO;
     public static final String EXTRA_HIDE_OVERLAYS = "eu.chainfire.supersu.extra.HIDE";
+    private Handler mHandler = new Handler();
 
     @Override
     public final void onReceive(Context context, Intent intent) {
-        Log.d("Screen-Filter", "anti-tapkjack");
-        if (Common.FilterYN.contains("Y")) {
-            Log.d("Screen-Filter", "Overlay for anti-tapkjack");
-            FilterService.setAlpha(0);
-            try {
-                Thread.sleep(15000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        final int H = FilterService.localLayoutParams.height;
+        final int W = FilterService.localLayoutParams.width;
+        FilterService.localLayoutParams.height = 1;
+        FilterService.localLayoutParams.width = 1;
+        FilterService.localWindowManager.updateViewLayout(FilterService.vw, FilterService.localLayoutParams);
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                FilterService.localLayoutParams.height = H;
+                FilterService.localLayoutParams.width = W;
+                FilterService.localWindowManager.updateViewLayout(FilterService.vw, FilterService.localLayoutParams);
             }
-            FilterService.setAlpha(Common.Alpha);
-        }
+        }, 15000);
     }
 }

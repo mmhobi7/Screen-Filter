@@ -35,8 +35,8 @@ public class FilterService extends Service {
         }
     };
     private final IBinder rBinder = new LocalBinder();
-    public WindowManager.LayoutParams localLayoutParams;
-    public WindowManager localWindowManager;
+    public static WindowManager.LayoutParams localLayoutParams;
+    public static WindowManager localWindowManager;
 
     public void addView() {
 //        DatabaseActivity db = new DatabaseActivity(this);
@@ -123,7 +123,7 @@ public class FilterService extends Service {
         vw = null;
     }
 
-    public static void setAlpha(int paramInt) {
+    public void setAlpha(int paramInt) {
         if (vw == null) {
             return;
         }
