@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
     public SeekBar Sliderb;
     public SeekBar Sliderc;
     public boolean first;
+    public static final String PREFS_NAME = "MyPrefsFile";
     FilterService rService;
     private final ServiceConnection rConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -58,30 +59,19 @@ public class MainActivity extends Activity {
         mThis = this;
         Common.passedonce = "Y";
         //CAN NOT INTERWEAVE WITH OTHER \/
-        // SharedPreferences fp = this.getSharedPreferences(getString(R.string.preference_first_key), 0);
-        // SharedPreferences bp = this.getSharedPreferences(getString(R.string.preference_Boot_key), 0);
-        //     R.string.preference_Area_key),
-        //    getString(R.string.preference_Color_key),
-        //  getString(R.string.preference_FilterYN_key),
-        //getString(R.string.preference_first_key), Context.MODE_WORLD_WRITEABLE);
-        //  SharedPreferences.Editor editor = bp.edit();
-        //  editor.putString(getString(R.string.preference_Boot_key), "0");
-        //   editor.commit();
-        //   if (fp.getString(getString(R.string.preference_first_key), "a").contains("1")) {
-        //     first = true;
-        // } else {
-        //     first = false;
-        //SharedPreferences.Editor editor2 = fp.edit();
-        //  editor2.putString(getString(R.string.preference_first_key), "1");
-        //editor2.commit();
-        //  }
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        boolean farst = settings.getBoolean("silentMode", false);
+        //    int Area = settings.getInt("Area", 50);
+        //  int Alpha = settings.getInt("Alpha", 50);
+        //int Height= settings.getInt("Height", 50);
+        // int Color = settings.getInt("Color", 50);
+        Log.d("p", String.valueOf(farst));
+        settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("silentMode", true);
+        // Commit the edits!
+        editor.commit();
 
-        SharedPreferences bp = this.getSharedPreferences(getString(R.string.preference_Boot_key), 0);
-        if (bp.getString(getString(R.string.preference_Boot_key), "a").contains("1")) {
-            moveTaskToBack(true);
-        }
-        Log.d("o", bp.getString(getString(R.string.preference_Boot_key), "a"));
-        //   Log.d("p", fp.getString(getString(R.string.preference_Height_key), "a"));
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         TextPercent = ((TextView) findViewById(R.id.textViewPer));
         ToggleButton1 = ((ToggleButton) findViewById(R.id.toggleButton2));
@@ -90,25 +80,21 @@ public class MainActivity extends Activity {
         Slider = ((SeekBar) findViewById(R.id.seekBar));
         Sliderb = ((SeekBar) findViewById(R.id.seekBar4));
         Sliderc = ((SeekBar) findViewById(R.id.seekBar5));
-        /*if (first) {
+        if (!farst) {
             Slider.setProgress(50);
             Sliderb.setProgress(50);
             Sliderc.setProgress(50);
         } else {
             Log.d("e", "2");
-            Cursor c7 = db.getTitle(7);
-           .// Cursor c6 = db.getTitle(6);
-            Cursor c8 = db.getTitle(8);
-            Slider.setProgress(Integer.parseInt(c7.getString(3)));
-            Sliderb.setProgress(Integer.parseInt(c8.getString(3)));
-            Sliderc.setProgress(Integer.parseInt(c6.getString(3)));
-            Log.d("1", String.valueOf(Integer.parseInt(c6.getString(3))));
-            Log.d("2", String.valueOf(Integer.parseInt(c8.getString(3))));
-            Log.d("3", String.valueOf(Integer.parseInt(c7.getString(3))));
-            set Common.Area Hieght and Alpha
+//            Slider.setProgress(Integer.parseInt(c7.getString(3)));
+            //          Sliderb.setProgress(Integer.parseInt(c8.getString(3)));
+            //        Sliderc.setProgress(Integer.parseInt(c6.getString(3)));
+            //      Log.d("1", String.valueOf(Integer.parseInt(c6.getString(3))));
+            //    Log.d("2", String.valueOf(Integer.parseInt(c8.getString(3))));
+            //  Log.d("3", String.valueOf(Integer.parseInt(c7.getString(3))));
+            //set Common.Area Hieght and Alpha
             //        TextPercent.setText(a + "%");
         }
-        */
         ToggleButton2.setChecked(false);
         if (Common.FilterYN.equals("Y")) {
             ToggleButton1.setChecked(true);
@@ -156,7 +142,6 @@ public class MainActivity extends Activity {
 
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
                 try {
-
                     //  "8",
                     //    "Height",
                     // Integer.toString(b));

@@ -62,7 +62,6 @@ public class FilterService extends Service {
         localLayoutParams.width = (int) screenWidth;
         localLayoutParams.y = (int) ((((((Common.Area - 50) * 2) / 100f)) * (screenHeight / 2)) * -1);
         localLayoutParams.x = 0;
-        //TODO: fix this \/
         int i = Common.Color;
         String hexColor = String.format("#%06X", (0xFFFFFF & i));
         String fade = hexColor.replace("#", "#00");
@@ -187,7 +186,6 @@ public class FilterService extends Service {
             ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
             float screenWidth = displaymetrics.widthPixels;
             float screenHeight = displaymetrics.heightPixels;
-            //TODO: fix this \/
             int i = Common.Color;
             String hexColor = String.format("#%06X", (0xFFFFFF & i));
             String fade = hexColor.replace("#", "#00");
