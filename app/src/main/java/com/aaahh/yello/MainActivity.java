@@ -60,7 +60,8 @@ public class MainActivity extends Activity {
         int Area = settings.getInt("Area", 50);
         int Alpha = settings.getInt("Alpha", 50);
         int Height = settings.getInt("Height", 50);
-        // int Color = settings.getInt("Color", 50);
+        int Color = settings.getInt("Color", Common.Color);
+        Common.Color = Color;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         TextPercent = ((TextView) findViewById(R.id.textViewPer));
         ToggleButton1 = ((ToggleButton) findViewById(R.id.toggleButton2));

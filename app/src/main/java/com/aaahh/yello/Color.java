@@ -1,6 +1,7 @@
 package com.aaahh.yello;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,11 +48,11 @@ public class Color extends Activity {
     }
 
     public void setOkay(View view) {
-        // Common.BgColor = Common.Color;
         FilterService.mThis.setColor();
-        // "5",
-        //   "BgColor",
-        //     String.valueOf(Common.Color));
+        SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("Color", Common.Color);
+        editor.apply();
         this.finish();
     }
 }
