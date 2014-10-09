@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -27,6 +28,7 @@ public class FilterService extends Service {
     public static GradientDrawable gt;
     public static WindowManager.LayoutParams localLayoutParams;
     public static WindowManager localWindowManager;
+    private Handler mHandler = new Handler();
     public final BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -34,27 +36,30 @@ public class FilterService extends Service {
                 Common.O = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
                 FilterService.mThis.setRotation();
             }
+            if (intent.getAction().equalsIgnoreCase("eu.chainfire.supersu.extra.HIDE")) {
+                final int H = FilterService.localLayoutParams.height;
+                final int W = FilterService.localLayoutParams.width;
+                FilterService.localLayoutParams.height = 1;
+                FilterService.localLayoutParams.width = 1;
+                FilterService.localWindowManager.updateViewLayout(FilterService.vw, FilterService.localLayoutParams);
+                mHandler.postDelayed(new Runnable() {
+                    public void run() {
+                        FilterService.localLayoutParams.height = H;
+                        FilterService.localLayoutParams.width = W;
+                        FilterService.localWindowManager.updateViewLayout(FilterService.vw, FilterService.localLayoutParams);
+                    }
+                }, 15000);
+            }
         }
     };
+
     private final IBinder rBinder = new LocalBinder();
 
     public void addView() {
-//        DatabaseActivity db = new DatabaseActivity(this);
-        //      db.open();
-        //    Cursor A = db.getTitle(8);
-        //  A.moveToFirst();
-        //Cursor H = db.getTitle(6);
-        //moveToFirst();
-        // Cursor Ar = db.getTitle(7);
-        //Ar.moveToFirst();
-        //Log.d("lololoololololol", A.getString(3));
         DisplayMetrics displaymetrics = new DisplayMetrics();
         ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
         float screenWidth = displaymetrics.widthPixels;
         float screenHeight = displaymetrics.heightPixels;
-        //    Common.Height = ;
-        //  Common.Area = (;
-        //  db.close();
         vw = new View(this);
         localLayoutParams = new WindowManager.LayoutParams((int) screenWidth, (int) screenHeight, 2006, 1288, -3);
         localWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
@@ -177,7 +182,6 @@ public class FilterService extends Service {
             }
             vw.getBackground().setAlpha(Common.Alpha);
         }
-        // ImageView imageView = (ImageView) getResources(R.id.textureView);
     }
 
     public void setRotation() {
@@ -329,8 +333,10 @@ public class FilterService extends Service {
 
     public void rotationReceiver() {
         IntentFilter filter1 = new IntentFilter("android.intent.action.CONFIGURATION_CHANGED");
+        IntentFilter filter2 = new IntentFilter("eu.chainfire.supersu.extra.HIDE");
         if (Common.Receiver) {
             registerReceiver(myReceiver, filter1);
+            registerReceiver(myReceiver, filter2);
         }
         if (!Common.Receiver) {
             unregisterReceiver(myReceiver);
