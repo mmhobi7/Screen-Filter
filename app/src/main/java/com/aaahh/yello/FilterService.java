@@ -25,6 +25,8 @@ public class FilterService extends Service {
     public static FilterService mThis;
     public static View vw;
     public static GradientDrawable gt;
+    public static WindowManager.LayoutParams localLayoutParams;
+    public static WindowManager localWindowManager;
     public final BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -35,8 +37,6 @@ public class FilterService extends Service {
         }
     };
     private final IBinder rBinder = new LocalBinder();
-    public static WindowManager.LayoutParams localLayoutParams;
-    public static WindowManager localWindowManager;
 
     public void addView() {
 //        DatabaseActivity db = new DatabaseActivity(this);
@@ -65,19 +65,19 @@ public class FilterService extends Service {
         int i = Common.Color;
         String hexColor = String.format("#%06X", (0xFFFFFF & i));
         String fade = hexColor.replace("#", "#00");
-        if (MainActivity.ToggleButton2.isChecked()) {
+        if (Common.Gradient > 0) {
             int b = (Color.parseColor(fade));
             gt = new GradientDrawable();
-            if (Common.GradientType.contains("1")) {
+            if (Common.Gradient == 1) {
                 int colors[] = {b, i};
                 gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
                 gt.setColors(colors);
             }
-            if (Common.GradientType.contains("2")) {
+            if (Common.Gradient == 2) {
                 int colors[] = {b, i, b};
                 gt.setColors(colors);
             }
-            if (Common.GradientType.contains("3")) {
+            if (Common.Gradient == 3) {
                 int colors[] = {b, i};
                 gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
                 gt.setColors(colors);
@@ -154,19 +154,19 @@ public class FilterService extends Service {
             int i = Common.Color;
             String hexColor = String.format("#%06X", (0xFFFFFF & i));
             String fade = hexColor.replace("#", "#00");
-            if (MainActivity.ToggleButton2.isChecked()) {
+            if (Common.Gradient > 0) {
                 int b = (Color.parseColor(fade));
-                if (Common.GradientType.contains("1")) {
+                if (Common.Gradient == 1) {
                     int colors[] = {b, i};
                     gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
                     gt.setColors(colors);
                 }
-                if (Common.GradientType.contains("2")) {
+                if (Common.Gradient == 2) {
                     int colors[] = {b, i, b};
                     gt.setColors(colors);
                     gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
                 }
-                if (Common.GradientType.contains("3")) {
+                if (Common.Gradient == 3) {
                     int colors[] = {b, i};
                     gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
                     gt.setColors(colors);
@@ -197,19 +197,19 @@ public class FilterService extends Service {
                 localLayoutParams.y = (int) ((((((Common.Area - 50) * 2) / 100f)) * (screenHeight / 2)) * -1);
                 localLayoutParams.x = 0;
 
-                if (MainActivity.ToggleButton2.isChecked()) {
+                if (Common.Gradient > 0) {
                     int b = (Color.parseColor(fade));
                     gt = new GradientDrawable();
-                    if (Common.GradientType.contains("1")) {
+                    if (Common.Gradient == 1) {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
                         gt.setColors(colors);
                     }
-                    if (Common.GradientType.contains("2")) {
+                    if (Common.Gradient == 2) {
                         int colors[] = {b, i, b};
                         gt.setColors(colors);
                     }
-                    if (Common.GradientType.contains("3")) {
+                    if (Common.Gradient == 3) {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
                         gt.setColors(colors);
@@ -225,20 +225,20 @@ public class FilterService extends Service {
                 localLayoutParams.x = (int) ((((((Common.Area - 50) * 2) / 100f)) * (screenWidth / 2)) * -1);
                 localLayoutParams.y = 0;
 
-                if (MainActivity.ToggleButton2.isChecked()) {
+                if (Common.Gradient > 0) {
                     int b = (Color.parseColor(fade));
                     gt = new GradientDrawable();
-                    if (Common.GradientType.contains("1")) {
+                    if (Common.Gradient == 1) {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
                         gt.setColors(colors);
                     }
-                    if (Common.GradientType.contains("2")) {
+                    if (Common.Gradient == 2) {
                         int colors[] = {b, i, b};
                         gt.setColors(colors);
                         gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
                     }
-                    if (Common.GradientType.contains("3")) {
+                    if (Common.Gradient == 3) {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
                         gt.setColors(colors);
@@ -254,19 +254,19 @@ public class FilterService extends Service {
                 localLayoutParams.x = 0;
                 localLayoutParams.y = (int) (((((Common.Area - 50) * 2) / 100f)) * (screenHeight / 2) * -1);
 
-                if (MainActivity.ToggleButton2.isChecked()) {
+                if (Common.Gradient > 0) {
                     int b = (Color.parseColor(fade));
                     gt = new GradientDrawable();
-                    if (Common.GradientType.contains("1")) {
+                    if (Common.Gradient == 1) {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
                         gt.setColors(colors);
                     }
-                    if (Common.GradientType.contains("2")) {
+                    if (Common.Gradient == 2) {
                         int colors[] = {b, i, b};
                         gt.setColors(colors);
                     }
-                    if (Common.GradientType.contains("3")) {
+                    if (Common.Gradient == 3) {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
                         gt.setColors(colors);
@@ -282,20 +282,20 @@ public class FilterService extends Service {
                 localLayoutParams.x = (int) ((((((Common.Area - 50) * 2) / 100f)) * (screenWidth / 2)));
                 localLayoutParams.y = 0;
                 Log.d("m", String.valueOf(screenHeight));
-                if (MainActivity.ToggleButton2.isChecked()) {
+                if (Common.Gradient > 0) {
                     int b = (Color.parseColor(fade));
                     gt = new GradientDrawable();
-                    if (Common.GradientType.contains("1")) {
+                    if (Common.Gradient == 1) {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
                         gt.setColors(colors);
                     }
-                    if (Common.GradientType.contains("2")) {
+                    if (Common.Gradient == 2) {
                         int colors[] = {b, i, b};
                         gt.setColors(colors);
                         gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
                     }
-                    if (Common.GradientType.contains("3")) {
+                    if (Common.Gradient == 3) {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
                         gt.setColors(colors);

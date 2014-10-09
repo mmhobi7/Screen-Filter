@@ -19,8 +19,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
-import android.util.Log;
-import android.widget.Toast;
 
 public class HideOverlaysReceiver extends BroadcastReceiver {
     public static final String ACTION_HIDE_OVERLAYS = "eu.chainfire.supersu.action.HIDE_OVERLAYS";

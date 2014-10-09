@@ -5,18 +5,16 @@ package com.aaahh.yello;
  * Fix Boot
  */
 public class Common {
+    public static final String PREFS_NAME = "MyPrefsFile";
     public static int O = 0;
     public static String boot = "0";
     public static int Alpha = 50;
     public static int Height = 50;
     public static int Area = 50;
-    public static String GradientType = String.valueOf(1);
-    public static String passedonce = "0";
+    public static int Gradient = 0;
     public static boolean Notif = false;
     public static boolean Receiver = false;
     public static int OColor = 0;
     public static int Color = -8257792;
-    public static String FilterYN = "N";
-    public static String GradientYN = "N";
-    public static final String PREFS_NAME = "MyPrefsFile";
+    public static boolean FilterYN = false;
 }

@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,7 +37,7 @@ public class MainActivity extends Activity {
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             FilterService.LocalBinder localLocalBinder = (FilterService.LocalBinder) iBinder;
             MainActivity.this.rService = localLocalBinder.getService();
-            if ((Common.FilterYN.equals("Y")) && (FilterService.vw == null)) {
+            if ((Common.FilterYN) && (FilterService.vw == null)) {
                 MainActivity.this.startService(new Intent(MainActivity.mThis, FilterService.class));
                 MainActivity.this.rService.addView();
             }
@@ -61,7 +60,11 @@ public class MainActivity extends Activity {
         int Alpha = settings.getInt("Alpha", 50);
         int Height = settings.getInt("Height", 50);
         int Color = settings.getInt("Color", Common.Color);
+        boolean FilterYN = settings.getBoolean("FilterYN", Common.FilterYN);
+        int Gradient = settings.getInt("Gradient", Common.Gradient);
         Common.Color = Color;
+        Common.FilterYN = FilterYN;
+        Common.Gradient = Gradient;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         TextPercent = ((TextView) findViewById(R.id.textViewPer));
         ToggleButton1 = ((ToggleButton) findViewById(R.id.toggleButton2));
@@ -74,12 +77,12 @@ public class MainActivity extends Activity {
         Sliderb.setProgress(Height);
         Sliderc.setProgress(Area);
         ToggleButton2.setChecked(false);
-        if (Common.FilterYN.equals("Y")) {
+        if (FilterYN) {
             ToggleButton1.setChecked(true);
             ToggleButton2.setEnabled(false);
             Common.Receiver = true;
         }
-        if (Common.GradientYN.equals("Y")) {
+        if (Common.Gradient > 0) {
             ToggleButton2.setChecked(true);
         } else {
             ToggleButton2.setChecked(false);
@@ -157,9 +160,10 @@ public class MainActivity extends Activity {
             ToggleButton2.setEnabled(false);
             Common.Receiver = true;
             rService.startNotification();
-//                    "2",
-            //                  "FilterYN",
-            //                "Y");
+            SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean("FilterYN", true);
+            editor.apply();
             startService(new Intent(this, FilterService.class));
             this.rService.addView();
         } else {
@@ -168,9 +172,10 @@ public class MainActivity extends Activity {
             ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancelAll();
             this.rService.endNotification();
             Common.Notif = false;
-            //          "2",
-            //         "FilterYN",
-            //       "N");
+            SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean("FilterYN", false);
+            editor.apply();
             this.rService.removeView();
             stopService(new Intent(this, FilterService.class));
         }
@@ -178,54 +183,49 @@ public class MainActivity extends Activity {
 
     public void GradientToggle(View view) {
         if (ToggleButton2.isChecked()) {
-            Log.d("e", Common.GradientType);
-            if (ToggleButton2.isChecked()) {
-//                        "3",
-                //                       "GradientYN",
-                //                     "Y");
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String[] Lists = {"Top only", "All", "Bottom only"};
-                        new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("Where")
-                                .setItems(Lists, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        if (i == 0) {
-                                            Common.GradientType = String.valueOf(1);
-//                                                    "4",
-                                            //                                                  "GradientType",
-                                            //                                                "1");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String[] Lists = {"Top only", "All", "Bottom only"};
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Where")
+                            .setItems(Lists, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    if (i == 0) {
+                                        Common.Gradient = 1;
+                                        SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+                                        SharedPreferences.Editor editor = settings.edit();
+                                        editor.putInt("Gradient", 1);
+                                        editor.apply();
+                                    } else {
+                                        if (i == 1) {
+                                            Common.Gradient = 2;
+                                            SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+                                            SharedPreferences.Editor editor = settings.edit();
+                                            editor.putInt("Gradient", 2);
+                                            editor.apply();
                                         } else {
-                                            if (i == 1) {
-                                                Common.GradientType = String.valueOf(2);
-                                                //               db.updateTitle(3,
-                                                //                     "4",
-                                                //                   "GradientType",
-                                                //                 "2");
-                                            } else {
-                                                if (i == 2) {
-                                                    Common.GradientType = String.valueOf(3);
-                                                    //           db.updateTitle(3,
-                                                    //                 "4",
-                                                    //               "GradientType",
-                                                    //             "3");
-                                                }
+                                            if (i == 2) {
+                                                Common.Gradient = 3;
+                                                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+                                                SharedPreferences.Editor editor = settings.edit();
+                                                editor.putInt("Gradient", 3);
+                                                editor.apply();
                                             }
                                         }
                                     }
-                                })
-                                .show();
-                    }
-                });
-            } else {
-                //     db.updateTitle(3,
-                //           "3",
-                //         "GradientYN",
-                //       "Y");
-                //db.close();
-            }
+                                }
+                            })
+                            .show();
+                }
+            });
+        } else {
+            Common.Gradient = 0;
+            SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("Gradient", 0);
+            editor.apply();
         }
     }
 
