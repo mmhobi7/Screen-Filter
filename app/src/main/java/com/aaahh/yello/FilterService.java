@@ -325,6 +325,7 @@ public class FilterService extends Service {
                 .setContentText("Activated")
                 .setSmallIcon(android.R.drawable.ic_input_get)
                 .setContentIntent(localPendingIntent)
+                .setPriority(-2)
                 .build();
         n.notify(1, localNotification);
         startForeground(1, localNotification);
