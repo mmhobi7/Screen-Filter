@@ -77,16 +77,6 @@
             android:layout_below="@+id/toggleButton"
             android:layout_alignStart="@+id/toggleButton" />
 
-        ImageView
-        android:id="@+id/textureView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/textView2"
-        android:layout_marginEnd="10dp"
-        android:layout_toStartOf="@+id/button"
-        android:background="#19BB7C"
-        android:contentDescription="@string/ColorImageIs" /
-
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"

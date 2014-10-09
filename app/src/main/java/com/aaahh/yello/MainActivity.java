@@ -55,7 +55,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         mThis = this;
         SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-        boolean silent = settings.getBoolean("silentMode", false);
         int Area = settings.getInt("Area", 50);
         int Alpha = settings.getInt("Alpha", 50);
         int Height = settings.getInt("Height", 50);

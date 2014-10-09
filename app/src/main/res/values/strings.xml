@@ -20,4 +20,6 @@
     <string name="preference_GradientType_key">0</string>
     <string name="preference_Color_key">8454400</string>
     <string name="preference_Boot_key">2</string>
+    <string name="Color_Cancel">Cancel</string>
+    <string name="Color_Save">Save</string>
 </resources>

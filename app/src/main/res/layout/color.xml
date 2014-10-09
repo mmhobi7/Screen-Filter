@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:layout_width="300.0dip"
+    android:layout_height="420.0dip"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentStart="true">
 
-    <LinearLayout
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        android:layout_width="300.0dip"
-        android:layout_height="420.0dip"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
-
-        <com.larswerkman.holocolorpicker.ColorPicker
+    <com.larswerkman.holocolorpicker.ColorPicker
             android:id="@+id/picker"
             android:layout_width="300.0dip"
-            android:layout_height="fill_parent"
-            android:layout_alignParentEnd="true" />
+        android:layout_height="fill_parent" />
 
-        <com.larswerkman.holocolorpicker.SaturationBar
+    <com.larswerkman.holocolorpicker.SaturationBar
             android:id="@+id/saturationbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -35,20 +29,16 @@
             <Button
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="Cancel"
+                android:text="@string/Color_Cancel"
                 android:id="@+id/button3"
                 android:onClick="setCancel" />
 
             <Button
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="Save"
+                android:text="@string/Color_Save"
                 android:id="@+id/button4"
-                android:layout_gravity="right|top"
+                android:layout_gravity="end|top"
                 android:onClick="setOkay" />
         </FrameLayout>
-
-
     </LinearLayout>
-
-</RelativeLayout>
