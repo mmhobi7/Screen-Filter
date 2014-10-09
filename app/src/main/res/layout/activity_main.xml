@@ -162,15 +162,6 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/textView7" />
 
-        <ToggleButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New ToggleButton"
-            android:id="@+id/toggleButton3"
-            android:layout_below="@+id/seekBar5"
-            android:layout_alignStart="@+id/textView5"
-            android:onClick="M" />
-
     </RelativeLayout>
 
 </FrameLayout>
