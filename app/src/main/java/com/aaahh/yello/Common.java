@@ -18,4 +18,5 @@ public class Common {
     public static int Color = -8257792;
     public static String FilterYN = "N";
     public static String GradientYN = "N";
+    public static final String PREFS_NAME = "MyPrefsFile";
 }

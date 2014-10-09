@@ -45,7 +45,6 @@
                 android:text="Save"
                 android:id="@+id/button4"
                 android:layout_gravity="right|top"
-                android:nestedScrollingEnabled="false"
                 android:onClick="setOkay" />
         </FrameLayout>
 
