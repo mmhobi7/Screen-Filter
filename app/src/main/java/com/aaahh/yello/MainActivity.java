@@ -72,6 +72,9 @@ public class MainActivity extends Activity {
         int Color = settings.getInt("Color", Common.Color);
         int Gradient = settings.getInt("Gradient", Common.Gradient);
         boolean FilterYN = settings.getBoolean("FilterYN", Common.FilterYN);
+        Common.Area = Area;
+        Common.Alpha = Alpha;
+        Common.Height = Height;
         Common.Color = Color;
         Common.FilterYN = FilterYN;
         Common.Gradient = Gradient;
@@ -98,7 +101,6 @@ public class MainActivity extends Activity {
         } else {
             ToggleButton2.setChecked(false);
         }
-        ToggleButton2.setChecked(false);
         Slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 TextPercent.setText(paramAnonymousInt + "%");
