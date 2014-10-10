@@ -112,7 +112,6 @@ public class MainActivity extends Activity {
             }
 
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
-                try {
                     TextPercent.setText((paramAnonymousSeekBar.getProgress()) + "%");
                     Common.Alpha = 200 - (paramAnonymousSeekBar.getProgress()) * 2;
                     SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
@@ -120,8 +119,6 @@ public class MainActivity extends Activity {
                     editor.putInt("Alpha", (paramAnonymousSeekBar.getProgress()));
                     editor.apply();
                     rService.setAlpha(Common.Alpha);
-                } catch (IllegalStateException ignored) {
-                }
             }
         });
         Sliderb.setMax(100);
@@ -135,15 +132,12 @@ public class MainActivity extends Activity {
             }
 
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
-                try {
                     SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putInt("Height", paramAnonymousSeekBar.getProgress());
                     editor.apply();
                     Common.Height = paramAnonymousSeekBar.getProgress();
                     rService.setHeight(Common.Height);
-                } catch (IllegalStateException ignored) {
-                }
             }
         });
         Sliderc.setMax(100);
@@ -163,6 +157,7 @@ public class MainActivity extends Activity {
                 editor.apply();
                 Common.Area = paramAnonymousSeekBar.getProgress();
                 rService.setArea(Common.Area);
+
             }
         });
         TextPercent.setText(Slider.getProgress() + "%");
