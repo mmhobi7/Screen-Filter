@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,7 +60,7 @@ public class MainActivity extends Activity {
         SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
         boolean Boot = settings.getBoolean("Boot", Common.Boot);
         if (!Common.Booted) {
-            if (!Boot) {
+            if (Boot) {
                 this.finish();
                 Common.Booted = true;
             }
