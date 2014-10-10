@@ -1,8 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity" >
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+    tools:context=".MainActivity">
+    <item
+        android:id="@+id/action_settings_root"
+        android:title="@string/action_settings_root"
         android:orderInCategory="100"
         android:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_settings_boot"
+        android:title="@string/action_settings_boot"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:checkable="true" />
 </menu>

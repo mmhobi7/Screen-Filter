@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,16 +55,28 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mThis = this;
+        if (Common.BootNow) {
+            moveTaskToBack(true);
+        }
         SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+        boolean Boot = settings.getBoolean("Boot", Common.Boot);
+        if (!Common.Booted) {
+            if (!Boot) {
+                this.finish();
+                Common.Booted = true;
+            }
+        }
         int Area = settings.getInt("Area", 50);
         int Alpha = settings.getInt("Alpha", 50);
         int Height = settings.getInt("Height", 50);
+        //TODO: I can speed this up by not refering to common.
         int Color = settings.getInt("Color", Common.Color);
-        boolean FilterYN = settings.getBoolean("FilterYN", Common.FilterYN);
         int Gradient = settings.getInt("Gradient", Common.Gradient);
+        boolean FilterYN = settings.getBoolean("FilterYN", Common.FilterYN);
         Common.Color = Color;
         Common.FilterYN = FilterYN;
         Common.Gradient = Gradient;
+        Common.Boot = Boot;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         TextPercent = ((TextView) findViewById(R.id.textViewPer));
         ToggleButton1 = ((ToggleButton) findViewById(R.id.toggleButton2));
@@ -75,7 +88,7 @@ public class MainActivity extends Activity {
         Slider.setProgress(Alpha);
         Sliderb.setProgress(Height);
         Sliderc.setProgress(Area);
-        ToggleButton2.setChecked(false);
+        //boot.setChecked(Boot);
         if (FilterYN) {
             ToggleButton1.setChecked(true);
             ToggleButton2.setEnabled(false);
@@ -261,6 +274,7 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        menu.findItem(R.id.action_settings_boot).setChecked(Common.Boot);
         return true;
     }
 
@@ -272,13 +286,44 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings_root) {
             try {
                 Runtime.getRuntime().exec("su");
             } catch (IOException e) {
                 e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("Command su not found")
+                                .setMessage("This means Root was not detected.")
+                                .setNeutralButton("Okay", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                })
+                                .show();
+                    }
+                });
             }
-            //settings
+            return true;
+        }
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings_boot) {
+            if (item.isChecked()) {
+                item.setChecked(false);
+                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean("Boot", false);
+                editor.apply();
+            } else {
+                item.setChecked(true);
+                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean("Boot", true);
+                editor.apply();
+            }
             return true;
         }
 

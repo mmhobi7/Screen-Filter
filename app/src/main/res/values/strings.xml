@@ -22,4 +22,6 @@
     <string name="preference_Boot_key">2</string>
     <string name="Color_Cancel">Cancel</string>
     <string name="Color_Save">Save</string>
+    <string name="action_settings_root">Anti-Tapjack</string>
+    <string name="action_settings_boot">Start On Boot</string>
 </resources>
