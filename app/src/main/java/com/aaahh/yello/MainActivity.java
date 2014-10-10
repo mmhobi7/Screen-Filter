@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
         int Gradient = settings.getInt("Gradient", Common.Gradient);
         boolean FilterYN = settings.getBoolean("FilterYN", Common.FilterYN);
         Common.Area = Area;
-        Common.Alpha = Alpha;
+        Common.Alpha = 200 - Alpha * 2;
         Common.Height = Height;
         Common.Color = Color;
         Common.FilterYN = FilterYN;
