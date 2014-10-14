@@ -8,8 +8,6 @@ public class Common {
     public static final String PREFS_NAME = "MyPrefsFile";
     public static int O = 0;
     public static boolean Boot = false;
-    public static boolean BootNow = false;
-    public static boolean Booted = false;
     public static int Alpha = 50;
     public static int Height = 50;
     public static int Area = 50;

@@ -14,9 +14,9 @@ public class Boot extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("m", "pie");
-        Common.BootNow = true;
-        Intent serviceIntent = new Intent(context, MainActivity.class);
+        Intent serviceIntent = new Intent(context, Minimal.class);
         serviceIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(serviceIntent);
+        context.startService(serviceIntent);
+
     }
 }

@@ -54,21 +54,12 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mThis = this;
-        if (Common.BootNow) {
-            moveTaskToBack(true);
-        }
         SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
         boolean Boot = settings.getBoolean("Boot", Common.Boot);
-        if (!Common.Booted) {
-            if (Boot) {
-                this.finish();
-                Common.Booted = true;
-            }
-        }
         int Area = settings.getInt("Area", 50);
         int Alpha = settings.getInt("Alpha", 50);
         int Height = settings.getInt("Height", 50);
-        //TODO: I can speed this up by not refering to common.
+        // I can speed this up by not refering to common.
         int Color = settings.getInt("Color", Common.Color);
         int Gradient = settings.getInt("Gradient", Common.Gradient);
         boolean FilterYN = settings.getBoolean("FilterYN", Common.FilterYN);
@@ -187,6 +178,10 @@ public class MainActivity extends Activity {
             this.rService.removeView();
             stopService(new Intent(this, FilterService.class));
         }
+    }
+
+    public void b(View v1) {
+        startService(new Intent(this, Minimal.class));
     }
 
     public void GradientToggle(View view) {
