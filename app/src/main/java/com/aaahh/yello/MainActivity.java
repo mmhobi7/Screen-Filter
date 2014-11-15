@@ -54,13 +54,12 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mThis = this;
-        if (Common.BootNow) {
-            moveTaskToBack(true);
-        }
         SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
         boolean Boot = settings.getBoolean("Boot", Common.Boot);
-        if (!Common.Booted) {
+        if (Common.BootNow) {
             if (Boot) {
+                moveTaskToBack(true);
+            } else {
                 this.finish();
                 Common.Booted = true;
             }
