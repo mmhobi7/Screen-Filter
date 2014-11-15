@@ -323,7 +323,7 @@ public class FilterService extends Service {
         Notification localNotification = new Notification.Builder(this)
                 .setContentTitle("Filter Screen")
                 .setContentText("Activated")
-                .setSmallIcon(android.R.drawable.ic_input_get)
+                .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentIntent(localPendingIntent)
                 .setPriority(-2)
                 .build();
