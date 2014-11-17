@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.aaahh.yello"
         minSdkVersion 19
-        targetSdkVersion 20
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }

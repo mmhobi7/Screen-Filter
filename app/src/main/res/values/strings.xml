@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Screen Filter</string>
+    <string name="app_name">Screen Equalizer</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Anti-Tapjack Trip</string>
+    <string name="action_settings">Anti-Tapjack Trip (SuperSU)</string>
     <string name="ToggleOne">ScreenFilter</string>
-    <string name="ScreenFilter">Screen Filter </string>
+    <string name="ScreenFilter">Screen Equalizer </string>
     <string name="Gradient">Gradient</string>
     <string name="ToggleTwo">Gradient</string>
     <string name="ColorSelectButton">Select a Color…</string>
@@ -22,6 +22,6 @@
     <string name="preference_Boot_key">2</string>
     <string name="Color_Cancel">Cancel</string>
     <string name="Color_Save">Save</string>
-    <string name="action_settings_root">Anti-Tapjack</string>
+    <string name="action_settings_root">Anti-Tapjack (SuperSU)</string>
     <string name="action_settings_boot">Start On Boot</string>
 </resources>

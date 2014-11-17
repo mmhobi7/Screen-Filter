@@ -58,10 +58,10 @@ public class MainActivity extends Activity {
         boolean Boot = settings.getBoolean("Boot", Common.Boot);
         if (Common.BootNow) {
             if (Boot) {
+                Common.BootNow = false;
                 moveTaskToBack(true);
             } else {
                 this.finish();
-                Common.Booted = true;
             }
         }
         int Area = settings.getInt("Area", 50);
