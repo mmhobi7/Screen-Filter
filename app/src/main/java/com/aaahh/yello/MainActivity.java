@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.Menu;
@@ -61,7 +62,7 @@ public class MainActivity extends Activity {
                 Common.BootNow = false;
                 moveTaskToBack(true);
             } else {
-                this.finish();
+                finish();
             }
         }
         int Area = settings.getInt("Area", 50);
@@ -244,7 +245,9 @@ public class MainActivity extends Activity {
     public void onDestroy() {
         super.onDestroy();
         Common.Receiver = false;
-        unbindService(rConnection);
+        if (Common.Boot) {
+            unbindService(rConnection);
+        }
     }
 
     public void onPause() {
@@ -322,6 +325,11 @@ public class MainActivity extends Activity {
             return true;
         }
 
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings_hide) {
+            PackageManager p = getPackageManager();
+            p.setComponentEnabledSetting(getComponentName(), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+        }
         return super.onOptionsItemSelected(item);
     }
 }
