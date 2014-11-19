@@ -65,6 +65,8 @@ public class MainActivity extends Activity {
                 finish();
             }
         }
+        boolean Hide = settings.getBoolean("Hide", Common.Hide);
+        boolean ToHide = settings.getBoolean("ToHide", Common.ToHide);
         int Area = settings.getInt("Area", 50);
         int Alpha = settings.getInt("Alpha", 50);
         int Height = settings.getInt("Height", 50);
@@ -79,6 +81,8 @@ public class MainActivity extends Activity {
         Common.FilterYN = FilterYN;
         Common.Gradient = Gradient;
         Common.Boot = Boot;
+        Common.Hide = Hide;
+        Common.ToHide = ToHide;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         TextPercent = ((TextView) findViewById(R.id.textViewPer));
         ToggleButton1 = ((ToggleButton) findViewById(R.id.toggleButton2));
@@ -273,6 +277,7 @@ public class MainActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         menu.findItem(R.id.action_settings_boot).setChecked(Common.Boot);
+        menu.findItem(R.id.action_settings_hide).setChecked(Common.ToHide);
         return true;
     }
 
@@ -311,24 +316,86 @@ public class MainActivity extends Activity {
         if (id == R.id.action_settings_boot) {
             if (item.isChecked()) {
                 item.setChecked(false);
+                Common.Boot = false;
                 SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putBoolean("Boot", false);
                 editor.apply();
+                if (Common.Hide) {
+                    Common.Hide = false;
+                    editor.putBoolean("Hide", false);
+                    editor.apply();
+                    PackageManager packageManager = this.getPackageManager();
+                    ComponentName componentName = new ComponentName(this,
+                            Launcher.class);
+                    packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                            PackageManager.DONT_KILL_APP);
+                }
             } else {
                 item.setChecked(true);
+                Common.Boot = true;
                 SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putBoolean("Boot", true);
                 editor.apply();
+                if (Common.ToHide) {
+                    Common.Hide = true;
+                    editor.putBoolean("Hide", true);
+                    editor.apply();
+                    PackageManager packageManager = this.getPackageManager();
+                    ComponentName componentName = new ComponentName(this,
+                            Launcher.class);
+                    packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                            PackageManager.DONT_KILL_APP);
+                }
             }
             return true;
         }
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings_hide) {
-            PackageManager p = getPackageManager();
-            p.setComponentEnabledSetting(getComponentName(), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+            if (item.isChecked()) {
+                Common.ToHide = false;
+                item.setChecked(false);
+                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean("ToHide", false);
+                editor.apply();
+                if (Common.Hide) {
+                    Common.Hide = false;
+                    editor.putBoolean("Hide", false);
+                    editor.apply();
+                    PackageManager packageManager = this.getPackageManager();
+                    ComponentName componentName = new ComponentName(this,
+                            Launcher.class);
+                    packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                            PackageManager.DONT_KILL_APP);
+                }
+            } else {
+                Common.ToHide = true;
+                item.setChecked(true);
+                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean("ToHide", true);
+                editor.apply();
+                if (Common.Boot) {
+                    editor.putBoolean("Hide", true);
+                    editor.apply();
+                    Common.Hide = true;
+                    PackageManager packageManager = this.getPackageManager();
+                    ComponentName componentName = new ComponentName(this,
+                            Launcher.class);
+                    packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                            PackageManager.DONT_KILL_APP);
+                }
+            }
+            /*
+            PackageManager packageManager = this.getPackageManager();
+            ComponentName componentName = new ComponentName(this,
+                    Launcher.class);
+            packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP);
+                    */
         }
         return super.onOptionsItemSelected(item);
     }

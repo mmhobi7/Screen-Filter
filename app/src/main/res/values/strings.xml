@@ -24,5 +24,5 @@
     <string name="Color_Save">Save</string>
     <string name="action_settings_root">Anti-Tapjack (SuperSU)</string>
     <string name="action_settings_boot">Start On Boot</string>
-    <string name="action_settings_hide">Toggle Hide app from Launcher</string>
+    <string name="action_settings_hide">Hide app from Launcher</string>
 </resources>

@@ -9,6 +9,8 @@ public class Common {
     public static int O = 0;
     public static boolean Boot = false;
     public static boolean BootNow = false;
+    public static boolean ToHide = false;
+    public static boolean Hide = false;
     public static int Alpha = 50;
     public static int Height = 50;
     public static int Area = 50;
