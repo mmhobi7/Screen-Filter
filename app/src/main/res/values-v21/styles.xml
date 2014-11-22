@@ -5,4 +5,7 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Dialog" parent="android:Theme.Material.Dialog">
+        <!-- Customize your theme here. -->
+    </style>
 </resources>

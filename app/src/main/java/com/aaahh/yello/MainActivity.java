@@ -372,6 +372,20 @@ public class MainActivity extends Activity {
                             PackageManager.DONT_KILL_APP);
                 }
             } else {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("Warning")
+                                .setMessage("The app will not hide if the filter is deactivated or the app is not set to start on boot.")
+                                .setNeutralButton("Okay", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                })
+                                .show();
+                    }
+                });
                 Common.ToHide = true;
                 item.setChecked(true);
                 SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
@@ -381,6 +395,17 @@ public class MainActivity extends Activity {
                 if (Common.Boot) {
                     editor.putBoolean("Hide", true);
                     editor.apply();
+                    Common.Hide = true;
+                    PackageManager packageManager = this.getPackageManager();
+                    ComponentName componentName = new ComponentName(this,
+                            Launcher.class);
+                    packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                            PackageManager.DONT_KILL_APP);
+                }
+                if (Common.Notif) {
+                    editor.putBoolean("Hide", true);
+                    editor.apply();
+
                     Common.Hide = true;
                     PackageManager packageManager = this.getPackageManager();
                     ComponentName componentName = new ComponentName(this,

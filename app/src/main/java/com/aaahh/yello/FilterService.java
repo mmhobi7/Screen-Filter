@@ -6,9 +6,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Binder;
@@ -27,8 +30,6 @@ public class FilterService extends Service {
     public static View vw;
     public static GradientDrawable gt;
     public static WindowManager.LayoutParams localLayoutParams;
-    public static WindowManager localWindowManager;
-    private Handler mHandler = new Handler();
     public final BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -52,8 +53,9 @@ public class FilterService extends Service {
             }
         }
     };
-
+    public static WindowManager localWindowManager;
     private final IBinder rBinder = new LocalBinder();
+    private Handler mHandler = new Handler();
 
     public void addView() {
         DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -103,6 +105,20 @@ public class FilterService extends Service {
 
     public void endNotification() {
         startForeground(0, new Notification());
+        if (Common.Hide) {
+            if (!(Common.Boot)) {
+                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean("Hide", true);
+                editor.apply();
+                Common.Hide = true;
+                PackageManager packageManager = this.getPackageManager();
+                ComponentName componentName = new ComponentName(this,
+                        Launcher.class);
+                packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                        PackageManager.DONT_KILL_APP);
+            }
+        }
     }
 
     public IBinder onBind(Intent paramIntent) {
@@ -330,6 +346,21 @@ public class FilterService extends Service {
         n.notify(1, localNotification);
         startForeground(1, localNotification);
         Common.Notif = true;
+        if (Common.ToHide) {
+            if (!(Common.Hide)) {
+                Common.Hide = true;
+                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean("Hide", true);
+                editor.apply();
+                Common.Hide = true;
+                PackageManager packageManager = this.getPackageManager();
+                ComponentName componentName = new ComponentName(this,
+                        Launcher.class);
+                packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                        PackageManager.DONT_KILL_APP);
+            }
+        }
     }
 
     public void rotationReceiver() {
