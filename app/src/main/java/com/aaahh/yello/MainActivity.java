@@ -70,10 +70,9 @@ public class MainActivity extends Activity {
         int Area = settings.getInt("Area", 50);
         int Alpha = settings.getInt("Alpha", 50);
         int Height = settings.getInt("Height", 50);
-        //TODO: I can speed this up by not refering to common.
-        int Color = settings.getInt("Color", Common.Color);
-        int Gradient = settings.getInt("Gradient", Common.Gradient);
-        boolean FilterYN = settings.getBoolean("FilterYN", Common.FilterYN);
+        int Color = settings.getInt("Color", -8257792);
+        int Gradient = settings.getInt("Gradient", 0);
+        boolean FilterYN = settings.getBoolean("FilterYN", false);
         Common.Area = Area;
         Common.Alpha = 200 - Alpha * 2;
         Common.Height = Height;
