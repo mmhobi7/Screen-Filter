@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 /**
- * Created by aaahh on 11/18/14. This is a launcher so that i can hide my app.
+ * Created by aaahh on 11/18/14.
+ * This is a launcher so that I can hide my app.
  */
 public class Launcher extends Activity {
 
