@@ -272,7 +272,7 @@ public class FilterService extends Service {
                 localLayoutParams.height = ((int) ((Common.Height / 100f) * screenHeight));
                 localLayoutParams.width = (int) screenWidth;
                 localLayoutParams.x = 0;
-                localLayoutParams.y = (int) (((((Common.Area - 50) * 2) / 100f)) * (screenHeight / 2) * -1);
+                localLayoutParams.y = (int) (((((Common.Area - 50) * 2) / 100f)) * (screenHeight / 2));
 
                 if (Common.Gradient > 0) {
                     int b = (Color.parseColor(fade));
