@@ -31,7 +31,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.aaahh.yello.R;
+import com.aaahh.yellow.R;
 
 public class ValueBar extends View {
 
@@ -47,13 +47,11 @@ public class ValueBar extends View {
      * Constants used to identify orientation.
      */
     private static final boolean ORIENTATION_HORIZONTAL = true;
-    private static final boolean ORIENTATION_VERTICAL = false;
-
     /**
      * Default orientation of the bar.
      */
     private static final boolean ORIENTATION_DEFAULT = ORIENTATION_HORIZONTAL;
-
+    private static final boolean ORIENTATION_VERTICAL = false;
     /**
      * The thickness of the bar.
      */
@@ -155,18 +153,6 @@ public class ValueBar extends View {
      */
     private int oldChangedListenerValue;
 
-    public interface OnValueChangedListener {
-        public void onValueChanged(int value);
-    }
-
-    public void setOnValueChangedListener(OnValueChangedListener listener) {
-        this.onValueChangedListener = listener;
-    }
-
-    public OnValueChangedListener getOnValueChangedListener() {
-        return this.onValueChangedListener;
-    }
-
     public ValueBar(Context context) {
         super(context);
         init(null, 0);
@@ -180,6 +166,14 @@ public class ValueBar extends View {
     public ValueBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
+    }
+
+    public OnValueChangedListener getOnValueChangedListener() {
+        return this.onValueChangedListener;
+    }
+
+    public void setOnValueChangedListener(OnValueChangedListener listener) {
+        this.onValueChangedListener = listener;
     }
 
     private void init(AttributeSet attrs, int defStyle) {
@@ -330,8 +324,6 @@ public class ValueBar extends View {
         canvas.drawCircle(cX, cY, mBarPointerRadius, mBarPointerPaint);
     }
 
-    ;
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         getParent().requestDisallowInterceptTouchEvent(true);
@@ -401,37 +393,7 @@ public class ValueBar extends View {
         return true;
     }
 
-    /**
-     * Set the bar color. <br>
-     * <br>
-     * Its discouraged to use this method.
-     *
-     * @param color
-     */
-    public void setColor(int color) {
-        int x1, y1;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
-            x1 = (mBarLength + mBarPointerHaloRadius);
-            y1 = mBarThickness;
-        } else {
-            x1 = mBarThickness;
-            y1 = (mBarLength + mBarPointerHaloRadius);
-        }
-
-        Color.colorToHSV(color, mHSVColor);
-        shader = new LinearGradient(mBarPointerHaloRadius, 0,
-                x1, y1, new int[]{
-                color, Color.BLACK}, null, Shader.TileMode.CLAMP);
-        mBarPaint.setShader(shader);
-        calculateColor(mBarPointerPosition);
-        mBarPointerPaint.setColor(mColor);
-        if (mPicker != null) {
-            mPicker.setNewCenterColor(mColor);
-            if (mPicker.hasOpacityBar())
-                mPicker.changeOpacityBarColor(mColor);
-        }
-        invalidate();
-    }
+    ;
 
     /**
      * Set the pointer on the bar. With the opacity value.
@@ -478,6 +440,38 @@ public class ValueBar extends View {
     }
 
     /**
+     * Set the bar color. <br>
+     * <br>
+     * Its discouraged to use this method.
+     *
+     * @param color
+     */
+    public void setColor(int color) {
+        int x1, y1;
+        if (mOrientation == ORIENTATION_HORIZONTAL) {
+            x1 = (mBarLength + mBarPointerHaloRadius);
+            y1 = mBarThickness;
+        } else {
+            x1 = mBarThickness;
+            y1 = (mBarLength + mBarPointerHaloRadius);
+        }
+
+        Color.colorToHSV(color, mHSVColor);
+        shader = new LinearGradient(mBarPointerHaloRadius, 0,
+                x1, y1, new int[]{
+                color, Color.BLACK}, null, Shader.TileMode.CLAMP);
+        mBarPaint.setShader(shader);
+        calculateColor(mBarPointerPosition);
+        mBarPointerPaint.setColor(mColor);
+        if (mPicker != null) {
+            mPicker.setNewCenterColor(mColor);
+            if (mPicker.hasOpacityBar())
+                mPicker.changeOpacityBarColor(mColor);
+        }
+        invalidate();
+    }
+
+    /**
      * Adds a {@code ColorPicker} instance to the bar. <br>
      * <br>
      * WARNING: Don't change the color picker. it is done already when the bar
@@ -514,5 +508,9 @@ public class ValueBar extends View {
 
         setColor(Color.HSVToColor(savedState.getFloatArray(STATE_COLOR)));
         setValue(savedState.getFloat(STATE_VALUE));
+    }
+
+    public interface OnValueChangedListener {
+        public void onValueChanged(int value);
     }
 }

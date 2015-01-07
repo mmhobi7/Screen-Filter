@@ -31,7 +31,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.aaahh.yello.R;
+import com.aaahh.yellow.R;
 
 /**
  * Displays a holo-themed color picker.
@@ -236,6 +236,14 @@ public class ColorPicker extends View {
      * {@code onColorSelectedListener} instance of the onColorSelectedListener
      */
     private OnColorSelectedListener onColorSelectedListener;
+    /**
+     * Color of the latest entry of the onColorChangedListener.
+     */
+    private int oldChangedListenerColor;
+    /**
+     * Color of the latest entry of the onColorSelectedListener.
+     */
+    private int oldSelectedListenerColor;
 
     public ColorPicker(Context context) {
         super(context);
@@ -253,21 +261,12 @@ public class ColorPicker extends View {
     }
 
     /**
-     * An interface that is called whenever the color is changed. Currently it
-     * is always called when the color is changes.
+     * Gets the onColorChangedListener
      *
-     * @author lars
+     * @return {@code OnColorChangedListener}
      */
-    public interface OnColorChangedListener {
-        public void onColorChanged(int color);
-    }
-
-    /**
-     * An interface that is called whenever a new color has been selected.
-     * Currently it is always called when the color wheel has been released.
-     */
-    public interface OnColorSelectedListener {
-        public void onColorSelected(int color);
+    public OnColorChangedListener getOnColorChangedListener() {
+        return this.onColorChangedListener;
     }
 
     /**
@@ -280,12 +279,12 @@ public class ColorPicker extends View {
     }
 
     /**
-     * Gets the onColorChangedListener
+     * Gets the onColorSelectedListener
      *
-     * @return {@code OnColorChangedListener}
+     * @return {@code OnColorSelectedListener}
      */
-    public OnColorChangedListener getOnColorChangedListener() {
-        return this.onColorChangedListener;
+    public OnColorSelectedListener getOnColorSelectedListener() {
+        return this.onColorSelectedListener;
     }
 
     /**
@@ -296,25 +295,6 @@ public class ColorPicker extends View {
     public void setOnColorSelectedListener(OnColorSelectedListener listener) {
         this.onColorSelectedListener = listener;
     }
-
-    /**
-     * Gets the onColorSelectedListener
-     *
-     * @return {@code OnColorSelectedListener}
-     */
-    public OnColorSelectedListener getOnColorSelectedListener() {
-        return this.onColorSelectedListener;
-    }
-
-    /**
-     * Color of the latest entry of the onColorChangedListener.
-     */
-    private int oldChangedListenerColor;
-
-    /**
-     * Color of the latest entry of the onColorSelectedListener.
-     */
-    private int oldSelectedListenerColor;
 
     private void init(AttributeSet attrs, int defStyle) {
         final TypedArray a = getContext().obtainStyledAttributes(attrs,
@@ -740,6 +720,10 @@ public class ColorPicker extends View {
         invalidate();
     }
 
+    public int getOldCenterColor() {
+        return mCenterOldColor;
+    }
+
     /**
      * Change the color of the center which indicates the old color.
      *
@@ -751,8 +735,8 @@ public class ColorPicker extends View {
         invalidate();
     }
 
-    public int getOldCenterColor() {
-        return mCenterOldColor;
+    public boolean getShowOldCenterColor() {
+        return mShowCenterOldColor;
     }
 
     /**
@@ -763,10 +747,6 @@ public class ColorPicker extends View {
     public void setShowOldCenterColor(boolean show) {
         mShowCenterOldColor = show;
         invalidate();
-    }
-
-    public boolean getShowOldCenterColor() {
-        return mShowCenterOldColor;
     }
 
     /**
@@ -873,5 +853,23 @@ public class ColorPicker extends View {
 
     public boolean getTouchAnywhereOnColorWheel() {
         return mTouchAnywhereOnColorWheelEnabled;
+    }
+
+    /**
+     * An interface that is called whenever the color is changed. Currently it
+     * is always called when the color is changes.
+     *
+     * @author lars
+     */
+    public interface OnColorChangedListener {
+        public void onColorChanged(int color);
+    }
+
+    /**
+     * An interface that is called whenever a new color has been selected.
+     * Currently it is always called when the color wheel has been released.
+     */
+    public interface OnColorSelectedListener {
+        public void onColorSelected(int color);
     }
 }

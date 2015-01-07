@@ -31,7 +31,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.aaahh.yello.R;
+import com.aaahh.yellow.R;
 
 
 public class SaturationBar extends View {
@@ -48,13 +48,11 @@ public class SaturationBar extends View {
      * Constants used to identify orientation.
      */
     private static final boolean ORIENTATION_HORIZONTAL = true;
-    private static final boolean ORIENTATION_VERTICAL = false;
-
     /**
      * Default orientation of the bar.
      */
     private static final boolean ORIENTATION_DEFAULT = ORIENTATION_HORIZONTAL;
-
+    private static final boolean ORIENTATION_VERTICAL = false;
     /**
      * The thickness of the bar.
      */
@@ -156,18 +154,6 @@ public class SaturationBar extends View {
      */
     private int oldChangedListenerSaturation;
 
-    public interface OnSaturationChangedListener {
-        public void onSaturationChanged(int saturation);
-    }
-
-    public void setOnSaturationChangedListener(OnSaturationChangedListener listener) {
-        this.onSaturationChangedListener = listener;
-    }
-
-    public OnSaturationChangedListener getOnSaturationChangedListener() {
-        return this.onSaturationChangedListener;
-    }
-
     public SaturationBar(Context context) {
         super(context);
         init(null, 0);
@@ -181,6 +167,14 @@ public class SaturationBar extends View {
     public SaturationBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
+    }
+
+    public OnSaturationChangedListener getOnSaturationChangedListener() {
+        return this.onSaturationChangedListener;
+    }
+
+    public void setOnSaturationChangedListener(OnSaturationChangedListener listener) {
+        this.onSaturationChangedListener = listener;
     }
 
     private void init(AttributeSet attrs, int defStyle) {
@@ -330,8 +324,6 @@ public class SaturationBar extends View {
         canvas.drawCircle(cX, cY, mBarPointerRadius, mBarPointerPaint);
     }
 
-    ;
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         getParent().requestDisallowInterceptTouchEvent(true);
@@ -404,40 +396,7 @@ public class SaturationBar extends View {
         return true;
     }
 
-    /**
-     * Set the bar color. <br>
-     * <br>
-     * Its discouraged to use this method.
-     *
-     * @param color
-     */
-    public void setColor(int color) {
-        int x1, y1;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
-            x1 = (mBarLength + mBarPointerHaloRadius);
-            y1 = mBarThickness;
-        } else {
-            x1 = mBarThickness;
-            y1 = (mBarLength + mBarPointerHaloRadius);
-        }
-
-        Color.colorToHSV(color, mHSVColor);
-        shader = new LinearGradient(mBarPointerHaloRadius, 0,
-                x1, y1, new int[]{
-                Color.WHITE, color}, null,
-                Shader.TileMode.CLAMP);
-        mBarPaint.setShader(shader);
-        calculateColor(mBarPointerPosition);
-        mBarPointerPaint.setColor(mColor);
-        if (mPicker != null) {
-            mPicker.setNewCenterColor(mColor);
-            if (mPicker.hasValueBar())
-                mPicker.changeValueBarColor(mColor);
-            else if (mPicker.hasOpacityBar())
-                mPicker.changeOpacityBarColor(mColor);
-        }
-        invalidate();
-    }
+    ;
 
     /**
      * Set the pointer on the bar. With the opacity value.
@@ -483,6 +442,41 @@ public class SaturationBar extends View {
     }
 
     /**
+     * Set the bar color. <br>
+     * <br>
+     * Its discouraged to use this method.
+     *
+     * @param color
+     */
+    public void setColor(int color) {
+        int x1, y1;
+        if (mOrientation == ORIENTATION_HORIZONTAL) {
+            x1 = (mBarLength + mBarPointerHaloRadius);
+            y1 = mBarThickness;
+        } else {
+            x1 = mBarThickness;
+            y1 = (mBarLength + mBarPointerHaloRadius);
+        }
+
+        Color.colorToHSV(color, mHSVColor);
+        shader = new LinearGradient(mBarPointerHaloRadius, 0,
+                x1, y1, new int[]{
+                Color.WHITE, color}, null,
+                Shader.TileMode.CLAMP);
+        mBarPaint.setShader(shader);
+        calculateColor(mBarPointerPosition);
+        mBarPointerPaint.setColor(mColor);
+        if (mPicker != null) {
+            mPicker.setNewCenterColor(mColor);
+            if (mPicker.hasValueBar())
+                mPicker.changeValueBarColor(mColor);
+            else if (mPicker.hasOpacityBar())
+                mPicker.changeOpacityBarColor(mColor);
+        }
+        invalidate();
+    }
+
+    /**
      * Adds a {@code ColorPicker} instance to the bar. <br>
      * <br>
      * WARNING: Don't change the color picker. it is done already when the bar
@@ -519,5 +513,9 @@ public class SaturationBar extends View {
 
         setColor(Color.HSVToColor(savedState.getFloatArray(STATE_COLOR)));
         setSaturation(savedState.getFloat(STATE_SATURATION));
+    }
+
+    public interface OnSaturationChangedListener {
+        public void onSaturationChanged(int saturation);
     }
 }

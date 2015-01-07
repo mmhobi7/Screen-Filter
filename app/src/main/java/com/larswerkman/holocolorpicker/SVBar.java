@@ -31,7 +31,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.aaahh.yello.R;
+import com.aaahh.yellow.R;
 
 public class SVBar extends View {
 
@@ -48,13 +48,11 @@ public class SVBar extends View {
      * Constants used to identify orientation.
      */
     private static final boolean ORIENTATION_HORIZONTAL = true;
-    private static final boolean ORIENTATION_VERTICAL = false;
-
     /**
      * Default orientation of the bar.
      */
     private static final boolean ORIENTATION_DEFAULT = ORIENTATION_HORIZONTAL;
-
+    private static final boolean ORIENTATION_VERTICAL = false;
     /**
      * The thickness of the bar.
      */
@@ -416,38 +414,6 @@ public class SVBar extends View {
     }
 
     /**
-     * Set the bar color. <br>
-     * <br>
-     * Its discouraged to use this method.
-     *
-     * @param color
-     */
-    public void setColor(int color) {
-        int x1, y1;
-        if (mOrientation) {
-            x1 = (mBarLength + mBarPointerHaloRadius);
-            y1 = mBarThickness;
-        } else {
-            x1 = mBarThickness;
-            y1 = (mBarLength + mBarPointerHaloRadius);
-        }
-
-        Color.colorToHSV(color, mHSVColor);
-        shader = new LinearGradient(mBarPointerHaloRadius, 0,
-                x1, y1, new int[]{Color.WHITE, color, Color.BLACK}, null,
-                Shader.TileMode.CLAMP);
-        mBarPaint.setShader(shader);
-        calculateColor(mBarPointerPosition);
-        mBarPointerPaint.setColor(mColor);
-        if (mPicker != null) {
-            mPicker.setNewCenterColor(mColor);
-            if (mPicker.hasOpacityBar())
-                mPicker.changeOpacityBarColor(mColor);
-        }
-        invalidate();
-    }
-
-    /**
      * Calculate the color selected by the pointer on the bar.
      *
      * @param coord Coordinate of the pointer.
@@ -481,6 +447,38 @@ public class SVBar extends View {
      */
     public int getColor() {
         return mColor;
+    }
+
+    /**
+     * Set the bar color. <br>
+     * <br>
+     * Its discouraged to use this method.
+     *
+     * @param color
+     */
+    public void setColor(int color) {
+        int x1, y1;
+        if (mOrientation) {
+            x1 = (mBarLength + mBarPointerHaloRadius);
+            y1 = mBarThickness;
+        } else {
+            x1 = mBarThickness;
+            y1 = (mBarLength + mBarPointerHaloRadius);
+        }
+
+        Color.colorToHSV(color, mHSVColor);
+        shader = new LinearGradient(mBarPointerHaloRadius, 0,
+                x1, y1, new int[]{Color.WHITE, color, Color.BLACK}, null,
+                Shader.TileMode.CLAMP);
+        mBarPaint.setShader(shader);
+        calculateColor(mBarPointerPosition);
+        mBarPointerPaint.setColor(mColor);
+        if (mPicker != null) {
+            mPicker.setNewCenterColor(mColor);
+            if (mPicker.hasOpacityBar())
+                mPicker.changeOpacityBarColor(mColor);
+        }
+        invalidate();
     }
 
     /**

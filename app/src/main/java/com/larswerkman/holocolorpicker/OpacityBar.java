@@ -31,7 +31,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.aaahh.yello.R;
+import com.aaahh.yellow.R;
 
 public class OpacityBar extends View {
 
@@ -47,13 +47,11 @@ public class OpacityBar extends View {
      * Constants used to identify orientation.
      */
     private static final boolean ORIENTATION_HORIZONTAL = true;
-    private static final boolean ORIENTATION_VERTICAL = false;
-
     /**
      * Default orientation of the bar.
      */
     private static final boolean ORIENTATION_DEFAULT = ORIENTATION_HORIZONTAL;
-
+    private static final boolean ORIENTATION_VERTICAL = false;
     /**
      * The thickness of the bar.
      */
@@ -144,24 +142,10 @@ public class OpacityBar extends View {
      * Opacity of the latest entry of the onOpacityChangedListener.
      */
     private int oldChangedListenerOpacity;
-
-    public interface OnOpacityChangedListener {
-        public void onOpacityChanged(int opacity);
-    }
-
-    public void setOnOpacityChangedListener(OnOpacityChangedListener listener) {
-        this.onOpacityChangedListener = listener;
-    }
-
-    public OnOpacityChangedListener getOnOpacityChangedListener() {
-        return this.onOpacityChangedListener;
-    }
-
     /**
      * {@code ColorPicker} instance used to control the ColorPicker.
      */
     private ColorPicker mPicker = null;
-
     /**
      * Used to toggle orientation between vertical and horizontal.
      */
@@ -180,6 +164,14 @@ public class OpacityBar extends View {
     public OpacityBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
+    }
+
+    public OnOpacityChangedListener getOnOpacityChangedListener() {
+        return this.onOpacityChangedListener;
+    }
+
+    public void setOnOpacityChangedListener(OnOpacityChangedListener listener) {
+        this.onOpacityChangedListener = listener;
     }
 
     private void init(AttributeSet attrs, int defStyle) {
@@ -329,8 +321,6 @@ public class OpacityBar extends View {
         canvas.drawCircle(cX, cY, mBarPointerRadius, mBarPointerPaint);
     }
 
-    ;
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         getParent().requestDisallowInterceptTouchEvent(true);
@@ -397,50 +387,7 @@ public class OpacityBar extends View {
         return true;
     }
 
-    /**
-     * Set the bar color. <br>
-     * <br>
-     * Its discouraged to use this method.
-     *
-     * @param color
-     */
-    public void setColor(int color) {
-        int x1, y1;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
-            x1 = (mBarLength + mBarPointerHaloRadius);
-            y1 = mBarThickness;
-        } else {
-            x1 = mBarThickness;
-            y1 = (mBarLength + mBarPointerHaloRadius);
-        }
-
-        Color.colorToHSV(color, mHSVColor);
-        shader = new LinearGradient(mBarPointerHaloRadius, 0,
-                x1, y1, new int[]{
-                Color.HSVToColor(0x00, mHSVColor), color}, null,
-                Shader.TileMode.CLAMP);
-        mBarPaint.setShader(shader);
-        calculateColor(mBarPointerPosition);
-        mBarPointerPaint.setColor(mColor);
-        if (mPicker != null) {
-            mPicker.setNewCenterColor(mColor);
-        }
-        invalidate();
-    }
-
-    /**
-     * Set the pointer on the bar. With the opacity value.
-     */
-    public void setOpacity(int opacity) {
-        mBarPointerPosition = Math.round((mOpacToPosFactor * opacity))
-                + mBarPointerHaloRadius;
-        calculateColor(mBarPointerPosition);
-        mBarPointerPaint.setColor(mColor);
-        if (mPicker != null) {
-            mPicker.setNewCenterColor(mColor);
-        }
-        invalidate();
-    }
+    ;
 
     /**
      * Get the currently selected opacity.
@@ -457,6 +404,20 @@ public class OpacityBar extends View {
         } else {
             return opacity;
         }
+    }
+
+    /**
+     * Set the pointer on the bar. With the opacity value.
+     */
+    public void setOpacity(int opacity) {
+        mBarPointerPosition = Math.round((mOpacToPosFactor * opacity))
+                + mBarPointerHaloRadius;
+        calculateColor(mBarPointerPosition);
+        mBarPointerPaint.setColor(mColor);
+        if (mPicker != null) {
+            mPicker.setNewCenterColor(mColor);
+        }
+        invalidate();
     }
 
     /**
@@ -489,6 +450,37 @@ public class OpacityBar extends View {
      */
     public int getColor() {
         return mColor;
+    }
+
+    /**
+     * Set the bar color. <br>
+     * <br>
+     * Its discouraged to use this method.
+     *
+     * @param color
+     */
+    public void setColor(int color) {
+        int x1, y1;
+        if (mOrientation == ORIENTATION_HORIZONTAL) {
+            x1 = (mBarLength + mBarPointerHaloRadius);
+            y1 = mBarThickness;
+        } else {
+            x1 = mBarThickness;
+            y1 = (mBarLength + mBarPointerHaloRadius);
+        }
+
+        Color.colorToHSV(color, mHSVColor);
+        shader = new LinearGradient(mBarPointerHaloRadius, 0,
+                x1, y1, new int[]{
+                Color.HSVToColor(0x00, mHSVColor), color}, null,
+                Shader.TileMode.CLAMP);
+        mBarPaint.setShader(shader);
+        calculateColor(mBarPointerPosition);
+        mBarPointerPaint.setColor(mColor);
+        if (mPicker != null) {
+            mPicker.setNewCenterColor(mColor);
+        }
+        invalidate();
     }
 
     /**
@@ -525,5 +517,9 @@ public class OpacityBar extends View {
 
         setColor(Color.HSVToColor(savedState.getFloatArray(STATE_COLOR)));
         setOpacity(savedState.getInt(STATE_OPACITY));
+    }
+
+    public interface OnOpacityChangedListener {
+        public void onOpacityChanged(int opacity);
     }
 }
