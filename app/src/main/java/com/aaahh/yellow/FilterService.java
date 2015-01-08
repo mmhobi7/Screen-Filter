@@ -364,11 +364,11 @@ public class FilterService extends Service {
     }
 
     public void rotationReceiver() {
-        IntentFilter filter1 = new IntentFilter("android.intent.action.CONFIGURATION_CHANGED");
-        IntentFilter filter2 = new IntentFilter("eu.chainfire.supersu.extra.HIDE");
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("eu.chainfire.supersu.extra.HIDE");
+        filter.addAction("android.intent.action.CONFIGURATION_CHANGED");
         if (Common.Receiver) {
-            registerReceiver(myReceiver, filter1);
-            registerReceiver(myReceiver, filter2);
+            registerReceiver(myReceiver, filter);
         }
         if (!Common.Receiver) {
             unregisterReceiver(myReceiver);
