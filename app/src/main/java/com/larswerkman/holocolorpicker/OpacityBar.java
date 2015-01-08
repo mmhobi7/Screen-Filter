@@ -41,7 +41,6 @@ public class OpacityBar extends View {
     private static final String STATE_PARENT = "parent";
     private static final String STATE_COLOR = "color";
     private static final String STATE_OPACITY = "opacity";
-    private static final String STATE_ORIENTATION = "orientation";
 
     /**
      * Constants used to identify orientation.
@@ -51,7 +50,6 @@ public class OpacityBar extends View {
      * Default orientation of the bar.
      */
     private static final boolean ORIENTATION_DEFAULT = ORIENTATION_HORIZONTAL;
-    private static final boolean ORIENTATION_VERTICAL = false;
     /**
      * The thickness of the bar.
      */
@@ -133,16 +131,6 @@ public class OpacityBar extends View {
     private float mOpacToPosFactor;
 
     /**
-     * Interface and listener so that changes in OpacityBar are sent
-     * to the host activity/fragment
-     */
-    private OnOpacityChangedListener onOpacityChangedListener;
-
-    /**
-     * Opacity of the latest entry of the onOpacityChangedListener.
-     */
-    private int oldChangedListenerOpacity;
-    /**
      * {@code ColorPicker} instance used to control the ColorPicker.
      */
     private ColorPicker mPicker = null;
@@ -164,14 +152,6 @@ public class OpacityBar extends View {
     public OpacityBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
-    }
-
-    public OnOpacityChangedListener getOnOpacityChangedListener() {
-        return this.onOpacityChangedListener;
-    }
-
-    public void setOnOpacityChangedListener(OnOpacityChangedListener listener) {
-        this.onOpacityChangedListener = listener;
     }
 
     private void init(AttributeSet attrs, int defStyle) {
@@ -219,7 +199,7 @@ public class OpacityBar extends View {
 
         // Variable orientation
         int measureSpec;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        if (mOrientation) {
             measureSpec = widthMeasureSpec;
         } else {
             measureSpec = heightMeasureSpec;
@@ -238,7 +218,7 @@ public class OpacityBar extends View {
 
         int barPointerHaloRadiusx2 = mBarPointerHaloRadius * 2;
         mBarLength = length - barPointerHaloRadiusx2;
-        if (mOrientation == ORIENTATION_VERTICAL) {
+        if (!mOrientation) {
             setMeasuredDimension(barPointerHaloRadiusx2,
                     (mBarLength + barPointerHaloRadiusx2));
         } else {
@@ -253,7 +233,7 @@ public class OpacityBar extends View {
 
         // Fill the rectangle instance based on orientation
         int x1, y1;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        if (mOrientation) {
             x1 = (mBarLength + mBarPointerHaloRadius);
             y1 = mBarThickness;
             mBarLength = w - (mBarPointerHaloRadius * 2);
@@ -307,7 +287,7 @@ public class OpacityBar extends View {
 
         // Calculate the center of the pointer.
         int cX, cY;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        if (mOrientation) {
             cX = mBarPointerPosition;
             cY = mBarPointerHaloRadius;
         } else {
@@ -327,7 +307,7 @@ public class OpacityBar extends View {
 
         // Convert coordinates to our internal coordinate system
         float dimen;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        if (mOrientation) {
             dimen = event.getX();
         } else {
             dimen = event.getY();
@@ -375,10 +355,6 @@ public class OpacityBar extends View {
                         invalidate();
                     }
                 }
-                if (onOpacityChangedListener != null && oldChangedListenerOpacity != getOpacity()) {
-                    onOpacityChangedListener.onOpacityChanged(getOpacity());
-                    oldChangedListenerOpacity = getOpacity();
-                }
                 break;
             case MotionEvent.ACTION_UP:
                 mIsMovingPointer = false;
@@ -386,8 +362,6 @@ public class OpacityBar extends View {
         }
         return true;
     }
-
-    ;
 
     /**
      * Get the currently selected opacity.
@@ -457,11 +431,10 @@ public class OpacityBar extends View {
      * <br>
      * Its discouraged to use this method.
      *
-     * @param color
      */
     public void setColor(int color) {
         int x1, y1;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        if (mOrientation) {
             x1 = (mBarLength + mBarPointerHaloRadius);
             y1 = mBarThickness;
         } else {
@@ -481,19 +454,6 @@ public class OpacityBar extends View {
             mPicker.setNewCenterColor(mColor);
         }
         invalidate();
-    }
-
-    /**
-     * Adds a {@code ColorPicker} instance to the bar. <br>
-     * <br>
-     * WARNING: Don't change the color picker. it is done already when the bar
-     * is added to the ColorPicker
-     *
-     * @param picker
-     * @see com.larswerkman.holocolorpicker.ColorPicker#addSVBar(com.larswerkman.holocolorpicker.SVBar)
-     */
-    public void setColorPicker(ColorPicker picker) {
-        mPicker = picker;
     }
 
     @Override
@@ -517,9 +477,5 @@ public class OpacityBar extends View {
 
         setColor(Color.HSVToColor(savedState.getFloatArray(STATE_COLOR)));
         setOpacity(savedState.getInt(STATE_OPACITY));
-    }
-
-    public interface OnOpacityChangedListener {
-        public void onOpacityChanged(int opacity);
     }
 }

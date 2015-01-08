@@ -42,7 +42,6 @@ public class SVBar extends View {
     private static final String STATE_COLOR = "color";
     private static final String STATE_SATURATION = "saturation";
     private static final String STATE_VALUE = "value";
-    private static final String STATE_ORIENTATION = "orientation";
 
     /**
      * Constants used to identify orientation.
@@ -52,7 +51,6 @@ public class SVBar extends View {
      * Default orientation of the bar.
      */
     private static final boolean ORIENTATION_DEFAULT = ORIENTATION_HORIZONTAL;
-    private static final boolean ORIENTATION_VERTICAL = false;
     /**
      * The thickness of the bar.
      */
@@ -203,7 +201,7 @@ public class SVBar extends View {
 
         // Variable orientation
         int measureSpec;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        if (mOrientation) {
             measureSpec = widthMeasureSpec;
         } else {
             measureSpec = heightMeasureSpec;
@@ -222,7 +220,7 @@ public class SVBar extends View {
 
         int barPointerHaloRadiusx2 = mBarPointerHaloRadius * 2;
         mBarLength = length - barPointerHaloRadiusx2;
-        if (mOrientation == ORIENTATION_VERTICAL) {
+        if (!mOrientation) {
             setMeasuredDimension(barPointerHaloRadiusx2,
                     (mBarLength + barPointerHaloRadiusx2));
         } else {
@@ -237,7 +235,7 @@ public class SVBar extends View {
 
         // Fill the rectangle instance based on orientation
         int x1, y1;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        if (mOrientation) {
             x1 = (mBarLength + mBarPointerHaloRadius);
             y1 = mBarThickness;
             mBarLength = w - (mBarPointerHaloRadius * 2);
@@ -294,7 +292,7 @@ public class SVBar extends View {
 
         // Calculate the center of the pointer.
         int cX, cY;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        if (mOrientation) {
             cX = mBarPointerPosition;
             cY = mBarPointerHaloRadius;
         } else {
@@ -308,15 +306,13 @@ public class SVBar extends View {
         canvas.drawCircle(cX, cY, mBarPointerRadius, mBarPointerPaint);
     }
 
-    ;
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         getParent().requestDisallowInterceptTouchEvent(true);
 
         // Convert coordinates to our internal coordinate system
         float dimen;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        if (mOrientation) {
             dimen = event.getX();
         } else {
             dimen = event.getY();
@@ -454,7 +450,6 @@ public class SVBar extends View {
      * <br>
      * Its discouraged to use this method.
      *
-     * @param color
      */
     public void setColor(int color) {
         int x1, y1;
@@ -487,7 +482,6 @@ public class SVBar extends View {
      * WARNING: Don't change the color picker. it is done already when the bar
      * is added to the ColorPicker
      *
-     * @param picker
      * @see com.larswerkman.holocolorpicker.ColorPicker#addSVBar(SVBar)
      */
     public void setColorPicker(ColorPicker picker) {

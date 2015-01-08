@@ -39,7 +39,6 @@ import com.aaahh.yellow.R;
  * <p>
  * Use {@link #getColor()} to retrieve the selected color. <br>
  * Use {@link #addSVBar(com.larswerkman.holocolorpicker.SVBar)} to add a Saturation/Value Bar. <br>
- * Use {@link #addOpacityBar(com.larswerkman.holocolorpicker.OpacityBar)} to add a Opacity Bar.
  * </p>
  */
 public class ColorPicker extends View {
@@ -216,13 +215,6 @@ public class ColorPicker extends View {
     private SaturationBar mSaturationBar = null;
 
     /**
-     * {@code TouchAnywhereOnColorWheelEnabled} instance used to control <br>
-     * if the color wheel accepts input anywhere on the wheel or just <br>
-     * on the halo.
-     */
-    private boolean mTouchAnywhereOnColorWheelEnabled = true;
-
-    /**
      * {@code ValueBar} instance used to control the Value bar.
      */
     private ValueBar mValueBar = null;
@@ -231,19 +223,10 @@ public class ColorPicker extends View {
      * {@code onColorChangedListener} instance of the onColorChangedListener
      */
     private OnColorChangedListener onColorChangedListener;
-
-    /**
-     * {@code onColorSelectedListener} instance of the onColorSelectedListener
-     */
-    private OnColorSelectedListener onColorSelectedListener;
     /**
      * Color of the latest entry of the onColorChangedListener.
      */
     private int oldChangedListenerColor;
-    /**
-     * Color of the latest entry of the onColorSelectedListener.
-     */
-    private int oldSelectedListenerColor;
 
     public ColorPicker(Context context) {
         super(context);
@@ -261,39 +244,11 @@ public class ColorPicker extends View {
     }
 
     /**
-     * Gets the onColorChangedListener
-     *
-     * @return {@code OnColorChangedListener}
-     */
-    public OnColorChangedListener getOnColorChangedListener() {
-        return this.onColorChangedListener;
-    }
-
-    /**
      * Set a onColorChangedListener
      *
-     * @param {@code OnColorChangedListener}
      */
     public void setOnColorChangedListener(OnColorChangedListener listener) {
         this.onColorChangedListener = listener;
-    }
-
-    /**
-     * Gets the onColorSelectedListener
-     *
-     * @return {@code OnColorSelectedListener}
-     */
-    public OnColorSelectedListener getOnColorSelectedListener() {
-        return this.onColorSelectedListener;
-    }
-
-    /**
-     * Set a onColorSelectedListener
-     *
-     * @param {@code OnColorSelectedListener}
-     */
-    public void setOnColorSelectedListener(OnColorSelectedListener listener) {
-        this.onColorSelectedListener = listener;
     }
 
     private void init(AttributeSet attrs, int defStyle) {
@@ -568,6 +523,11 @@ public class ColorPicker extends View {
             case MotionEvent.ACTION_DOWN:
                 // Check whether the user pressed on the pointer.
                 float[] pointerPosition = calculatePointerPosition(mAngle);
+                /*
+      {@code TouchAnywhereOnColorWheelEnabled} instance used to control <br>
+      if the color wheel accepts input anywhere on the wheel or just <br>
+      on the halo.
+     */
                 if (x >= (pointerPosition[0] - mColorPointerHaloRadius)
                         && x <= (pointerPosition[0] + mColorPointerHaloRadius)
                         && y >= (pointerPosition[1] - mColorPointerHaloRadius)
@@ -586,9 +546,7 @@ public class ColorPicker extends View {
                     invalidate();
                 }
                 // Check whether the user pressed anywhere on the wheel.
-                else if (Math.sqrt(x * x + y * y) <= mColorWheelRadius + mColorPointerHaloRadius
-                        && Math.sqrt(x * x + y * y) >= mColorWheelRadius - mColorPointerHaloRadius
-                        && mTouchAnywhereOnColorWheelEnabled) {
+                else if (Math.sqrt(x * x + y * y) <= mColorWheelRadius + mColorPointerHaloRadius && Math.sqrt(x * x + y * y) >= mColorWheelRadius - mColorPointerHaloRadius) {
                     mUserIsMovingPointer = true;
                     invalidate();
                 }
@@ -633,18 +591,9 @@ public class ColorPicker extends View {
                 mUserIsMovingPointer = false;
                 mCenterHaloPaint.setAlpha(0x00);
 
-                if (onColorSelectedListener != null && mCenterNewColor != oldSelectedListenerColor) {
-                    onColorSelectedListener.onColorSelected(mCenterNewColor);
-                    oldSelectedListenerColor = mCenterNewColor;
-                }
-
                 invalidate();
                 break;
             case MotionEvent.ACTION_CANCEL:
-                if (onColorSelectedListener != null && mCenterNewColor != oldSelectedListenerColor) {
-                    onColorSelectedListener.onColorSelected(mCenterNewColor);
-                    oldSelectedListenerColor = mCenterNewColor;
-                }
                 break;
         }
         return true;
@@ -675,18 +624,6 @@ public class ColorPicker extends View {
         // Give an instance of the color picker to the Saturation/Value bar.
         mSVbar.setColorPicker(this);
         mSVbar.setColor(mColor);
-    }
-
-    /**
-     * Add a Opacity bar to the color wheel.
-     *
-     * @param bar The instance of the Opacity bar.
-     */
-    public void addOpacityBar(OpacityBar bar) {
-        mOpacityBar = bar;
-        // Give an instance of the color picker to the Opacity bar.
-        mOpacityBar.setColorPicker(this);
-        mOpacityBar.setColor(mColor);
     }
 
     public void addSaturationBar(SaturationBar bar) {
@@ -735,10 +672,6 @@ public class ColorPicker extends View {
         invalidate();
     }
 
-    public boolean getShowOldCenterColor() {
-        return mShowCenterOldColor;
-    }
-
     /**
      * Set whether the old color is to be shown in the center or not
      *
@@ -758,17 +691,6 @@ public class ColorPicker extends View {
     public void changeOpacityBarColor(int color) {
         if (mOpacityBar != null) {
             mOpacityBar.setColor(color);
-        }
-    }
-
-    /**
-     * Used to change the color of the {@code SaturationBar}.
-     *
-     * @param color int of the color used to change the opacity bar color.
-     */
-    public void changeSaturationBarColor(int color) {
-        if (mSaturationBar != null) {
-            mSaturationBar.setColor(color);
         }
     }
 
@@ -801,24 +723,6 @@ public class ColorPicker extends View {
         return mValueBar != null;
     }
 
-    /**
-     * Checks if there is a {@code SaturationBar} connected.
-     *
-     * @return true or false.
-     */
-    public boolean hasSaturationBar() {
-        return mSaturationBar != null;
-    }
-
-    /**
-     * Checks if there is a {@code SVBar} connected.
-     *
-     * @return true or false.
-     */
-    public boolean hasSVBar() {
-        return mSVbar != null;
-    }
-
     @Override
     protected Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
@@ -847,14 +751,6 @@ public class ColorPicker extends View {
         setNewCenterColor(currentColor);
     }
 
-    public void setTouchAnywhereOnColorWheelEnabled(boolean TouchAnywhereOnColorWheelEnabled) {
-        mTouchAnywhereOnColorWheelEnabled = TouchAnywhereOnColorWheelEnabled;
-    }
-
-    public boolean getTouchAnywhereOnColorWheel() {
-        return mTouchAnywhereOnColorWheelEnabled;
-    }
-
     /**
      * An interface that is called whenever the color is changed. Currently it
      * is always called when the color is changes.
@@ -865,11 +761,4 @@ public class ColorPicker extends View {
         public void onColorChanged(int color);
     }
 
-    /**
-     * An interface that is called whenever a new color has been selected.
-     * Currently it is always called when the color wheel has been released.
-     */
-    public interface OnColorSelectedListener {
-        public void onColorSelected(int color);
-    }
 }

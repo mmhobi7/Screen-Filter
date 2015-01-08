@@ -42,7 +42,6 @@ public class SaturationBar extends View {
     private static final String STATE_PARENT = "parent";
     private static final String STATE_COLOR = "color";
     private static final String STATE_SATURATION = "saturation";
-    private static final String STATE_ORIENTATION = "orientation";
 
     /**
      * Constants used to identify orientation.
@@ -52,7 +51,6 @@ public class SaturationBar extends View {
      * Default orientation of the bar.
      */
     private static final boolean ORIENTATION_DEFAULT = ORIENTATION_HORIZONTAL;
-    private static final boolean ORIENTATION_VERTICAL = false;
     /**
      * The thickness of the bar.
      */
@@ -143,17 +141,6 @@ public class SaturationBar extends View {
      */
     private boolean mOrientation;
 
-    /**
-     * Interface and listener so that changes in SaturationBar are sent
-     * to the host activity/fragment
-     */
-    private OnSaturationChangedListener onSaturationChangedListener;
-
-    /**
-     * Saturation of the latest entry of the onSaturationChangedListener.
-     */
-    private int oldChangedListenerSaturation;
-
     public SaturationBar(Context context) {
         super(context);
         init(null, 0);
@@ -167,14 +154,6 @@ public class SaturationBar extends View {
     public SaturationBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
-    }
-
-    public OnSaturationChangedListener getOnSaturationChangedListener() {
-        return this.onSaturationChangedListener;
-    }
-
-    public void setOnSaturationChangedListener(OnSaturationChangedListener listener) {
-        this.onSaturationChangedListener = listener;
     }
 
     private void init(AttributeSet attrs, int defStyle) {
@@ -222,7 +201,7 @@ public class SaturationBar extends View {
 
         // Variable orientation
         int measureSpec;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        if (mOrientation) {
             measureSpec = widthMeasureSpec;
         } else {
             measureSpec = heightMeasureSpec;
@@ -241,7 +220,7 @@ public class SaturationBar extends View {
 
         int barPointerHaloRadiusx2 = mBarPointerHaloRadius * 2;
         mBarLength = length - barPointerHaloRadiusx2;
-        if (mOrientation == ORIENTATION_VERTICAL) {
+        if (!mOrientation) {
             setMeasuredDimension(barPointerHaloRadiusx2,
                     (mBarLength + barPointerHaloRadiusx2));
         } else {
@@ -256,7 +235,7 @@ public class SaturationBar extends View {
 
         // Fill the rectangle instance based on orientation
         int x1, y1;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        if (mOrientation) {
             x1 = (mBarLength + mBarPointerHaloRadius);
             y1 = mBarThickness;
             mBarLength = w - (mBarPointerHaloRadius * 2);
@@ -310,7 +289,7 @@ public class SaturationBar extends View {
 
         // Calculate the center of the pointer.
         int cX, cY;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        if (mOrientation) {
             cX = mBarPointerPosition;
             cY = mBarPointerHaloRadius;
         } else {
@@ -330,7 +309,7 @@ public class SaturationBar extends View {
 
         // Convert coordinates to our internal coordinate system
         float dimen;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        if (mOrientation) {
             dimen = event.getX();
         } else {
             dimen = event.getY();
@@ -384,10 +363,6 @@ public class SaturationBar extends View {
                         invalidate();
                     }
                 }
-                if (onSaturationChangedListener != null && oldChangedListenerSaturation != mColor) {
-                    onSaturationChangedListener.onSaturationChanged(mColor);
-                    oldChangedListenerSaturation = mColor;
-                }
                 break;
             case MotionEvent.ACTION_UP:
                 mIsMovingPointer = false;
@@ -395,8 +370,6 @@ public class SaturationBar extends View {
         }
         return true;
     }
-
-    ;
 
     /**
      * Set the pointer on the bar. With the opacity value.
@@ -446,11 +419,10 @@ public class SaturationBar extends View {
      * <br>
      * Its discouraged to use this method.
      *
-     * @param color
      */
     public void setColor(int color) {
         int x1, y1;
-        if (mOrientation == ORIENTATION_HORIZONTAL) {
+        if (mOrientation) {
             x1 = (mBarLength + mBarPointerHaloRadius);
             y1 = mBarThickness;
         } else {
@@ -482,7 +454,6 @@ public class SaturationBar extends View {
      * WARNING: Don't change the color picker. it is done already when the bar
      * is added to the ColorPicker
      *
-     * @param picker
      * @see com.larswerkman.holocolorpicker.ColorPicker#addSVBar(com.larswerkman.holocolorpicker.SVBar)
      */
     public void setColorPicker(ColorPicker picker) {
@@ -515,7 +486,4 @@ public class SaturationBar extends View {
         setSaturation(savedState.getFloat(STATE_SATURATION));
     }
 
-    public interface OnSaturationChangedListener {
-        public void onSaturationChanged(int saturation);
-    }
 }
