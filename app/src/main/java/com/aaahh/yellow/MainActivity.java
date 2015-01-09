@@ -140,6 +140,9 @@ public class MainActivity extends Activity {
                 editor.putInt("Height", paramAnonymousSeekBar.getProgress());
                 editor.apply();
                 Common.Height = paramAnonymousSeekBar.getProgress();
+                if (Common.Height < 1) {
+                    Common.Height = 1;
+                }
                 rService.setHeight(Common.Height);
             }
         });
