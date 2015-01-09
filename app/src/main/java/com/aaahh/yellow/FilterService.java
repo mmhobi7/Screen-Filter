@@ -18,7 +18,6 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -209,8 +208,6 @@ public class FilterService extends Service {
             int i = Common.Color;
             String hexColor = String.format("#%06X", (0xFFFFFF & i));
             String fade = hexColor.replace("#", "#00");
-            Log.d("2", String.valueOf(i));
-            Log.d("h", String.valueOf(Common.O));
             if (Common.O == 0) {
                 localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
                 localLayoutParams.width = (int) screenWidth;
@@ -301,7 +298,6 @@ public class FilterService extends Service {
                 localLayoutParams.height = (int) screenHeight;
                 localLayoutParams.x = (int) ((((((Common.Area - 50) * 2) / 100f)) * (screenWidth / 2)));
                 localLayoutParams.y = 0;
-                Log.d("m", String.valueOf(screenHeight));
                 if (Common.Gradient > 0) {
                     int b = (Color.parseColor(fade));
                     gt = new GradientDrawable();
@@ -332,6 +328,8 @@ public class FilterService extends Service {
     }
 
     public void startNotification() {
+        //                .addAction(android.R.drawable.ic_media_play, "Toggle", pIntent)
+        //boolean Toggle = false;
         Intent localIntent = new Intent(getApplicationContext(), MainActivity.class);
         localIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent localPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, localIntent, 0);
@@ -345,6 +343,7 @@ public class FilterService extends Service {
                 .build();
         n.notify(1, localNotification);
         startForeground(1, localNotification);
+
         Common.Notif = true;
         if (Common.ToHide) {
             if (!(Common.Hide)) {

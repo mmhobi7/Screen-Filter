@@ -3,7 +3,6 @@ package com.aaahh.yellow;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.larswerkman.holocolorpicker.ColorPicker;
@@ -36,7 +35,6 @@ public class Color extends Activity {
             public void onColorChanged(int color) {
                 Common.Color = picker.getColor();
                 FilterService.mThis.setColor();
-                Log.d("gish", String.valueOf(Common.Color));
             }
         });
     }
