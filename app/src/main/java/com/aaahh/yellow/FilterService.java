@@ -1,6 +1,5 @@
 package com.aaahh.yellow;
 
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -124,7 +123,6 @@ public class FilterService extends Service {
         return this.rBinder;
     }
 
-    @SuppressLint({"NewApi"})
     public void onCreate() {
         super.onCreate();
         mThis = this;
