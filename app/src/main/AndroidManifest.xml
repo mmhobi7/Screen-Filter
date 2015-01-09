@@ -29,7 +29,6 @@
 
         <service
             android:name="com.aaahh.yellow.FilterService"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|layoutDirection"
             android:enabled="true"
             android:permission="android.permission.SYSTEM_ALERT_WINDOW" />
         <receiver android:name="com.aaahh.yellow.Boot">
