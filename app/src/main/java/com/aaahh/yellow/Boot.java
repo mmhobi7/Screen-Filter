@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * Created by aaahh on 10/9/14.
+ * Created by Aaahh on 10/9/14.
  * Starts the whole app
  */
 public class Boot extends BroadcastReceiver {

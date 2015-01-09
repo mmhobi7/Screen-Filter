@@ -51,56 +51,55 @@ public class OpacityBar extends View {
      */
     private static final boolean ORIENTATION_DEFAULT = ORIENTATION_HORIZONTAL;
     /**
+     * The rectangle enclosing the bar.
+     */
+    private final RectF mBarRect = new RectF();
+    /**
+     * An array of floats that can be build into a {@code Color} <br>
+     * Where we can extract the color from.
+     */
+    private final float[] mHSVColor = new float[3];
+    /**
+     * {@code ColorPicker} instance used to control the ColorPicker.
+     */
+    private final ColorPicker mPicker = null;
+    /**
      * The thickness of the bar.
      */
     private int mBarThickness;
-
     /**
      * The length of the bar.
      */
     private int mBarLength;
     private int mPreferredBarLength;
-
     /**
      * The radius of the pointer.
      */
     private int mBarPointerRadius;
-
     /**
      * The radius of the halo of the pointer.
      */
     private int mBarPointerHaloRadius;
-
     /**
      * The position of the pointer on the bar.
      */
     private int mBarPointerPosition;
-
     /**
      * {@code Paint} instance used to draw the bar.
      */
     private Paint mBarPaint;
-
     /**
      * {@code Paint} instance used to draw the pointer.
      */
     private Paint mBarPointerPaint;
-
     /**
      * {@code Paint} instance used to draw the halo of the pointer.
      */
     private Paint mBarPointerHaloPaint;
-
-    /**
-     * The rectangle enclosing the bar.
-     */
-    private RectF mBarRect = new RectF();
-
     /**
      * {@code Shader} instance used to fill the shader of the paint.
      */
     private Shader shader;
-
     /**
      * {@code true} if the user clicked on the pointer to start the move mode. <br>
      * {@code false} once the user stops touching the screen.
@@ -108,32 +107,18 @@ public class OpacityBar extends View {
      * @see #onTouchEvent(android.view.MotionEvent)
      */
     private boolean mIsMovingPointer;
-
     /**
      * The ARGB value of the currently selected color.
      */
     private int mColor;
-
-    /**
-     * An array of floats that can be build into a {@code Color} <br>
-     * Where we can extract the color from.
-     */
-    private float[] mHSVColor = new float[3];
-
     /**
      * Factor used to calculate the position to the Opacity on the bar.
      */
     private float mPosToOpacFactor;
-
     /**
      * Factor used to calculate the Opacity to the postion on the bar.
      */
     private float mOpacToPosFactor;
-
-    /**
-     * {@code ColorPicker} instance used to control the ColorPicker.
-     */
-    private ColorPicker mPicker = null;
     /**
      * Used to toggle orientation between vertical and horizontal.
      */
@@ -368,7 +353,7 @@ public class OpacityBar extends View {
      *
      * @return The int value of the currently selected opacity.
      */
-    public int getOpacity() {
+    int getOpacity() {
         int opacity = Math
                 .round((mPosToOpacFactor * (mBarPointerPosition - mBarPointerHaloRadius)));
         if (opacity < 5) {
@@ -418,19 +403,9 @@ public class OpacityBar extends View {
     }
 
     /**
-     * Get the currently selected color.
-     *
-     * @return The ARGB value of the currently selected color.
-     */
-    public int getColor() {
-        return mColor;
-    }
-
-    /**
      * Set the bar color. <br>
      * <br>
      * Its discouraged to use this method.
-     *
      */
     public void setColor(int color) {
         int x1, y1;

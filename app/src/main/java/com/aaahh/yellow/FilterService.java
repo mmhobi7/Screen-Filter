@@ -21,14 +21,14 @@ import android.view.View;
 import android.view.WindowManager;
 
 /**
- * Created by aaahh on 8/26/14. Edited 9/13/14
+ * Created by Aaahh on 8/26/14. Edited 9/13/14
  */
 public class FilterService extends Service {
     public static FilterService mThis;
     public static View vw;
-    public static GradientDrawable gt;
-    public static WindowManager.LayoutParams localLayoutParams;
-    public final BroadcastReceiver myReceiver = new BroadcastReceiver() {
+    private static GradientDrawable gt;
+    private static WindowManager.LayoutParams localLayoutParams;
+    private final BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equalsIgnoreCase("android.intent.action.CONFIGURATION_CHANGED")) {
@@ -51,9 +51,9 @@ public class FilterService extends Service {
             }
         }
     };
-    public static WindowManager localWindowManager;
+    private static WindowManager localWindowManager;
     private final IBinder rBinder = new LocalBinder();
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
 
     public void addView() {
         DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -197,7 +197,7 @@ public class FilterService extends Service {
         }
     }
 
-    public void setRotation() {
+    void setRotation() {
         if (!(vw == null)) {
             DisplayMetrics displaymetrics = new DisplayMetrics();
             ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
@@ -360,7 +360,7 @@ public class FilterService extends Service {
         }
     }
 
-    public void rotationReceiver() {
+    void rotationReceiver() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("eu.chainfire.supersu.extra.HIDE");
         filter.addAction("android.intent.action.CONFIGURATION_CHANGED");

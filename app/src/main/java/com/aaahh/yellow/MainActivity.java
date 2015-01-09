@@ -15,7 +15,6 @@ import android.os.IBinder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -25,15 +24,11 @@ import java.io.IOException;
 
 public class MainActivity extends Activity {
 
-    public static MainActivity mThis;
-    public static ToggleButton ToggleButton2;
-    public TextView TextPercent;
-    public ToggleButton ToggleButton1;
-    public Button SelectButton;
-    public SeekBar Slider;
-    public SeekBar Sliderb;
-    public SeekBar Sliderc;
-    FilterService rService;
+    private static MainActivity mThis;
+    private static ToggleButton ToggleButton2;
+    private TextView TextPercent;
+    private ToggleButton ToggleButton1;
+    private FilterService rService;
     private final ServiceConnection rConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             FilterService.LocalBinder localLocalBinder = (FilterService.LocalBinder) iBinder;
@@ -86,13 +81,12 @@ public class MainActivity extends Activity {
         TextPercent = ((TextView) findViewById(R.id.textViewPer));
         ToggleButton1 = ((ToggleButton) findViewById(R.id.toggleButton2));
         ToggleButton2 = ((ToggleButton) findViewById(R.id.toggleButton));
-        SelectButton = ((Button) findViewById(R.id.button));
-        Slider = ((SeekBar) findViewById(R.id.seekBar));
-        Sliderb = ((SeekBar) findViewById(R.id.seekBar4));
-        Sliderc = ((SeekBar) findViewById(R.id.seekBar5));
-        Slider.setProgress(Alpha);
-        Sliderb.setProgress(Height);
-        Sliderc.setProgress(Area);
+        SeekBar slider = ((SeekBar) findViewById(R.id.seekBar));
+        SeekBar sliderb = ((SeekBar) findViewById(R.id.seekBar4));
+        SeekBar sliderc = ((SeekBar) findViewById(R.id.seekBar5));
+        slider.setProgress(Alpha);
+        sliderb.setProgress(Height);
+        sliderc.setProgress(Area);
         //boot.setChecked(Boot);
         if (FilterYN) {
             ToggleButton1.setChecked(true);
@@ -104,7 +98,7 @@ public class MainActivity extends Activity {
         } else {
             ToggleButton2.setChecked(false);
         }
-        Slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 TextPercent.setText(paramAnonymousInt + "%");
                 Common.Alpha = 200 - paramAnonymousInt * 2;
@@ -124,8 +118,8 @@ public class MainActivity extends Activity {
                 rService.setAlpha(Common.Alpha);
             }
         });
-        Sliderb.setMax(100);
-        Sliderb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        sliderb.setMax(100);
+        sliderb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 Common.Height = paramAnonymousInt;
                 rService.setHeight(Common.Height);
@@ -146,8 +140,8 @@ public class MainActivity extends Activity {
                 rService.setHeight(Common.Height);
             }
         });
-        Sliderc.setMax(100);
-        Sliderc.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        sliderc.setMax(100);
+        sliderc.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 Common.Area = paramAnonymousInt;
                 rService.setArea(Common.Area);
@@ -166,7 +160,7 @@ public class MainActivity extends Activity {
 
             }
         });
-        TextPercent.setText(Slider.getProgress() + "%");
+        TextPercent.setText(slider.getProgress() + "%");
     }
 
     public void StartToggle(View view) {
@@ -251,9 +245,7 @@ public class MainActivity extends Activity {
     public void onDestroy() {
         super.onDestroy();
         Common.Receiver = false;
-        if (Common.Boot) {
-            unbindService(rConnection);
-        }
+        unbindService(rConnection);
     }
 
     public void onPause() {

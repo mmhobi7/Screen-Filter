@@ -1,10 +1,10 @@
 package com.aaahh.yellow;
 
 /**
- * Created by aaahh on 9/18/14.
+ * Created by Aaahh on 9/18/14.
  * Fix Boot
  */
-public class Common {
+class Common {
     public static final String PREFS_NAME = "MyPrefsFile";
     public static int O = 0;
     public static boolean Boot = false;

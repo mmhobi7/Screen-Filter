@@ -38,7 +38,6 @@ import com.aaahh.yellow.R;
  * <p/>
  * <p>
  * Use {@link #getColor()} to retrieve the selected color. <br>
- * Use {@link #addSVBar(com.larswerkman.holocolorpicker.SVBar)} to add a Saturation/Value Bar. <br>
  * </p>
  */
 public class ColorPicker extends View {
@@ -55,65 +54,66 @@ public class ColorPicker extends View {
      */
     private static final int[] COLORS = new int[]{0xFFFF0000, 0xFFFF00FF,
             0xFF0000FF, 0xFF00FFFF, 0xFF00FF00, 0xFFFFFF00, 0xFFFF0000};
-
+    /**
+     * The rectangle enclosing the color wheel.
+     */
+    private final RectF mColorWheelRectangle = new RectF();
+    /**
+     * The rectangle enclosing the center inside the color wheel.
+     */
+    private final RectF mCenterRectangle = new RectF();
+    /**
+     * An array of floats that can be build into a {@code Color} <br>
+     * Where we can extract the Saturation and Value from.
+     */
+    private final float[] mHSV = new float[3];
+    /**
+     * {@code SVBar} instance used to control the Saturation/Value bar.
+     */
+    private final SVBar mSVbar = null;
+    /**
+     * {@code OpacityBar} instance used to control the Opacity bar.
+     */
+    private final OpacityBar mOpacityBar = null;
     /**
      * {@code Paint} instance used to draw the color wheel.
      */
     private Paint mColorWheelPaint;
-
     /**
      * {@code Paint} instance used to draw the pointer's "halo".
      */
     private Paint mPointerHaloPaint;
-
     /**
      * {@code Paint} instance used to draw the pointer (the selected color).
      */
     private Paint mPointerColor;
-
     /**
      * The width of the color wheel thickness.
      */
     private int mColorWheelThickness;
-
     /**
      * The radius of the color wheel.
      */
     private int mColorWheelRadius;
     private int mPreferredColorWheelRadius;
-
     /**
      * The radius of the center circle inside the color wheel.
      */
     private int mColorCenterRadius;
     private int mPreferredColorCenterRadius;
-
     /**
      * The radius of the halo of the center circle inside the color wheel.
      */
     private int mColorCenterHaloRadius;
     private int mPreferredColorCenterHaloRadius;
-
     /**
      * The radius of the pointer.
      */
     private int mColorPointerRadius;
-
     /**
      * The radius of the halo of the pointer.
      */
     private int mColorPointerHaloRadius;
-
-    /**
-     * The rectangle enclosing the color wheel.
-     */
-    private RectF mColorWheelRectangle = new RectF();
-
-    /**
-     * The rectangle enclosing the center inside the color wheel.
-     */
-    private RectF mCenterRectangle = new RectF();
-
     /**
      * {@code true} if the user clicked on the pointer to start the move mode. <br>
      * {@code false} once the user stops touching the screen.
@@ -121,27 +121,22 @@ public class ColorPicker extends View {
      * @see #onTouchEvent(android.view.MotionEvent)
      */
     private boolean mUserIsMovingPointer = false;
-
     /**
      * The ARGB value of the currently selected color.
      */
     private int mColor;
-
     /**
      * The ARGB value of the center with the old selected color.
      */
     private int mCenterOldColor;
-
     /**
      * Whether to show the old color in the center or not.
      */
     private boolean mShowCenterOldColor;
-
     /**
      * The ARGB value of the center with the new selected color.
      */
     private int mCenterNewColor;
-
     /**
      * Number of pixels the origin of this view is moved in X- and Y-direction.
      * <p/>
@@ -159,56 +154,33 @@ public class ColorPicker extends View {
      * @see #onDraw(android.graphics.Canvas)
      */
     private float mTranslationOffset;
-
     /**
      * Distance between pointer and user touch in X-direction.
      */
     private float mSlopX;
-
     /**
      * Distance between pointer and user touch in Y-direction.
      */
     private float mSlopY;
-
     /**
      * The pointer's position expressed as angle (in rad).
      */
     private float mAngle;
-
     /**
      * {@code Paint} instance used to draw the center with the old selected
      * color.
      */
     private Paint mCenterOldPaint;
-
     /**
      * {@code Paint} instance used to draw the center with the new selected
      * color.
      */
     private Paint mCenterNewPaint;
-
     /**
      * {@code Paint} instance used to draw the halo of the center selected
      * colors.
      */
     private Paint mCenterHaloPaint;
-
-    /**
-     * An array of floats that can be build into a {@code Color} <br>
-     * Where we can extract the Saturation and Value from.
-     */
-    private float[] mHSV = new float[3];
-
-    /**
-     * {@code SVBar} instance used to control the Saturation/Value bar.
-     */
-    private SVBar mSVbar = null;
-
-    /**
-     * {@code OpacityBar} instance used to control the Opacity bar.
-     */
-    private OpacityBar mOpacityBar = null;
-
     /**
      * {@code SaturationBar} instance used to control the Saturation bar.
      */
@@ -614,18 +586,6 @@ public class ColorPicker extends View {
         return new float[]{x, y};
     }
 
-    /**
-     * Add a Saturation/Value bar to the color wheel.
-     *
-     * @param bar The instance of the Saturation/Value bar.
-     */
-    public void addSVBar(SVBar bar) {
-        mSVbar = bar;
-        // Give an instance of the color picker to the Saturation/Value bar.
-        mSVbar.setColorPicker(this);
-        mSVbar.setColor(mColor);
-    }
-
     public void addSaturationBar(SaturationBar bar) {
         mSaturationBar = bar;
         mSaturationBar.setColorPicker(this);
@@ -657,7 +617,7 @@ public class ColorPicker extends View {
         invalidate();
     }
 
-    public int getOldCenterColor() {
+    int getOldCenterColor() {
         return mCenterOldColor;
     }
 
@@ -666,7 +626,7 @@ public class ColorPicker extends View {
      *
      * @param color int of the color.
      */
-    public void setOldCenterColor(int color) {
+    void setOldCenterColor(int color) {
         mCenterOldColor = color;
         mCenterOldPaint.setColor(color);
         invalidate();
@@ -675,10 +635,9 @@ public class ColorPicker extends View {
     /**
      * Set whether the old color is to be shown in the center or not
      *
-     * @param show true if the old color is to be shown, false otherwise
      */
-    public void setShowOldCenterColor(boolean show) {
-        mShowCenterOldColor = show;
+    public void setShowOldCenterColor() {
+        mShowCenterOldColor = false;
         invalidate();
     }
 

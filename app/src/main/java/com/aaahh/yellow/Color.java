@@ -10,25 +10,22 @@ import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
 
 /**
- * Created by aaahh on 9/20/14. Using Holo Color Picker
+ * Created by Aaahh on 9/20/14. Using Holo Color Picker
  */
 public class Color extends Activity {
-    public static Color mThis;
 
     public void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
         requestWindowFeature(1);
         setContentView(R.layout.color);
         final ColorPicker picker = (ColorPicker) findViewById(R.id.picker);
-        mThis = this;
         getWindow().setFlags(4, 4);
         Common.OColor = Common.Color;
         SaturationBar saturationBar = (SaturationBar) findViewById(R.id.saturationbar);
         ValueBar valueBar = (ValueBar) findViewById(R.id.valuebar);
         picker.addSaturationBar(saturationBar);
         picker.addValueBar(valueBar);
-//        picker.setOldCenterColor(picker.getColor());
-        picker.setShowOldCenterColor(false);
+        picker.setShowOldCenterColor();
         picker.setColor(Common.Color);
         picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
             @Override

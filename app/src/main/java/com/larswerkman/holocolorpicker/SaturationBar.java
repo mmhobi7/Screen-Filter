@@ -52,56 +52,51 @@ public class SaturationBar extends View {
      */
     private static final boolean ORIENTATION_DEFAULT = ORIENTATION_HORIZONTAL;
     /**
+     * The rectangle enclosing the bar.
+     */
+    private final RectF mBarRect = new RectF();
+    /**
+     * An array of floats that can be build into a {@code Color} <br>
+     * Where we can extract the color from.
+     */
+    private final float[] mHSVColor = new float[3];
+    /**
      * The thickness of the bar.
      */
     private int mBarThickness;
-
     /**
      * The length of the bar.
      */
     private int mBarLength;
     private int mPreferredBarLength;
-
     /**
      * The radius of the pointer.
      */
     private int mBarPointerRadius;
-
     /**
      * The radius of the halo of the pointer.
      */
     private int mBarPointerHaloRadius;
-
     /**
      * The position of the pointer on the bar.
      */
     private int mBarPointerPosition;
-
     /**
      * {@code Paint} instance used to draw the bar.
      */
     private Paint mBarPaint;
-
     /**
      * {@code Paint} instance used to draw the pointer.
      */
     private Paint mBarPointerPaint;
-
     /**
      * {@code Paint} instance used to draw the halo of the pointer.
      */
     private Paint mBarPointerHaloPaint;
-
-    /**
-     * The rectangle enclosing the bar.
-     */
-    private RectF mBarRect = new RectF();
-
     /**
      * {@code Shader} instance used to fill the shader of the paint.
      */
     private Shader shader;
-
     /**
      * {@code true} if the user clicked on the pointer to start the move mode. <br>
      * {@code false} once the user stops touching the screen.
@@ -109,18 +104,10 @@ public class SaturationBar extends View {
      * @see #onTouchEvent(android.view.MotionEvent)
      */
     private boolean mIsMovingPointer;
-
     /**
      * The ARGB value of the currently selected color.
      */
     private int mColor;
-
-    /**
-     * An array of floats that can be build into a {@code Color} <br>
-     * Where we can extract the color from.
-     */
-    private float[] mHSVColor = new float[3];
-
     /**
      * Factor used to calculate the position to the Opacity on the bar.
      */
@@ -406,19 +393,9 @@ public class SaturationBar extends View {
     }
 
     /**
-     * Get the currently selected color.
-     *
-     * @return The ARGB value of the currently selected color.
-     */
-    public int getColor() {
-        return mColor;
-    }
-
-    /**
      * Set the bar color. <br>
      * <br>
      * Its discouraged to use this method.
-     *
      */
     public void setColor(int color) {
         int x1, y1;
@@ -453,8 +430,6 @@ public class SaturationBar extends View {
      * <br>
      * WARNING: Don't change the color picker. it is done already when the bar
      * is added to the ColorPicker
-     *
-     * @see com.larswerkman.holocolorpicker.ColorPicker#addSVBar(com.larswerkman.holocolorpicker.SVBar)
      */
     public void setColorPicker(ColorPicker picker) {
         mPicker = picker;
