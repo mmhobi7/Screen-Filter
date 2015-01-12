@@ -244,8 +244,9 @@ public class MainActivity extends Activity {
 
     public void onDestroy() {
         super.onDestroy();
-        Common.Receiver = false;
-        unbindService(rConnection);
+        if (Common.Receiver) {
+            unbindService(rConnection);
+        }
     }
 
     public void onPause() {
