@@ -48,8 +48,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mThis = this;
         SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
         boolean Boot = settings.getBoolean("Boot", Common.Boot);
         if (Common.BootNow) {
@@ -60,6 +58,8 @@ public class MainActivity extends Activity {
                 finish();
             }
         }
+        setContentView(R.layout.activity_main);
+        mThis = this;
         boolean Hide = settings.getBoolean("Hide", Common.Hide);
         boolean ToHide = settings.getBoolean("ToHide", Common.ToHide);
         int Area = settings.getInt("Area", 50);
@@ -194,45 +194,27 @@ public class MainActivity extends Activity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    String[] Lists = {"Top only", "All", "Bottom only"};
+                    String[] Lists = {"Top only", "All", "Bottom only", "Left to Right", "Right to Left"};
                     new AlertDialog.Builder(MainActivity.this)
                             .setTitle("Where")
                             .setItems(Lists, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    if (i == 0) {
-                                        Common.Gradient = 1;
-                                        SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-                                        SharedPreferences.Editor editor = settings.edit();
-                                        editor.putInt("Gradient", 1);
-                                        editor.apply();
-                                    } else {
-                                        if (i == 1) {
-                                            Common.Gradient = 2;
-                                            SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-                                            SharedPreferences.Editor editor = settings.edit();
-                                            editor.putInt("Gradient", 2);
-                                            editor.apply();
-                                        } else {
-                                            if (i == 2) {
-                                                Common.Gradient = 3;
-                                                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-                                                SharedPreferences.Editor editor = settings.edit();
-                                                editor.putInt("Gradient", 3);
-                                                editor.apply();
-                                            }
-                                        }
-                                    }
+                                    Common.Gradient = i;
+                                    SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+                                    SharedPreferences.Editor editor = settings.edit();
+                                    editor.putInt("Gradient", i);
+                                    editor.apply();
                                 }
                             })
                             .show();
                 }
             });
         } else {
-            Common.Gradient = 0;
+            Common.Gradient = (-1);
             SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
             SharedPreferences.Editor editor = settings.edit();
-            editor.putInt("Gradient", 0);
+            editor.putInt("Gradient", (-1));
             editor.apply();
         }
     }

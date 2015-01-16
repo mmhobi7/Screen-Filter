@@ -56,48 +56,16 @@ public class FilterService extends Service {
     private final Handler mHandler = new Handler();
 
     public void addView() {
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
-        float screenWidth = displaymetrics.widthPixels;
-        float screenHeight = displaymetrics.heightPixels;
         vw = new View(this);
-        localLayoutParams = new WindowManager.LayoutParams((int) screenWidth, (int) screenHeight, 2006, 1288, -3);
+        localLayoutParams = new WindowManager.LayoutParams(1, 1, 2006, 1288, -3);
         localWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-        localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
-        localLayoutParams.width = (int) screenWidth;
-        localLayoutParams.y = (int) ((((((Common.Area - 50) * 2) / 100f)) * (screenHeight / 2)) * -1);
-        localLayoutParams.x = 0;
-        int i = Common.Color;
-        String hexColor = String.format("#%06X", (0xFFFFFF & i));
-        String fade = hexColor.replace("#", "#00");
-        if (Common.Gradient > 0) {
-            int b = (Color.parseColor(fade));
-            gt = new GradientDrawable();
-            if (Common.Gradient == 1) {
-                int colors[] = {b, i};
-                gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
-                gt.setColors(colors);
-            }
-            if (Common.Gradient == 2) {
-                int colors[] = {b, i, b};
-                gt.setColors(colors);
-            }
-            if (Common.Gradient == 3) {
-                int colors[] = {b, i};
-                gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
-                gt.setColors(colors);
-            }
-            vw.setBackground(gt);
-        } else {
-            vw.setBackgroundColor(i);
-        }
-        vw.getBackground().setAlpha(Common.Alpha);
-        vw.getBackground().setDither(true);
         vw.setRotation(0);
         localWindowManager.addView(vw, localLayoutParams);
         if (!Common.Notif) {
             startNotification();
         }
+        setRotation();
+        vw.getBackground().setDither(true);
         rotationReceiver();
     }
 
@@ -211,22 +179,31 @@ public class FilterService extends Service {
                 localLayoutParams.width = (int) screenWidth;
                 localLayoutParams.y = (int) ((((((Common.Area - 50) * 2) / 100f)) * (screenHeight / 2)) * -1);
                 localLayoutParams.x = 0;
-
-                if (Common.Gradient > 0) {
+                if (Common.Gradient > (-1)) {
                     int b = (Color.parseColor(fade));
                     gt = new GradientDrawable();
-                    if (Common.Gradient == 1) {
+                    if (Common.Gradient == 0) {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
                         gt.setColors(colors);
                     }
-                    if (Common.Gradient == 2) {
+                    if (Common.Gradient == 1) {
                         int colors[] = {b, i, b};
+                        gt.setColors(colors);
+                    }
+                    if (Common.Gradient == 2) {
+                        int colors[] = {b, i};
+                        gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
                         gt.setColors(colors);
                     }
                     if (Common.Gradient == 3) {
                         int colors[] = {b, i};
-                        gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
+                        gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
+                        gt.setColors(colors);
+                    }
+                    if (Common.Gradient == 4) {
+                        int colors[] = {b, i};
+                        gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
                         gt.setColors(colors);
                     }
                     vw.setBackground(gt);
@@ -239,23 +216,31 @@ public class FilterService extends Service {
                 localLayoutParams.height = (int) screenHeight;
                 localLayoutParams.x = (int) ((((((Common.Area - 50) * 2) / 100f)) * (screenWidth / 2)) * -1);
                 localLayoutParams.y = 0;
-
-                if (Common.Gradient > 0) {
+                if (Common.Gradient > -1) {
                     int b = (Color.parseColor(fade));
                     gt = new GradientDrawable();
-                    if (Common.Gradient == 1) {
+                    if (Common.Gradient == 0) {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
+                        gt.setColors(colors);
+                    }
+                    if (Common.Gradient == 1) {
+                        int colors[] = {b, i, b};
                         gt.setColors(colors);
                     }
                     if (Common.Gradient == 2) {
-                        int colors[] = {b, i, b};
+                        int colors[] = {b, i};
+                        gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
                         gt.setColors(colors);
-                        gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
                     }
                     if (Common.Gradient == 3) {
                         int colors[] = {b, i};
-                        gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
+                        gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
+                        gt.setColors(colors);
+                    }
+                    if (Common.Gradient == 4) {
+                        int colors[] = {b, i};
+                        gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
                         gt.setColors(colors);
                     }
                     vw.setBackground(gt);
@@ -268,22 +253,31 @@ public class FilterService extends Service {
                 localLayoutParams.width = (int) screenWidth;
                 localLayoutParams.x = 0;
                 localLayoutParams.y = (int) (((((Common.Area - 50) * 2) / 100f)) * (screenHeight / 2));
-
-                if (Common.Gradient > 0) {
+                if (Common.Gradient > -1) {
                     int b = (Color.parseColor(fade));
                     gt = new GradientDrawable();
-                    if (Common.Gradient == 1) {
+                    if (Common.Gradient == 0) {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
                         gt.setColors(colors);
                     }
-                    if (Common.Gradient == 2) {
+                    if (Common.Gradient == 1) {
                         int colors[] = {b, i, b};
+                        gt.setColors(colors);
+                    }
+                    if (Common.Gradient == 2) {
+                        int colors[] = {b, i};
+                        gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
                         gt.setColors(colors);
                     }
                     if (Common.Gradient == 3) {
                         int colors[] = {b, i};
-                        gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
+                        gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
+                        gt.setColors(colors);
+                    }
+                    if (Common.Gradient == 4) {
+                        int colors[] = {b, i};
+                        gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
                         gt.setColors(colors);
                     }
                     vw.setBackground(gt);
@@ -296,22 +290,31 @@ public class FilterService extends Service {
                 localLayoutParams.height = (int) screenHeight;
                 localLayoutParams.x = (int) ((((((Common.Area - 50) * 2) / 100f)) * (screenWidth / 2)));
                 localLayoutParams.y = 0;
-                if (Common.Gradient > 0) {
+                if (Common.Gradient > -1) {
                     int b = (Color.parseColor(fade));
                     gt = new GradientDrawable();
-                    if (Common.Gradient == 1) {
+                    if (Common.Gradient == 0) {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
+                        gt.setColors(colors);
+                    }
+                    if (Common.Gradient == 1) {
+                        int colors[] = {b, i, b};
                         gt.setColors(colors);
                     }
                     if (Common.Gradient == 2) {
-                        int colors[] = {b, i, b};
+                        int colors[] = {b, i};
+                        gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
                         gt.setColors(colors);
-                        gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
                     }
                     if (Common.Gradient == 3) {
                         int colors[] = {b, i};
-                        gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
+                        gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
+                        gt.setColors(colors);
+                    }
+                    if (Common.Gradient == 4) {
+                        int colors[] = {b, i};
+                        gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
                         gt.setColors(colors);
                     }
                     vw.setBackground(gt);
