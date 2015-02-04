@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
@@ -26,8 +27,7 @@ import android.view.WindowManager;
 public class FilterService extends Service {
     public static FilterService mThis;
     public static View vw;
-    private static GradientDrawable gt;
-    private static WindowManager.LayoutParams localLayoutParams;
+    public static WindowManager.LayoutParams localLayoutParams;
     private final BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -36,22 +36,19 @@ public class FilterService extends Service {
                 FilterService.mThis.setRotation();
             }
             if (intent.getAction().equalsIgnoreCase("eu.chainfire.supersu.extra.HIDE")) {
-                final int H = FilterService.localLayoutParams.height;
-                final int W = FilterService.localLayoutParams.width;
-                FilterService.localLayoutParams.height = 1;
-                FilterService.localLayoutParams.width = 1;
+                FilterService.vw.getBackground().setAlpha(0);
                 FilterService.localWindowManager.updateViewLayout(FilterService.vw, FilterService.localLayoutParams);
                 mHandler.postDelayed(new Runnable() {
                     public void run() {
-                        FilterService.localLayoutParams.height = H;
-                        FilterService.localLayoutParams.width = W;
+                        FilterService.vw.getBackground().setAlpha(Common.Alpha);
                         FilterService.localWindowManager.updateViewLayout(FilterService.vw, FilterService.localLayoutParams);
                     }
                 }, 15000);
             }
         }
     };
-    private static WindowManager localWindowManager;
+    public static WindowManager localWindowManager;
+    private static GradientDrawable gt;
     private final IBinder rBinder = new LocalBinder();
     private final Handler mHandler = new Handler();
 
@@ -62,7 +59,7 @@ public class FilterService extends Service {
         vw.setRotation(0);
         localWindowManager.addView(vw, localLayoutParams);
         if (!Common.Notif) {
-            startNotification();
+            Notification();
         }
         setRotation();
         vw.getBackground().setDither(true);
@@ -328,23 +325,41 @@ public class FilterService extends Service {
         }
     }
 
-    public void startNotification() {
-        //                .addAction(android.R.drawable.ic_media_play, "Toggle", pIntent)
-        //boolean Toggle = false;
+    public void Notification() {
         Intent localIntent = new Intent(getApplicationContext(), MainActivity.class);
         localIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent localPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, localIntent, 0);
+        Intent deleteIntent = new Intent(this, Toggle.class);
+        PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(this, 0, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager n = ((NotificationManager) getSystemService(NOTIFICATION_SERVICE));
-        Notification localNotification = new Notification.Builder(this)
-                .setContentTitle("Filter Screen")
-                .setContentText("Activated")
-                .setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentIntent(localPendingIntent)
-                .setPriority(-2)
-                .build();
+        Notification localNotification;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int buttonToggle = Common.toggle
+                    ? android.R.drawable.ic_media_play : android.R.drawable.ic_media_pause;
+            localNotification = new Notification.Builder(this)
+                    .setContentTitle("Filter Screen")
+                    .setContentText("Activated")
+                    .addAction(buttonToggle, "Toggle", pendingIntentCancel)
+                    .setSmallIcon(android.R.drawable.ic_dialog_info)
+                    .setContentIntent(localPendingIntent)
+                    .setStyle(new Notification.MediaStyle()
+                            .setShowActionsInCompactView(0))
+                            //  .setColor(Color.rgb(223,223,223))
+                    .setColor(Color.rgb(33, 150, 243))
+                    .setPriority(-2)
+                    .build();
+        } else {
+            localNotification = new Notification.Builder(this)
+                    .setContentTitle("Filter Screen")
+                    .setContentText("Activated")
+                    .addAction(android.R.drawable.ic_media_play, "Toggle", pendingIntentCancel)
+                    .setSmallIcon(android.R.drawable.ic_dialog_info)
+                    .setContentIntent(localPendingIntent)
+                    .setPriority(-2)
+                    .build();
+        }
         n.notify(1, localNotification);
         startForeground(1, localNotification);
-
         Common.Notif = true;
         if (Common.ToHide) {
             if (!(Common.Hide)) {

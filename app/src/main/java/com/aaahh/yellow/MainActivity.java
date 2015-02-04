@@ -167,7 +167,7 @@ public class MainActivity extends Activity {
         if (ToggleButton1.isChecked()) {
             ToggleButton2.setEnabled(false);
             Common.Receiver = true;
-            rService.startNotification();
+            rService.Notification();
             SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
             SharedPreferences.Editor editor = settings.edit();
             editor.putBoolean("FilterYN", true);

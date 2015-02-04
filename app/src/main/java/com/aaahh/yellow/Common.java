@@ -20,4 +20,5 @@ class Common {
     public static int OColor = 0;
     public static int Color = -8257792;
     public static boolean FilterYN = false;
+    public static boolean toggle = false;
 }
