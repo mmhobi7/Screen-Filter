@@ -87,8 +87,7 @@
         android:singleLine="true"
         android:text="@string/Color"
         android:textAlignment="center"
-        android:textAppearance="?android:textAppearanceMedium"
-        tools:ignore="UnusedAttribute" />
+        android:textAppearance="?android:textAppearanceMedium" />
 
     <TextView
         android:id="@id/textViewPer"

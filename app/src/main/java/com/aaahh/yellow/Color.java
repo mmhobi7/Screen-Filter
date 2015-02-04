@@ -29,7 +29,7 @@ public class Color extends Activity {
         picker.setColor(Common.Color);
         picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
             @Override
-            public void onColorChanged(int color) {
+            public void onColorChanged() {
                 Common.Color = picker.getColor();
                 FilterService.mThis.setColor();
             }

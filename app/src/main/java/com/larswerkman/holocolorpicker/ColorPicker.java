@@ -611,7 +611,7 @@ public class ColorPicker extends View {
             mCenterOldPaint.setColor(color);
         }
         if (onColorChangedListener != null && color != oldChangedListenerColor) {
-            onColorChangedListener.onColorChanged(color);
+            onColorChangedListener.onColorChanged();
             oldChangedListenerColor = color;
         }
         invalidate();
@@ -717,7 +717,7 @@ public class ColorPicker extends View {
      * @author lars
      */
     public interface OnColorChangedListener {
-        public void onColorChanged(int color);
+        public void onColorChanged();
     }
 
 }
