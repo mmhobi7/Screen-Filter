@@ -62,11 +62,11 @@ public class MainActivity extends Activity {
         mThis = this;
         boolean Hide = settings.getBoolean("Hide", Common.Hide);
         boolean ToHide = settings.getBoolean("ToHide", Common.ToHide);
-        int Area = settings.getInt("Area", 50);
+        int Area = settings.getInt("Area", 75);
         int Alpha = settings.getInt("Alpha", 50);
         int Height = settings.getInt("Height", 50);
         int Color = settings.getInt("Color", -8257792);
-        int Gradient = settings.getInt("Gradient", 0);
+        int Gradient = settings.getInt("Gradient", -1);
         boolean FilterYN = settings.getBoolean("FilterYN", false);
         Common.Area = Area;
         Common.Alpha = 200 - Alpha * 2;

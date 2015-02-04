@@ -189,7 +189,7 @@ public class FilterService extends Service {
             if (Common.O == 0) {
                 localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
                 localLayoutParams.width = (int) screenWidth;
-                localLayoutParams.y = (int) ((((((Common.Area - 50) * 2) / 100f)) * (screenHeight / 2)) * -1);
+                localLayoutParams.y = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2)) * -1);
                 localLayoutParams.x = 0;
                 if (Common.Gradient > (-1)) {
                     int b = (Color.parseColor(fade));
@@ -226,7 +226,7 @@ public class FilterService extends Service {
             if (Common.O == 1) {
                 localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
                 localLayoutParams.height = (int) screenHeight;
-                localLayoutParams.x = (int) ((((((Common.Area - 50) * 2) / 100f)) * (screenWidth / 2)) * -1);
+                localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)) * -1);
                 localLayoutParams.y = 0;
                 if (Common.Gradient > -1) {
                     int b = (Color.parseColor(fade));
@@ -264,7 +264,7 @@ public class FilterService extends Service {
                 localLayoutParams.height = ((int) ((Common.Height / 100f) * screenHeight));
                 localLayoutParams.width = (int) screenWidth;
                 localLayoutParams.x = 0;
-                localLayoutParams.y = (int) (((((Common.Area - 50) * 2) / 100f)) * (screenHeight / 2));
+                localLayoutParams.y = (int) (((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2));
                 if (Common.Gradient > -1) {
                     int b = (Color.parseColor(fade));
                     gt = new GradientDrawable();
@@ -300,7 +300,7 @@ public class FilterService extends Service {
             if (Common.O == 3) {
                 localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
                 localLayoutParams.height = (int) screenHeight;
-                localLayoutParams.x = (int) ((((((Common.Area - 50) * 2) / 100f)) * (screenWidth / 2)));
+                localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)));
                 localLayoutParams.y = 0;
                 if (Common.Gradient > -1) {
                     int b = (Color.parseColor(fade));
