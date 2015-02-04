@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Binder;
 import android.os.Build;
@@ -57,6 +58,11 @@ public class FilterService extends Service {
         localLayoutParams = new WindowManager.LayoutParams(1, 1, 2006, 1288, -3);
         localWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         vw.setRotation(0);
+        localLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR
+                | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+                | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                | PixelFormat.RGBA_8888;
         localWindowManager.addView(vw, localLayoutParams);
         if (!Common.Notif) {
             Notification();
@@ -127,7 +133,7 @@ public class FilterService extends Service {
             DisplayMetrics displaymetrics = new DisplayMetrics();
             ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
             float screenHeight = displaymetrics.heightPixels;
-            localLayoutParams.y = (int) ((((paramInt - 50) * 2) / 100f) * (screenHeight / 2) * -1);
+            localLayoutParams.y = (int) ((((paramInt - 75) * 2) / 100f) * (screenHeight / 2) * -1);
             localWindowManager.updateViewLayout(vw, localLayoutParams);
         }
     }

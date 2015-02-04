@@ -140,7 +140,7 @@ public class MainActivity extends Activity {
                 rService.setHeight(Common.Height);
             }
         });
-        sliderc.setMax(100);
+        sliderc.setMax(150);
         sliderc.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 Common.Area = paramAnonymousInt;
