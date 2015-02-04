@@ -48,33 +48,29 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-        boolean Boot = settings.getBoolean("Boot", Common.Boot);
         if (Common.BootNow) {
-            if (Boot) {
-                Common.BootNow = false;
-                moveTaskToBack(true);
-            } else {
-                finish();
-            }
+            Common.BootNow = false;
+            moveTaskToBack(true);
         }
         setContentView(R.layout.activity_main);
         mThis = this;
+        SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+        int Alpha = settings.getInt("Alpha", 50);
+        int Area = settings.getInt("Area", 75);
+        boolean Boot = settings.getBoolean("Boot", Common.Boot);
+        int Color = settings.getInt("Color", -8257792);
+        boolean FilterYN = settings.getBoolean("FilterYN", false);
+        int Gradient = settings.getInt("Gradient", -1);
+        int Height = settings.getInt("Height", 50);
         boolean Hide = settings.getBoolean("Hide", Common.Hide);
         boolean ToHide = settings.getBoolean("ToHide", Common.ToHide);
-        int Area = settings.getInt("Area", 75);
-        int Alpha = settings.getInt("Alpha", 50);
-        int Height = settings.getInt("Height", 50);
-        int Color = settings.getInt("Color", -8257792);
-        int Gradient = settings.getInt("Gradient", -1);
-        boolean FilterYN = settings.getBoolean("FilterYN", false);
-        Common.Area = Area;
         Common.Alpha = 200 - Alpha * 2;
-        Common.Height = Height;
+        Common.Area = Area;
+        Common.Boot = Boot;
         Common.Color = Color;
         Common.FilterYN = FilterYN;
         Common.Gradient = Gradient;
-        Common.Boot = Boot;
+        Common.Height = Height;
         Common.Hide = Hide;
         Common.ToHide = ToHide;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
@@ -87,13 +83,12 @@ public class MainActivity extends Activity {
         slider.setProgress(Alpha);
         sliderb.setProgress(Height);
         sliderc.setProgress(Area);
-        //boot.setChecked(Boot);
         if (FilterYN) {
             ToggleButton1.setChecked(true);
             ToggleButton2.setEnabled(false);
             Common.Receiver = true;
         }
-        if (Common.Gradient > 0) {
+        if (Common.Gradient > (-1)) {
             ToggleButton2.setChecked(true);
         } else {
             ToggleButton2.setChecked(false);
