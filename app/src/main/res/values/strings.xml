@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">Screen Equalizer</string>
-    <string name="action_settings">Anti-Tapjack Trip (SuperSU)</string>
     <string name="ToggleOne">ScreenFilter</string>
     <string name="ScreenFilter">Screen Equalizer </string>
     <string name="Gradient">Gradient</string>
@@ -14,11 +13,6 @@
     <string name="Height">Height</string>
     <string name="Area">Area</string>
     <string name="ColorImageIs">Color</string>
-    <string name="preference_first_key">0</string>
-    <string name="preference_FilterYN_key">N</string>
-    <string name="preference_GradientType_key">0</string>
-    <string name="preference_Color_key">8454400</string>
-    <string name="preference_Boot_key">2</string>
     <string name="Color_Cancel">Cancel</string>
     <string name="Color_Save">Save</string>
     <string name="action_settings_root">Anti-Tapjack (SuperSU)</string>

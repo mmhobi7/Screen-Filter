@@ -137,21 +137,30 @@ public class FilterService extends Service {
             int i = Common.Color;
             String hexColor = String.format("#%06X", (0xFFFFFF & i));
             String fade = hexColor.replace("#", "#00");
-            if (Common.Gradient > 0) {
+            if (Common.Gradient > (-1)) {
                 int b = (Color.parseColor(fade));
-                if (Common.Gradient == 1) {
+                if (Common.Gradient == 0) {
                     int colors[] = {b, i};
                     gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
+                    gt.setColors(colors);
+                }
+                if (Common.Gradient == 1) {
+                    int colors[] = {b, i, b};
                     gt.setColors(colors);
                 }
                 if (Common.Gradient == 2) {
-                    int colors[] = {b, i, b};
+                    int colors[] = {b, i};
+                    gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
                     gt.setColors(colors);
-                    gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
                 }
                 if (Common.Gradient == 3) {
                     int colors[] = {b, i};
-                    gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
+                    gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
+                    gt.setColors(colors);
+                }
+                if (Common.Gradient == 4) {
+                    int colors[] = {b, i};
+                    gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
                     gt.setColors(colors);
                 }
                 vw.setBackground(gt);
