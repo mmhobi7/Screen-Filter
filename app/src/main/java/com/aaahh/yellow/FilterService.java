@@ -29,6 +29,11 @@ public class FilterService extends Service {
     public static FilterService mThis;
     public static View vw;
     public static WindowManager.LayoutParams localLayoutParams;
+    public static WindowManager localWindowManager;
+    private final IBinder rBinder = new LocalBinder();
+    private final Handler mHandler = new Handler();
+    public Notification localNotification;
+    public int buttonToggle;
     private final BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -46,11 +51,21 @@ public class FilterService extends Service {
                     }
                 }, 15000);
             }
+            if (intent.getAction().equalsIgnoreCase("com.aaahh.yellow.Toggle")) {
+                if (Common.toggle) {
+                    vw.getBackground().setAlpha(Common.Alpha);
+                    localWindowManager.updateViewLayout(FilterService.vw, FilterService.localLayoutParams);
+                    buttonToggle = android.R.drawable.ic_media_play;
+                    Common.toggle = false;
+                } else {
+                    vw.getBackground().setAlpha(0);
+                    localWindowManager.updateViewLayout(FilterService.vw, FilterService.localLayoutParams);
+                    buttonToggle = android.R.drawable.ic_media_pause;
+                    Common.toggle = true;
+                }
+            }
         }
     };
-    public static WindowManager localWindowManager;
-    private final IBinder rBinder = new LocalBinder();
-    private final Handler mHandler = new Handler();
 
     public void addView() {
         vw = new View(this);
@@ -177,14 +192,14 @@ public class FilterService extends Service {
                     }
                     vw.setBackground(gt);
                 } else {
+                    localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
+                    localLayoutParams.width = (int) screenWidth;
+                    localLayoutParams.y = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2)) * -1);
+                    localLayoutParams.x = 0;
                     vw.setBackgroundColor(i);
                 }
             }
             if (Common.O == 1) {
-                localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
-                localLayoutParams.height = (int) screenHeight;
-                localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)) * -1);
-                localLayoutParams.y = 0;
                 if (Common.Gradient > -1) {
                     int b = (Color.parseColor(fade));
                     gt = new GradientDrawable();
@@ -234,6 +249,10 @@ public class FilterService extends Service {
                     }
                     vw.setBackground(gt);
                 } else {
+                    localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
+                    localLayoutParams.height = (int) screenHeight;
+                    localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)) * -1);
+                    localLayoutParams.y = 0;
                     vw.setBackgroundColor(i);
                 }
             }
@@ -287,6 +306,10 @@ public class FilterService extends Service {
                     }
                     vw.setBackground(gt);
                 } else {
+                    localLayoutParams.height = ((int) ((Common.Height / 100f) * screenHeight));
+                    localLayoutParams.width = (int) screenWidth;
+                    localLayoutParams.x = 0;
+                    localLayoutParams.y = (int) (((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2));
                     vw.setBackgroundColor(i);
                 }
             }
@@ -340,8 +363,11 @@ public class FilterService extends Service {
                     }
                     vw.setBackground(gt);
                 } else {
+                    localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
+                    localLayoutParams.height = (int) screenHeight;
+                    localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)));
+                    localLayoutParams.y = 0;
                     vw.setBackgroundColor(i);
-
                 }
             }
             localWindowManager.updateViewLayout(vw, localLayoutParams);
@@ -353,12 +379,11 @@ public class FilterService extends Service {
         Intent localIntent = new Intent(getApplicationContext(), MainActivity.class);
         localIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent localPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, localIntent, 0);
-        Intent deleteIntent = new Intent(this, Toggle.class);
+        Intent deleteIntent = new Intent("com.aaahh.yellow.Toggle");
         PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(this, 0, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationManager n = ((NotificationManager) getSystemService(NOTIFICATION_SERVICE));
-        Notification localNotification;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int buttonToggle = Common.toggle
+            buttonToggle = Common.toggle
                     ? android.R.drawable.ic_media_play : android.R.drawable.ic_media_pause;
             localNotification = new Notification.Builder(this)
                     .setContentTitle("Filter Screen")
@@ -376,7 +401,7 @@ public class FilterService extends Service {
             localNotification = new Notification.Builder(this)
                     .setContentTitle("Filter Screen")
                     .setContentText("Activated")
-                    .addAction(android.R.drawable.ic_media_play, "Toggle", pendingIntentCancel)
+                    .addAction(android.R.drawable.ic_media_pause, "Toggle", pendingIntentCancel)
                     .setSmallIcon(android.R.drawable.ic_dialog_info)
                     .setContentIntent(localPendingIntent)
                     .setPriority(-2)
@@ -406,6 +431,7 @@ public class FilterService extends Service {
         IntentFilter filter = new IntentFilter();
         filter.addAction("eu.chainfire.supersu.extra.HIDE");
         filter.addAction("android.intent.action.CONFIGURATION_CHANGED");
+        filter.addAction("com.aaahh.yellow.Toggle");
         if (Common.Receiver) {
             registerReceiver(myReceiver, filter);
         }
