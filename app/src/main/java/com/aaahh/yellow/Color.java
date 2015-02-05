@@ -31,19 +31,19 @@ public class Color extends Activity {
             @Override
             public void onColorChanged() {
                 Common.Color = picker.getColor();
-                FilterService.mThis.setColor();
+                FilterService.mThis.setRotation();
             }
         });
     }
 
     public void setCancel(View view) {
         Common.Color = Common.OColor;
-        FilterService.mThis.setColor();
+        FilterService.mThis.setRotation();
         this.finish();
     }
 
     public void setOkay(View view) {
-        FilterService.mThis.setColor();
+        FilterService.mThis.setRotation();
         SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt("Color", Common.Color);

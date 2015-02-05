@@ -49,7 +49,6 @@ public class FilterService extends Service {
         }
     };
     public static WindowManager localWindowManager;
-    private static GradientDrawable gt;
     private final IBinder rBinder = new LocalBinder();
     private final Handler mHandler = new Handler();
 
@@ -138,45 +137,6 @@ public class FilterService extends Service {
         }
     }
 
-    public void setColor() {
-        if (!(vw == null)) {
-            int i = Common.Color;
-            String hexColor = String.format("#%06X", (0xFFFFFF & i));
-            String fade = hexColor.replace("#", "#00");
-            if (Common.Gradient > (-1)) {
-                int b = (Color.parseColor(fade));
-                if (Common.Gradient == 0) {
-                    int colors[] = {b, i};
-                    gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
-                    gt.setColors(colors);
-                }
-                if (Common.Gradient == 1) {
-                    int colors[] = {b, i, b};
-                    gt.setColors(colors);
-                }
-                if (Common.Gradient == 2) {
-                    int colors[] = {b, i};
-                    gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
-                    gt.setColors(colors);
-                }
-                if (Common.Gradient == 3) {
-                    int colors[] = {b, i};
-                    gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
-                    gt.setColors(colors);
-                }
-                if (Common.Gradient == 4) {
-                    int colors[] = {b, i};
-                    gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
-                    gt.setColors(colors);
-                }
-                vw.setBackground(gt);
-            } else {
-                vw.setBackgroundColor(i);
-            }
-            vw.getBackground().setAlpha(Common.Alpha);
-        }
-    }
-
     void setRotation() {
         if (!(vw == null)) {
             DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -186,6 +146,7 @@ public class FilterService extends Service {
             int i = Common.Color;
             String hexColor = String.format("#%06X", (0xFFFFFF & i));
             String fade = hexColor.replace("#", "#00");
+            GradientDrawable gt;
             if (Common.O == 0) {
                 localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
                 localLayoutParams.width = (int) screenWidth;
