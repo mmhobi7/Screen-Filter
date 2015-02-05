@@ -117,7 +117,7 @@ public class MainActivity extends Activity {
         sliderb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 Common.Height = paramAnonymousInt;
-                rService.setHeight(Common.Height);
+                rService.setRotation();
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -132,14 +132,14 @@ public class MainActivity extends Activity {
                 if (Common.Height < 1) {
                     Common.Height = 1;
                 }
-                rService.setHeight(Common.Height);
+                rService.setRotation();
             }
         });
         sliderc.setMax(150);
         sliderc.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 Common.Area = paramAnonymousInt;
-                rService.setArea(Common.Area);
+                rService.setRotation();
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -151,7 +151,7 @@ public class MainActivity extends Activity {
                 editor.putInt("Area", paramAnonymousSeekBar.getProgress());
                 editor.apply();
                 Common.Area = paramAnonymousSeekBar.getProgress();
-                rService.setArea(Common.Area);
+                rService.setRotation();
 
             }
         });
