@@ -8,6 +8,7 @@
     <string name="ToggleTwo">Gradient</string>
     <string name="ColorSelectButton">Select a Color…</string>
     <string name="Color">Color</string>
+    <string name="Layer">Layer</string>
     <string name="TransparencyPercent">50%</string>
     <string name="Transparency">Transparency</string>
     <string name="Height">Height</string>
@@ -17,4 +18,7 @@
     <string name="action_settings_root">Anti-Tapjack (SuperSU)</string>
     <string name="action_settings_boot">Start On Boot</string>
     <string name="action_settings_hide">Hide app from Launcher</string>
+    <string name="LayerOne">1</string>
+    <string name="LayerTwo">2</string>
+    <string name="LayerThree">3</string>
 </resources>
