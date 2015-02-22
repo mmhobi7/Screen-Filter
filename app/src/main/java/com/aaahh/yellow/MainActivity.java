@@ -12,6 +12,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,7 +37,7 @@ public class MainActivity extends Activity {
             MainActivity.this.rService = localLocalBinder.getService();
             if ((Common.FilterYN) && (FilterService.vw == null)) {
                 MainActivity.this.startService(new Intent(MainActivity.mThis, FilterService.class));
-                MainActivity.this.rService.addView();
+                MainActivity.this.rService.addView(Common.Layer);
             }
         }
 
@@ -45,6 +46,12 @@ public class MainActivity extends Activity {
 
         }
     };
+    private Button layerOne;
+    private Button layerTwo;
+    private Button layerThree;
+    private SeekBar slider;
+    private SeekBar sliderb;
+    private SeekBar sliderc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,40 +62,53 @@ public class MainActivity extends Activity {
         }
         setContentView(R.layout.activity_main);
         mThis = this;
+        //TODO: loop statment
+        //
         SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-        int Alpha = settings.getInt("Alpha", 50);
-        int Area = settings.getInt("Area", 75);
-        boolean Boot = settings.getBoolean("Boot", Common.Boot);
-        int Color = settings.getInt("Color", -8257792);
-        boolean FilterYN = settings.getBoolean("FilterYN", false);
-        int Gradient = settings.getInt("Gradient", -1);
-        int Height = settings.getInt("Height", 50);
-        boolean Hide = settings.getBoolean("Hide", Common.Hide);
-        boolean ToHide = settings.getBoolean("ToHide", Common.ToHide);
-        Common.Alpha = 200 - Alpha * 2;
-        Common.Area = Area;
-        Common.Boot = Boot;
-        Common.Color = Color;
-        Common.FilterYN = FilterYN;
-        Common.Gradient = Gradient;
-        Common.Height = Height;
-        Common.Hide = Hide;
-        Common.ToHide = ToHide;
+        Common.Alpha = (200 - (settings.getInt("Alpha", 50)) * 2);
+        Common.Area = settings.getInt("Area", 75);
+        Common.Boot = settings.getBoolean("Boot", false);
+        Common.Color = settings.getInt("Color", -8257792);
+        Common.FilterYN = settings.getBoolean("FilterYN", false);
+        Common.Gradient = settings.getInt("Gradient", -1);
+        Common.Height = settings.getInt("Height", 50);
+        Common.Hide = settings.getBoolean("Hide", false);
+        Common.ToHide = settings.getBoolean("ToHide", false);
+        SharedPreferences settings2 = getSharedPreferences(Common.PREFS_NAME2, 0);
+        Common.Alpha2 = (200 - (settings2.getInt("Alpha", 50)) * 2);
+        Common.Area2 = settings2.getInt("Area", 75);
+        Common.Color2 = settings2.getInt("Color", -8257792);
+        Common.FilterYN2 = settings2.getBoolean("FilterYN", false);
+        Common.Gradient2 = settings2.getInt("Gradient", -1);
+        Common.Height2 = settings2.getInt("Height", 50);
+        SharedPreferences settings3 = getSharedPreferences(Common.PREFS_NAME3, 0);
+        Common.Alpha3 = (200 - (settings3.getInt("Alpha", 50)) * 2);
+        Common.Area3 = settings3.getInt("Area", 75);
+        Common.Color3 = settings3.getInt("Color", -8257792);
+        Common.FilterYN3 = settings3.getBoolean("FilterYN", false);
+        Common.Gradient3 = settings3.getInt("Gradient", -1);
+        Common.Height3 = settings3.getInt("Height", 50);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-        Button button = (Button) findViewById(R.id.button2);
-        button.setFocusable(true);
-        button.setFocusableInTouchMode(true);///add this line
-        button.requestFocus();
+        layerOne = (Button) findViewById(R.id.button2);
+        //layerOne.setFocusable(true);
+        ////layerOne.setFocusableInTouchMode(true);
+        layerOne.requestFocus();
+        layerTwo = (Button) findViewById(R.id.button5);
+        //layerTwo.setFocusable(true);
+        //layerTwo.setFocusableInTouchMode(true);
+        layerThree = (Button) findViewById(R.id.button6);
+        //layerThree.setFocusable(true);
+        //layerThree.setFocusableInTouchMode(true);
         TextPercent = ((TextView) findViewById(R.id.textViewPer));
         ToggleButton1 = ((ToggleButton) findViewById(R.id.toggleButton2));
         ToggleButton2 = ((ToggleButton) findViewById(R.id.toggleButton));
-        SeekBar slider = ((SeekBar) findViewById(R.id.seekBar));
-        SeekBar sliderb = ((SeekBar) findViewById(R.id.seekBar4));
-        SeekBar sliderc = ((SeekBar) findViewById(R.id.seekBar5));
-        slider.setProgress(Alpha);
-        sliderb.setProgress(Height);
-        sliderc.setProgress(Area);
-        if (FilterYN) {
+        slider = ((SeekBar) findViewById(R.id.seekBar));
+        sliderb = ((SeekBar) findViewById(R.id.seekBar4));
+        sliderc = ((SeekBar) findViewById(R.id.seekBar5));
+        slider.setProgress(Common.Alpha);
+        sliderb.setProgress(Common.Height);
+        sliderc.setProgress(Common.Area);
+        if (Common.FilterYN) {
             ToggleButton1.setChecked(true);
             ToggleButton2.setEnabled(false);
             Common.Receiver = true;
@@ -102,7 +122,16 @@ public class MainActivity extends Activity {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 TextPercent.setText(paramAnonymousInt + "%");
                 Common.Alpha = 200 - paramAnonymousInt * 2;
-                rService.setAlpha(Common.Alpha);
+                if (Common.Layer == 1) {
+                    rService.setAlpha(Common.Alpha);
+                }
+                if (Common.Layer == 2) {
+                    rService.setAlpha(Common.Alpha2);
+                }
+                if (Common.Layer == 3) {
+                    rService.setAlpha(Common.Alpha3);
+                }
+                
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -110,18 +139,44 @@ public class MainActivity extends Activity {
 
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
                 TextPercent.setText((paramAnonymousSeekBar.getProgress()) + "%");
-                Common.Alpha = 200 - (paramAnonymousSeekBar.getProgress()) * 2;
-                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putInt("Alpha", (paramAnonymousSeekBar.getProgress()));
-                editor.apply();
-                rService.setAlpha(Common.Alpha);
+                if (Common.Layer == 1) {
+                    Common.Alpha = 200 - (paramAnonymousSeekBar.getProgress()) * 2;
+                    SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("Alpha", (paramAnonymousSeekBar.getProgress()));
+                    editor.apply();
+                    rService.setAlpha(Common.Alpha);
+                }
+                if (Common.Layer == 2) {
+                    Common.Alpha2 = 200 - (paramAnonymousSeekBar.getProgress()) * 2;
+                    SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME2, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("Alpha", (paramAnonymousSeekBar.getProgress()));
+                    editor.apply();
+                    rService.setAlpha(Common.Alpha2);
+                }
+                if (Common.Layer == 3) {
+                    Common.Alpha3 = 200 - (paramAnonymousSeekBar.getProgress()) * 2;
+                    SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME3, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("Alpha", (paramAnonymousSeekBar.getProgress()));
+                    editor.apply();
+                    rService.setAlpha(Common.Alpha3);
+                }
             }
         });
         sliderb.setMax(100);
         sliderb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
-                Common.Height = paramAnonymousInt;
+                if (Common.Layer == 1) {
+                    Common.Height = paramAnonymousInt;
+                }
+                if (Common.Layer == 2) {
+                    Common.Height2 = paramAnonymousInt;
+                }
+                if (Common.Layer == 3) {
+                    Common.Height3 = paramAnonymousInt;
+                }
                 rService.setRotation();
             }
 
@@ -129,13 +184,36 @@ public class MainActivity extends Activity {
             }
 
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
-                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putInt("Height", paramAnonymousSeekBar.getProgress());
-                editor.apply();
-                Common.Height = paramAnonymousSeekBar.getProgress();
-                if (Common.Height < 1) {
-                    Common.Height = 1;
+                if (Common.Layer == 1) {
+                    SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("Height", paramAnonymousSeekBar.getProgress());
+                    editor.apply();
+                    Common.Height = paramAnonymousSeekBar.getProgress();
+                    if (Common.Height < 1) {
+                        Common.Height = 1;
+                    }
+                }
+                if (Common.Layer == 2) {
+                    SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME2, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("Height", paramAnonymousSeekBar.getProgress());
+                    editor.apply();
+                    Common.Height2 = paramAnonymousSeekBar.getProgress();
+                    if (Common.Height2 < 1) {
+                        Common.Height2 = 1;
+                    }
+                    Log.d("2", String.valueOf(Common.Height2));
+                }
+                if (Common.Layer == 3) {
+                    SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME3, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("Height", paramAnonymousSeekBar.getProgress());
+                    editor.apply();
+                    Common.Height3 = paramAnonymousSeekBar.getProgress();
+                    if (Common.Height3 < 1) {
+                        Common.Height3 = 1;
+                    }
                 }
                 rService.setRotation();
             }
@@ -143,7 +221,15 @@ public class MainActivity extends Activity {
         sliderc.setMax(150);
         sliderc.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
-                Common.Area = paramAnonymousInt;
+                if (Common.Layer == 1) {
+                    Common.Area = paramAnonymousInt;
+                }
+                if (Common.Layer == 2) {
+                    Common.Area2 = paramAnonymousInt;
+                }
+                if (Common.Layer == 3) {
+                    Common.Area3 = paramAnonymousInt;
+                }
                 rService.setRotation();
             }
 
@@ -151,11 +237,27 @@ public class MainActivity extends Activity {
             }
 
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
-                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putInt("Area", paramAnonymousSeekBar.getProgress());
-                editor.apply();
-                Common.Area = paramAnonymousSeekBar.getProgress();
+                if (Common.Layer == 1) {
+                    SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("Area", paramAnonymousSeekBar.getProgress());
+                    editor.apply();
+                    Common.Area = paramAnonymousSeekBar.getProgress();
+                }
+                if (Common.Layer == 2) {
+                    SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME2, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("Area", paramAnonymousSeekBar.getProgress());
+                    editor.apply();
+                    Common.Area2 = paramAnonymousSeekBar.getProgress();
+                }
+                if (Common.Layer == 3) {
+                    SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME3, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("Area", paramAnonymousSeekBar.getProgress());
+                    editor.apply();
+                    Common.Area3 = paramAnonymousSeekBar.getProgress();
+                }
                 rService.setRotation();
 
             }
@@ -164,28 +266,71 @@ public class MainActivity extends Activity {
     }
 
     public void StartToggle(View view) {
+        Log.d("1", "2");
         if (ToggleButton1.isChecked()) {
-            ToggleButton2.setEnabled(false);
             Common.Receiver = true;
-            rService.Notification();
-            SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putBoolean("FilterYN", true);
-            editor.apply();
-            startService(new Intent(this, FilterService.class));
-            this.rService.addView();
+            if (!Common.FilterYN || !Common.FilterYN2 || !Common.FilterYN3) {
+                startService(new Intent(this, FilterService.class));
+                rService.Notification();
+            }
+            ToggleButton2.setEnabled(false);
+            if (Common.Layer == 1) {
+                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean("FilterYN", true);
+                editor.apply();
+                Common.FilterYN = true;
+                this.rService.addView(1);
+            }
+            if (Common.Layer == 2) {
+                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME2, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean("FilterYN2", true);
+                editor.apply();
+                Common.FilterYN2 = true;
+                this.rService.addView(2);
+
+            }
+            if (Common.Layer == 3) {
+                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME3, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean("FilterYN3", true);
+                editor.apply();
+                Common.FilterYN3 = true;
+                this.rService.addView(3);
+            }
         } else {
             ToggleButton2.setEnabled(true);
-            Common.Receiver = false;
-            ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancelAll();
-            this.rService.endNotification();
-            Common.Notif = false;
-            SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putBoolean("FilterYN", false);
-            editor.apply();
+            if (Common.Layer == 1) {
+                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean("FilterYN", false);
+                editor.apply();
+                Common.FilterYN = false;
+            }
+            if (Common.Layer == 2) {
+                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME2, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean("FilterYN2", false);
+                editor.apply();
+                Common.FilterYN2 = false;
+            }
+            if (Common.Layer == 3) {
+                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME3, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean("FilterYN3", false);
+                editor.apply();
+                Common.FilterYN3 = false;
+            }
             this.rService.removeView();
-            stopService(new Intent(this, FilterService.class));
+            if (!Common.FilterYN | !Common.FilterYN2 | !Common.FilterYN3) {
+                Common.Receiver = false;
+                ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancelAll();
+                this.rService.endNotification();
+                Common.Notif = false;
+                stopService(new Intent(this, FilterService.class));
+            }
+            rService.setRotation();
         }
     }
 
@@ -222,6 +367,73 @@ public class MainActivity extends Activity {
     public void ColorPicker(View view) {
         Intent intent = new Intent(this, Color.class);
         this.startActivity(intent);
+    }
+
+    public void LayerOne(View view) {
+        Common.Layer = 1;
+        Log.d("1", String.valueOf(Common.Height));
+        slider.setProgress(Common.Alpha);
+        sliderb.setProgress(Common.Height);
+        sliderc.setProgress(Common.Area);
+        /*
+        if (Common.FilterYN) {
+            ToggleButton1.setChecked(true);
+            ToggleButton2.setEnabled(false);
+            Common.Receiver = true;
+        } else {
+            ToggleButton1.setChecked(false);
+            ToggleButton2.setEnabled(true);
+        }
+        if (Common.Gradient > (-1)) {
+            ToggleButton2.setChecked(true);
+        } else {
+            ToggleButton2.setChecked(false);
+        }
+        */
+    }
+
+    public void LayerTwo(View view) {
+        Common.Layer = 2;
+        Log.d("2", String.valueOf(Common.Height2));
+        slider.setProgress(Common.Alpha2);
+        sliderb.setProgress(Common.Height2);
+        sliderc.setProgress(Common.Area2);
+        /*
+        if (Common.FilterYN2) {
+            ToggleButton1.setChecked(true);
+            ToggleButton2.setEnabled(false);
+            Common.Receiver = true;
+        } else {
+            ToggleButton1.setChecked(false);
+            ToggleButton2.setEnabled(true);
+        }
+        if (Common.Gradient2 > (-1)) {
+            ToggleButton2.setChecked(true);
+        } else {
+            ToggleButton2.setChecked(false);
+        }
+        */
+    }
+
+    public void LayerThree(View view) {
+        Common.Layer = 3;
+        Log.d("3", String.valueOf(Common.Height3));
+        slider.setProgress(Common.Alpha3);
+        sliderb.setProgress(Common.Height3);
+        sliderc.setProgress(Common.Area3);
+        if (Common.FilterYN3) {
+            ToggleButton1.setChecked(true);
+            ToggleButton2.setEnabled(false);
+            Common.Receiver = true;
+        } else {
+            ToggleButton1.setChecked(false);
+            ToggleButton2.setEnabled(true);
+        }
+        if (Common.Gradient3 > (-1)) {
+            ToggleButton2.setChecked(true);
+        } else {
+            ToggleButton2.setChecked(false);
+        }
     }
 
     public void onDestroy() {

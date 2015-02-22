@@ -198,6 +198,8 @@
         android:layout_alignLeft="@+id/button"
         android:layout_alignStart="@+id/button"
         android:layout_below="@+id/button"
+        android:nestedScrollingEnabled="true"
+        android:onClick="LayerOne"
         android:text="@string/LayerOne" />
 
     <Button
@@ -210,6 +212,7 @@
         android:layout_toLeftOf="@+id/button6"
         android:layout_toRightOf="@+id/button2"
         android:layout_toStartOf="@+id/button6"
+        android:onClick="LayerTwo"
         android:text="@string/LayerTwo" />
 
     <Button
@@ -220,5 +223,6 @@
         android:layout_alignEnd="@+id/button"
         android:layout_alignRight="@+id/button"
         android:layout_below="@+id/button"
+        android:onClick="LayerThree"
         android:text="@string/LayerThree" />
 </RelativeLayout>
