@@ -15,7 +15,6 @@ import android.os.IBinder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -75,10 +74,6 @@ public class MainActivity extends Activity {
         Common.Hide = Hide;
         Common.ToHide = ToHide;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
-        Button button = (Button) findViewById(R.id.button2);
-        button.setFocusable(true);
-        button.setFocusableInTouchMode(true);///add this line
-        button.requestFocus();
         TextPercent = ((TextView) findViewById(R.id.textViewPer));
         ToggleButton1 = ((ToggleButton) findViewById(R.id.toggleButton2));
         ToggleButton2 = ((ToggleButton) findViewById(R.id.toggleButton));

@@ -13,7 +13,6 @@ import com.larswerkman.holocolorpicker.ValueBar;
  * Created by Aaahh on 9/20/14. Using Holo Color Picker
  */
 public class Color extends Activity {
-    int OColor;
 
     public void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
@@ -21,7 +20,7 @@ public class Color extends Activity {
         setContentView(R.layout.color);
         final ColorPicker picker = (ColorPicker) findViewById(R.id.picker);
         getWindow().setFlags(4, 4);
-        OColor = Common.Color;
+        Common.OColor = Common.Color;
         SaturationBar saturationBar = (SaturationBar) findViewById(R.id.saturationbar);
         ValueBar valueBar = (ValueBar) findViewById(R.id.valuebar);
         picker.addSaturationBar(saturationBar);
@@ -38,7 +37,7 @@ public class Color extends Activity {
     }
 
     public void setCancel(View view) {
-        Common.Color = OColor;
+        Common.Color = Common.OColor;
         FilterService.mThis.setRotation();
         this.finish();
     }
