@@ -77,13 +77,13 @@ public class FilterService extends Service {
                 | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR
                 | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
                 | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                | Paint.DITHER_FLAG
                 | PixelFormat.RGBA_8888;
         localWindowManager.addView(vw, localLayoutParams);
         if (!Common.Notif) {
             Notification();
         }
         setRotation(this);
-        vw.getBackground().setDither(true);
         rotationReceiver();
     }
 
