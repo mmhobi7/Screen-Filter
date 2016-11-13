@@ -10,8 +10,11 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,6 +57,7 @@ public class MainActivity extends Activity {
         }
         setContentView(R.layout.activity_main);
         mThis = this;
+        requestSystemAlertPermission(mThis, 1234);
         SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
         int Alpha = settings.getInt("Alpha", 50);
         int Area = settings.getInt("Area", 75);
@@ -95,7 +99,8 @@ public class MainActivity extends Activity {
         }
         slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
-                TextPercent.setText(paramAnonymousInt + "%");
+                String textpercenttext = (paramAnonymousInt + "%");
+                TextPercent.setText(textpercenttext);
                 Common.Alpha = 200 - paramAnonymousInt * 2;
                 rService.setAlpha(Common.Alpha);
             }
@@ -104,7 +109,8 @@ public class MainActivity extends Activity {
             }
 
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
-                TextPercent.setText((paramAnonymousSeekBar.getProgress()) + "%");
+                String textpercenttext = (paramAnonymousSeekBar.getProgress()) + "%";
+                TextPercent.setText(textpercenttext);
                 Common.Alpha = 200 - (paramAnonymousSeekBar.getProgress()) * 2;
                 SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
                 SharedPreferences.Editor editor = settings.edit();
@@ -117,7 +123,7 @@ public class MainActivity extends Activity {
         sliderb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 Common.Height = paramAnonymousInt;
-                rService.setRotation();
+                FilterService.setRotation(mThis);
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -132,14 +138,14 @@ public class MainActivity extends Activity {
                 if (Common.Height < 1) {
                     Common.Height = 1;
                 }
-                rService.setRotation();
+                FilterService.setRotation(mThis);
             }
         });
         sliderc.setMax(150);
         sliderc.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 Common.Area = paramAnonymousInt;
-                rService.setRotation();
+                FilterService.setRotation(mThis);
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -151,11 +157,12 @@ public class MainActivity extends Activity {
                 editor.putInt("Area", paramAnonymousSeekBar.getProgress());
                 editor.apply();
                 Common.Area = paramAnonymousSeekBar.getProgress();
-                rService.setRotation();
+                FilterService.setRotation(mThis);
 
             }
         });
-        TextPercent.setText(slider.getProgress() + "%");
+        String textpercenttext = slider.getProgress() + "%";
+        TextPercent.setText(textpercenttext);
     }
 
     public void StartToggle(View view) {
@@ -181,6 +188,18 @@ public class MainActivity extends Activity {
             editor.apply();
             this.rService.removeView();
             stopService(new Intent(this, FilterService.class));
+        }
+    }
+
+    public static void requestSystemAlertPermission(Activity context, int requestCode) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            final boolean result = Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context);
+            if (!result) {
+                final String packageName = context.getPackageName();
+                final Intent intent;
+                intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + packageName));
+                context.startActivityForResult(intent, requestCode);
+            }
         }
     }
 

@@ -37,11 +37,11 @@
         android:paddingLeft="10dp"
         android:paddingRight="50dp"
         android:paddingStart="10dp"
-        android:singleLine="true"
         android:text="@string/ScreenFilter"
         android:textAlignment="center"
         android:textAppearance="?android:textAppearanceMedium"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:maxLines="1" />
 
     <TextView
         android:id="@+id/textView2"
@@ -57,11 +57,11 @@
         android:paddingLeft="10dp"
         android:paddingRight="50dp"
         android:paddingStart="10dp"
-        android:singleLine="true"
         android:text="@string/Gradient"
         android:textAlignment="center"
         android:textAppearance="?android:textAppearanceMedium"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:maxLines="1" />
 
     <ToggleButton
         android:id="@+id/toggleButton"
@@ -98,11 +98,11 @@
         android:paddingLeft="10dp"
         android:paddingRight="50dp"
         android:paddingStart="10dp"
-        android:singleLine="true"
         android:text="@string/Color"
         android:textAlignment="center"
         android:textAppearance="?android:textAppearanceMedium"
-        tools:ignore="UnusedAttribute" />
+        tools:ignore="UnusedAttribute"
+        android:maxLines="1" />
 
     <TextView
         android:id="@id/textViewPer"

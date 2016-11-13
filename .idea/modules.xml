@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Screen-Filter.iml" filepath="$PROJECT_DIR$/Screen-Filter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Yellow.iml" filepath="$PROJECT_DIR$/Yellow.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
 </project>
-

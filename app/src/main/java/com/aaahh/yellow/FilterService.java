@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Binder;
@@ -26,7 +27,7 @@ import android.view.WindowManager;
  * Created by Aaahh on 8/26/14. Edited 9/13/14
  */
 public class FilterService extends Service {
-    public static FilterService mThis;
+    public FilterService mThis;
     public static View vw;
     public static WindowManager.LayoutParams localLayoutParams;
     public static WindowManager localWindowManager;
@@ -39,7 +40,7 @@ public class FilterService extends Service {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equalsIgnoreCase("android.intent.action.CONFIGURATION_CHANGED")) {
                 Common.O = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
-                FilterService.mThis.setRotation();
+                FilterService.setRotation(context);
             }
             if (intent.getAction().equalsIgnoreCase("eu.chainfire.supersu.extra.HIDE")) {
                 FilterService.vw.getBackground().setAlpha(0);
@@ -81,7 +82,7 @@ public class FilterService extends Service {
         if (!Common.Notif) {
             Notification();
         }
-        setRotation();
+        setRotation(this);
         vw.getBackground().setDither(true);
         rotationReceiver();
     }
@@ -132,10 +133,10 @@ public class FilterService extends Service {
         vw.getBackground().setAlpha(paramInt);
     }
 
-    void setRotation() {
+    static void setRotation(Context mContext) {
         if (!(vw == null)) {
             DisplayMetrics displaymetrics = new DisplayMetrics();
-            ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
+            ((WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
             float screenWidth = displaymetrics.widthPixels;
             float screenHeight = displaymetrics.heightPixels;
             int i = Common.Color;
@@ -395,7 +396,7 @@ public class FilterService extends Service {
                             .setShowActionsInCompactView(0))
                             //  .setColor(Color.rgb(223,223,223))
                     .setColor(Color.rgb(33, 150, 243))
-                    .setPriority(-2)
+                    .setPriority(Notification.PRIORITY_MIN)
                     .build();
         } else {
             localNotification = new Notification.Builder(this)
@@ -404,7 +405,7 @@ public class FilterService extends Service {
                     .addAction(android.R.drawable.ic_media_pause, "Toggle", pendingIntentCancel)
                     .setSmallIcon(android.R.drawable.ic_dialog_info)
                     .setContentIntent(localPendingIntent)
-                    .setPriority(-2)
+                    .setPriority(Notification.PRIORITY_MIN)
                     .build();
         }
         n.notify(1, localNotification);
