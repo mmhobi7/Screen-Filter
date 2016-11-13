@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -27,7 +28,6 @@ import android.view.WindowManager;
  * Created by Aaahh on 8/26/14. Edited 9/13/14
  */
 public class FilterService extends Service {
-    public FilterService mThis;
     public static View vw;
     public static WindowManager.LayoutParams localLayoutParams;
     public static WindowManager localWindowManager;
@@ -38,10 +38,10 @@ public class FilterService extends Service {
     private final BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equalsIgnoreCase("android.intent.action.CONFIGURATION_CHANGED")) {
+            /*if (intent.getAction().equalsIgnoreCase("android.intent.action.CONFIGURATION_CHANGED")) {
                 Common.O = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
                 FilterService.setRotation(context);
-            }
+            }*/
             if (intent.getAction().equalsIgnoreCase("eu.chainfire.supersu.extra.HIDE")) {
                 FilterService.vw.getBackground().setAlpha(0);
                 FilterService.localWindowManager.updateViewLayout(FilterService.vw, FilterService.localLayoutParams);
@@ -111,7 +111,6 @@ public class FilterService extends Service {
 
     public void onCreate() {
         super.onCreate();
-        mThis = this;
     }
 
     public void onDestroy() {
@@ -143,6 +142,8 @@ public class FilterService extends Service {
             String hexColor = String.format("#%06X", (0xFFFFFF & i));
             String fade = hexColor.replace("#", "#00");
             GradientDrawable gt;
+            Log.d("Mango", String.valueOf(Common.O));
+            Common.O = ((WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
             if (Common.O == 0) {
                 if (Common.Gradient > (-1)) {
                     int b = (Color.parseColor(fade));
@@ -442,9 +443,6 @@ public class FilterService extends Service {
     }
 
     public class LocalBinder extends Binder {
-        public LocalBinder() {
-        }
-
         FilterService getService() {
             return FilterService.this;
         }

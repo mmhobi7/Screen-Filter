@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,7 +30,7 @@ import java.io.IOException;
 public class MainActivity extends Activity {
 
     private static MainActivity mThis;
-    private static ToggleButton ToggleButton2;
+    private ToggleButton ToggleButton2;
     private TextView TextPercent;
     private ToggleButton ToggleButton1;
     private FilterService rService;
@@ -163,6 +165,26 @@ public class MainActivity extends Activity {
         });
         String textpercenttext = slider.getProgress() + "%";
         TextPercent.setText(textpercenttext);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            DisplayManager.DisplayListener mDisplayListener = new DisplayManager.DisplayListener() {
+                @Override
+                public void onDisplayAdded(int i) {
+                    FilterService.setRotation(mThis);
+                }
+
+                @Override
+                public void onDisplayRemoved(int i) {
+                    FilterService.setRotation(mThis);
+                }
+
+                @Override
+                public void onDisplayChanged(int i) {
+                    FilterService.setRotation(mThis);
+                }
+            };
+            DisplayManager displayManager = (DisplayManager) mThis.getSystemService(Context.DISPLAY_SERVICE);
+            displayManager.registerDisplayListener(mDisplayListener, null);
+        }
     }
 
     public void StartToggle(View view) {
