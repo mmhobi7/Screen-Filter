@@ -29,7 +29,7 @@ import java.io.IOException;
 
 public class MainActivity extends Activity {
 
-    private static MainActivity mThis;
+    private MainActivity mThis;
     private ToggleButton ToggleButton2;
     private TextView TextPercent;
     private ToggleButton ToggleButton1;
@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
             FilterService.LocalBinder localLocalBinder = (FilterService.LocalBinder) iBinder;
             MainActivity.this.rService = localLocalBinder.getService();
             if ((Common.FilterYN) && (FilterService.vw == null)) {
-                MainActivity.this.startService(new Intent(MainActivity.mThis, FilterService.class));
+                MainActivity.this.startService(new Intent(MainActivity.this, FilterService.class));
                 MainActivity.this.rService.addView();
             }
         }
@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
         }
         setContentView(R.layout.activity_main);
         mThis = this;
-        requestSystemAlertPermission(mThis, 1234);
+        requestSystemAlertPermission(mThis);
         SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
         int Alpha = settings.getInt("Alpha", 50);
         int Area = settings.getInt("Area", 75);
@@ -215,14 +215,14 @@ public class MainActivity extends Activity {
         }
     }
 
-    public static void requestSystemAlertPermission(Activity context, int requestCode) {
+    private static void requestSystemAlertPermission(Activity context) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             final boolean result = Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context);
             if (!result) {
                 final String packageName = context.getPackageName();
                 final Intent intent;
                 intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + packageName));
-                context.startActivityForResult(intent, requestCode);
+                context.startActivityForResult(intent, 1);
             }
         }
     }
@@ -429,13 +429,6 @@ public class MainActivity extends Activity {
                             PackageManager.DONT_KILL_APP);
                 }
             }
-            /*
-            PackageManager packageManager = this.getPackageManager();
-            ComponentName componentName = new ComponentName(this,
-                    Launcher.class);
-            packageManager.setComponentEnabledSetting(componentName, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                    PackageManager.DONT_KILL_APP);
-                    */
         }
         return super.onOptionsItemSelected(item);
     }

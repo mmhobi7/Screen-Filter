@@ -14,7 +14,7 @@ import com.larswerkman.holocolorpicker.ValueBar;
  * Created by Aaahh on 9/20/14. Using Holo Color Picker
  */
 public class Color extends Activity {
-    int OColor;
+    private int OColor;
 
     public void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);

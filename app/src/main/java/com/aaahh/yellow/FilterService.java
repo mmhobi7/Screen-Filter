@@ -20,7 +20,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -29,13 +28,13 @@ import android.view.WindowManager;
  */
 public class FilterService extends Service {
     public static View vw;
-    public static WindowManager.LayoutParams localLayoutParams;
-    public static WindowManager localWindowManager;
+    private static WindowManager.LayoutParams localLayoutParams;
+    private static WindowManager localWindowManager;
     private final IBinder rBinder = new LocalBinder();
     private final Handler mHandler = new Handler();
-    public static NotificationManager n;
-    public Notification.Builder localNotification;
-    public int buttonToggle;
+    private static NotificationManager n;
+    private Notification.Builder localNotification;
+    private int buttonToggle;
     private final BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -112,10 +111,6 @@ public class FilterService extends Service {
         return this.rBinder;
     }
 
-    public void onCreate() {
-        super.onCreate();
-    }
-
     public void onDestroy() {
         super.onDestroy();
         removeView();
@@ -145,7 +140,6 @@ public class FilterService extends Service {
             String hexColor = String.format("#%06X", (0xFFFFFF & i));
             String fade = hexColor.replace("#", "#00");
             GradientDrawable gt;
-            Log.d("Mango", String.valueOf(Common.O));
             Common.O = ((WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
             if (Common.O == 0) {
                 if (Common.Gradient > (-1)) {
@@ -384,7 +378,7 @@ public class FilterService extends Service {
         }
     }
 
-    public void NotificationBuilder() {
+    private void NotificationBuilder() {
         Intent localIntent = new Intent(getApplicationContext(), MainActivity.class);
         localIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent localPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, localIntent, 0);
@@ -439,7 +433,7 @@ public class FilterService extends Service {
         }
     }
 
-    void rotationReceiver() {
+    private void rotationReceiver() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("eu.chainfire.supersu.extra.HIDE");
         filter.addAction("android.intent.action.CONFIGURATION_CHANGED");
