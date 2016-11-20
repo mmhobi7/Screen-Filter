@@ -34,7 +34,6 @@ public class FilterService extends Service {
     private final Handler mHandler = new Handler();
     private static NotificationManager n;
     private Notification.Builder localNotification;
-    private int buttonToggle;
     private final BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -384,7 +383,7 @@ public class FilterService extends Service {
         PendingIntent localPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, localIntent, 0);
         Intent deleteIntent = new Intent("com.aaahh.yellow.Toggle");
         PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(this, 0, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        buttonToggle = Common.toggle
+        int buttonToggle = Common.toggle
                 ? android.R.drawable.ic_media_play : android.R.drawable.ic_media_pause;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             //new Notification.Action.Builder(buttonToggle, "Toggle", pendingIntentCancel); google deprecated in api 25, dont know what the replacement is

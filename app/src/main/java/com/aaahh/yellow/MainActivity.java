@@ -24,8 +24,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import java.io.IOException;
-
 
 public class MainActivity extends Activity {
 
@@ -220,8 +218,7 @@ public class MainActivity extends Activity {
             final boolean result = Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context);
             if (!result) {
                 final String packageName = context.getPackageName();
-                final Intent intent;
-                intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + packageName));
+                final Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + packageName));
                 context.startActivityForResult(intent, 1);
             }
         }
@@ -304,7 +301,7 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings_root) {
+        /*if (id == R.id.action_settings_root) {
             try {
                 Runtime.getRuntime().exec("su");
             } catch (IOException e) {
@@ -325,7 +322,7 @@ public class MainActivity extends Activity {
                 });
             }
             return true;
-        }
+        }*/
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings_boot) {
