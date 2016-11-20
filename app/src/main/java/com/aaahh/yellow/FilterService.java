@@ -37,20 +37,6 @@ public class FilterService extends Service {
     private final BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            /*if (intent.getAction().equalsIgnoreCase("android.intent.action.CONFIGURATION_CHANGED")) {
-                Common.O = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
-                FilterService.setRotation(context);
-            }*/
-            if (intent.getAction().equalsIgnoreCase("eu.chainfire.supersu.extra.HIDE")) {
-                vw.getBackground().setAlpha(0);
-                FilterService.localWindowManager.updateViewLayout(vw, FilterService.localLayoutParams);
-                mHandler.postDelayed(new Runnable() {
-                    public void run() {
-                        vw.getBackground().setAlpha(Common.Alpha);
-                        FilterService.localWindowManager.updateViewLayout(vw, FilterService.localLayoutParams);
-                    }
-                }, 15000);
-            }
             if (intent.getAction().equalsIgnoreCase("com.aaahh.yellow.Toggle")) {
                 if (Common.toggle) {
                     vw.getBackground().setAlpha(Common.Alpha);
