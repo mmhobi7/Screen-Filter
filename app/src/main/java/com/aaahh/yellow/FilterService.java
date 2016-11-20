@@ -33,7 +33,8 @@ public class FilterService extends Service {
     public static WindowManager localWindowManager;
     private final IBinder rBinder = new LocalBinder();
     private final Handler mHandler = new Handler();
-    public Notification localNotification;
+    public static NotificationManager n;
+    public Notification.Builder localNotification;
     public int buttonToggle;
     private final BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
@@ -56,13 +57,15 @@ public class FilterService extends Service {
                 if (Common.toggle) {
                     vw.getBackground().setAlpha(Common.Alpha);
                     localWindowManager.updateViewLayout(vw, FilterService.localLayoutParams);
-                    buttonToggle = android.R.drawable.ic_media_play;
                     Common.toggle = false;
+                    NotificationBuilder();
+                    n.notify(1, localNotification.build());
                 } else {
                     vw.getBackground().setAlpha(0);
                     localWindowManager.updateViewLayout(vw, FilterService.localLayoutParams);
-                    buttonToggle = android.R.drawable.ic_media_pause;
                     Common.toggle = true;
+                    NotificationBuilder();
+                    n.notify(1, localNotification.build());
                 }
             }
         }
@@ -381,16 +384,16 @@ public class FilterService extends Service {
         }
     }
 
-    public void Notification() {
+    public void NotificationBuilder() {
         Intent localIntent = new Intent(getApplicationContext(), MainActivity.class);
         localIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent localPendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, localIntent, 0);
         Intent deleteIntent = new Intent("com.aaahh.yellow.Toggle");
         PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(this, 0, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationManager n = ((NotificationManager) getSystemService(NOTIFICATION_SERVICE));
+        buttonToggle = Common.toggle
+                ? android.R.drawable.ic_media_play : android.R.drawable.ic_media_pause;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            buttonToggle = Common.toggle
-                    ? android.R.drawable.ic_media_play : android.R.drawable.ic_media_pause;
+            //new Notification.Action.Builder(buttonToggle, "Toggle", pendingIntentCancel); google deprecated in api 25, dont know what the replacement is
             localNotification = new Notification.Builder(this)
                     .setContentTitle("Screen Filter")
                     .setContentText("Activated")
@@ -399,22 +402,25 @@ public class FilterService extends Service {
                     .setContentIntent(localPendingIntent)
                     .setStyle(new Notification.MediaStyle()
                             .setShowActionsInCompactView(0))
-                            //  .setColor(Color.rgb(223,223,223))
+                    //  .setColor(Color.rgb(223,223,223))
                     .setColor(Color.rgb(33, 150, 243))
-                    .setPriority(Notification.PRIORITY_MIN)
-                    .build();
+                    .setPriority(Notification.PRIORITY_MIN);
         } else {
             localNotification = new Notification.Builder(this)
                     .setContentTitle("Screen Filter")
                     .setContentText("Activated")
-                    .addAction(android.R.drawable.ic_media_pause, "Toggle", pendingIntentCancel)
+                    .addAction(buttonToggle, "Toggle", pendingIntentCancel)
                     .setSmallIcon(android.R.drawable.ic_dialog_info)
                     .setContentIntent(localPendingIntent)
-                    .setPriority(Notification.PRIORITY_MIN)
-                    .build();
+                    .setPriority(Notification.PRIORITY_MIN);
         }
-        n.notify(1, localNotification);
-        startForeground(1, localNotification);
+    }
+
+    public void Notification() {
+        n = ((NotificationManager) getSystemService(NOTIFICATION_SERVICE));
+        NotificationBuilder();
+        n.notify(1, localNotification.build());
+        startForeground(1, localNotification.build());
         Common.Notif = true;
         if (Common.ToHide) {
             if (!(Common.Hide)) {

@@ -191,6 +191,7 @@ public class MainActivity extends Activity {
         if (ToggleButton1.isChecked()) {
             ToggleButton2.setEnabled(false);
             Common.Receiver = true;
+            Common.toggle = false; // not really needed here
             rService.Notification();
             SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
             SharedPreferences.Editor editor = settings.edit();
@@ -204,6 +205,7 @@ public class MainActivity extends Activity {
             ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancelAll();
             this.rService.endNotification();
             Common.Notif = false;
+            Common.toggle = false;
             SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
             SharedPreferences.Editor editor = settings.edit();
             editor.putBoolean("FilterYN", false);
