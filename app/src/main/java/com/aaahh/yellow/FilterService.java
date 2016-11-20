@@ -43,24 +43,24 @@ public class FilterService extends Service {
                 FilterService.setRotation(context);
             }*/
             if (intent.getAction().equalsIgnoreCase("eu.chainfire.supersu.extra.HIDE")) {
-                FilterService.vw.getBackground().setAlpha(0);
-                FilterService.localWindowManager.updateViewLayout(FilterService.vw, FilterService.localLayoutParams);
+                vw.getBackground().setAlpha(0);
+                FilterService.localWindowManager.updateViewLayout(vw, FilterService.localLayoutParams);
                 mHandler.postDelayed(new Runnable() {
                     public void run() {
-                        FilterService.vw.getBackground().setAlpha(Common.Alpha);
-                        FilterService.localWindowManager.updateViewLayout(FilterService.vw, FilterService.localLayoutParams);
+                        vw.getBackground().setAlpha(Common.Alpha);
+                        FilterService.localWindowManager.updateViewLayout(vw, FilterService.localLayoutParams);
                     }
                 }, 15000);
             }
             if (intent.getAction().equalsIgnoreCase("com.aaahh.yellow.Toggle")) {
                 if (Common.toggle) {
                     vw.getBackground().setAlpha(Common.Alpha);
-                    localWindowManager.updateViewLayout(FilterService.vw, FilterService.localLayoutParams);
+                    localWindowManager.updateViewLayout(vw, FilterService.localLayoutParams);
                     buttonToggle = android.R.drawable.ic_media_play;
                     Common.toggle = false;
                 } else {
                     vw.getBackground().setAlpha(0);
-                    localWindowManager.updateViewLayout(FilterService.vw, FilterService.localLayoutParams);
+                    localWindowManager.updateViewLayout(vw, FilterService.localLayoutParams);
                     buttonToggle = android.R.drawable.ic_media_pause;
                     Common.toggle = true;
                 }
@@ -312,7 +312,7 @@ public class FilterService extends Service {
                     localLayoutParams.width = (int) screenWidth;
                     localLayoutParams.x = 0;
                     localLayoutParams.y = (int) (((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2));
-                    vw.setBackgroundColor(i);
+                    FilterService.vw.setBackgroundColor(i);
                 }
             }
             if (Common.O == 3) {
@@ -372,8 +372,12 @@ public class FilterService extends Service {
                     vw.setBackgroundColor(i);
                 }
             }
+            if (!Common.toggle) {
+                vw.getBackground().setAlpha(Common.Alpha);
+            } else {
+                vw.getBackground().setAlpha(0);
+            }
             localWindowManager.updateViewLayout(vw, localLayoutParams);
-            vw.getBackground().setAlpha(Common.Alpha);
         }
     }
 
@@ -388,7 +392,7 @@ public class FilterService extends Service {
             buttonToggle = Common.toggle
                     ? android.R.drawable.ic_media_play : android.R.drawable.ic_media_pause;
             localNotification = new Notification.Builder(this)
-                    .setContentTitle("Filter Screen")
+                    .setContentTitle("Screen Filter")
                     .setContentText("Activated")
                     .addAction(buttonToggle, "Toggle", pendingIntentCancel)
                     .setSmallIcon(android.R.drawable.ic_dialog_info)
@@ -401,7 +405,7 @@ public class FilterService extends Service {
                     .build();
         } else {
             localNotification = new Notification.Builder(this)
-                    .setContentTitle("Filter Screen")
+                    .setContentTitle("Screen Filter")
                     .setContentText("Activated")
                     .addAction(android.R.drawable.ic_media_pause, "Toggle", pendingIntentCancel)
                     .setSmallIcon(android.R.drawable.ic_dialog_info)
