@@ -237,6 +237,7 @@ public class FilterService extends Service {
                         localLayoutParams.x = 0;
                     }
                     vw.setBackground(gt);
+                    vw.getBackground().setDither(true);
                 } else {
                     localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
                     localLayoutParams.height = (int) screenHeight;
@@ -299,6 +300,7 @@ public class FilterService extends Service {
                         localLayoutParams.y = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2)) * -1);
                     }
                     vw.setBackground(gt);
+                    vw.getBackground().setDither(true);
                 } else {
                     localLayoutParams.height = ((int) ((Common.Height / 100f) * screenHeight));
                     localLayoutParams.width = (int) screenWidth;
@@ -361,6 +363,7 @@ public class FilterService extends Service {
                         localLayoutParams.x = 0;
                     }
                     vw.setBackground(gt);
+                    vw.getBackground().setDither(true);
                 } else {
                     localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
                     localLayoutParams.height = (int) screenHeight;
