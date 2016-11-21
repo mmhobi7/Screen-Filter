@@ -11,6 +11,7 @@
     <string name="TransparencyPercent">50%</string>
     <string name="Transparency">Transparency</string>
     <string name="Height">Height</string>
+    <string name="Width">Width</string>
     <string name="Area">Area</string>
     <string name="Color_Cancel">Cancel</string>
     <string name="Color_Save">Save</string>

@@ -66,6 +66,7 @@ public class MainActivity extends Activity {
         boolean FilterYN = settings.getBoolean("FilterYN", false);
         int Gradient = settings.getInt("Gradient", -1);
         int Height = settings.getInt("Height", 50);
+        int Width = settings.getInt("Height", 50);
         boolean Hide = settings.getBoolean("Hide", Common.Hide);
         boolean ToHide = settings.getBoolean("ToHide", Common.ToHide);
         Common.Alpha = 200 - Alpha * 2;
@@ -75,18 +76,21 @@ public class MainActivity extends Activity {
         Common.FilterYN = FilterYN;
         Common.Gradient = Gradient;
         Common.Height = Height;
+        Common.Width = Width;
         Common.Hide = Hide;
         Common.ToHide = ToHide;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         TextPercent = ((TextView) findViewById(R.id.textViewPer));
         ToggleButton1 = ((ToggleButton) findViewById(R.id.toggleButton2));
         ToggleButton2 = ((ToggleButton) findViewById(R.id.toggleButton));
-        SeekBar slider = ((SeekBar) findViewById(R.id.seekBar));
-        SeekBar sliderb = ((SeekBar) findViewById(R.id.seekBar4));
-        SeekBar sliderc = ((SeekBar) findViewById(R.id.seekBar5));
-        slider.setProgress(Alpha);
-        sliderb.setProgress(Height);
-        sliderc.setProgress(Area);
+        SeekBar sliderTransparency = ((SeekBar) findViewById(R.id.seekBar));
+        SeekBar sliderHeight = ((SeekBar) findViewById(R.id.seekBar4));
+        SeekBar sliderWidth = ((SeekBar) findViewById(R.id.seekBar5));
+        SeekBar sliderArea = ((SeekBar) findViewById(R.id.seekBar6));
+        sliderTransparency.setProgress(Alpha);
+        sliderHeight.setProgress(Height);
+        sliderWidth.setProgress(Width);
+        sliderArea.setProgress(Area);
         if (FilterYN) {
             ToggleButton1.setChecked(true);
             ToggleButton2.setEnabled(false);
@@ -97,7 +101,7 @@ public class MainActivity extends Activity {
         } else {
             ToggleButton2.setChecked(false);
         }
-        slider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        sliderTransparency.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 String textpercenttext = (paramAnonymousInt + "%");
                 TextPercent.setText(textpercenttext);
@@ -119,8 +123,8 @@ public class MainActivity extends Activity {
                 rService.setAlpha(Common.Alpha);
             }
         });
-        sliderb.setMax(100);
-        sliderb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        sliderHeight.setMax(100);
+        sliderHeight.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 Common.Height = paramAnonymousInt;
                 FilterService.setRotation(mThis, MainActivity.this.rService.vw);
@@ -141,8 +145,30 @@ public class MainActivity extends Activity {
                 FilterService.setRotation(mThis, MainActivity.this.rService.vw);
             }
         });
-        sliderc.setMax(150);
-        sliderc.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        sliderWidth.setMax(100);
+        sliderWidth.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
+                Common.Width = paramAnonymousInt;
+                FilterService.setRotation(mThis, MainActivity.this.rService.vw);
+            }
+
+            public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
+            }
+
+            public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
+                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putInt("Width", paramAnonymousSeekBar.getProgress());
+                editor.apply();
+                Common.Width = paramAnonymousSeekBar.getProgress();
+                if (Common.Width < 1) {
+                    Common.Width = 1;
+                }
+                FilterService.setRotation(mThis, MainActivity.this.rService.vw);
+            }
+        });
+        sliderArea.setMax(150);
+        sliderArea.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 Common.Area = paramAnonymousInt;
                 FilterService.setRotation(mThis, MainActivity.this.rService.vw);
@@ -161,7 +187,7 @@ public class MainActivity extends Activity {
 
             }
         });
-        String textpercenttext = slider.getProgress() + "%";
+        String textpercenttext = sliderTransparency.getProgress() + "%";
         TextPercent.setText(textpercenttext);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
             DisplayManager.DisplayListener mDisplayListener = new DisplayManager.DisplayListener() {

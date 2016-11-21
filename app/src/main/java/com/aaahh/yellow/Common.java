@@ -13,6 +13,7 @@ class Common {
     static boolean Hide = false;
     static int Alpha = 50;
     static int Height = 50;
+    static int Width = 50;
     static int Area = 50;
     static int Gradient = 0;
     static boolean Notif = false;

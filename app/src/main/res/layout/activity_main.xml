@@ -141,7 +141,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/seekBar4"
         android:layout_centerHorizontal="true"
-        android:text="@string/Area" />
+        android:text="@string/Width" />
 
     <SeekBar
         android:id="@+id/seekBar5"
@@ -150,5 +150,21 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textView7" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/seekBar5"
+        android:layout_centerHorizontal="true"
+        android:text="@string/Area" />
+
+    <SeekBar
+        android:id="@+id/seekBar6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView8" />
 
 </RelativeLayout>

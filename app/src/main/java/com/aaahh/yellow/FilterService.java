@@ -130,7 +130,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
-                        localLayoutParams.width = (int) screenWidth;
+                        localLayoutParams.width = (int) ((Common.Width / 100f) * screenWidth);
                         localLayoutParams.y = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2)) * -1);
                         localLayoutParams.x = 0;
                     }
@@ -139,7 +139,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
-                        localLayoutParams.width = (int) screenWidth;
+                        localLayoutParams.width = (int) ((Common.Width / 100f) * screenWidth);
                         localLayoutParams.y = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2)) * -1);
                         localLayoutParams.x = 0;
                     }
@@ -149,7 +149,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
-                        localLayoutParams.width = (int) screenWidth;
+                        localLayoutParams.width = (int) ((Common.Width / 100f) * screenWidth);
                         localLayoutParams.y = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2)) * -1);
                         localLayoutParams.x = 0;
                     }
@@ -159,7 +159,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
-                        localLayoutParams.height = (int) screenHeight;
+                        localLayoutParams.height = (int) ((Common.Width / 100f) * screenHeight);
                         localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2)) * -1);
                         localLayoutParams.y = 0;
                     }
@@ -169,7 +169,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
-                        localLayoutParams.height = (int) screenHeight;
+                        localLayoutParams.height = (int) ((Common.Width / 100f) * screenHeight);
                         localLayoutParams.x = (int) (((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2));
                         localLayoutParams.y = 0;
                     }
@@ -177,7 +177,7 @@ public class FilterService extends Service {
                     vw.getBackground().setDither(true);
                 } else {
                     localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
-                    localLayoutParams.width = (int) screenWidth;
+                    localLayoutParams.width = (int) ((Common.Width / 100f) * screenWidth);
                     localLayoutParams.y = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2)) * -1);
                     localLayoutParams.x = 0;
                     vw.setBackgroundColor(i);
@@ -193,7 +193,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
-                        localLayoutParams.height = (int) screenHeight;
+                        localLayoutParams.height = (int) ((Common.Width / 100f) * screenHeight);
                         localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)) * -1);
                         localLayoutParams.y = 0;
                     }
@@ -202,7 +202,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
-                        localLayoutParams.height = (int) screenHeight;
+                        localLayoutParams.height = (int) ((Common.Width / 100f) * screenHeight);
                         localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)) * -1);
                         localLayoutParams.y = 0;
                     }
@@ -212,7 +212,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
-                        localLayoutParams.height = (int) screenHeight;
+                        localLayoutParams.height = (int) ((Common.Width / 100f) * screenHeight);
                         localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)) * -1);
                         localLayoutParams.y = 0;
                     }
@@ -222,7 +222,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
-                        localLayoutParams.width = (int) screenWidth;
+                        localLayoutParams.width = (int) ((Common.Width / 100f) * screenWidth);
                         localLayoutParams.y = (int) (((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2));
                         localLayoutParams.x = 0;
                     }
@@ -232,7 +232,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
-                        localLayoutParams.width = (int) screenWidth;
+                        localLayoutParams.width = (int) ((Common.Width / 100f) * screenWidth);
                         localLayoutParams.y = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)) * -1);
                         localLayoutParams.x = 0;
                     }
@@ -240,7 +240,7 @@ public class FilterService extends Service {
                     vw.getBackground().setDither(true);
                 } else {
                     localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
-                    localLayoutParams.height = (int) screenHeight;
+                    localLayoutParams.height = (int) ((Common.Width / 100f) * screenHeight);
                     localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)) * -1);
                     localLayoutParams.y = 0;
                     vw.setBackgroundColor(i);
@@ -256,7 +256,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.height = ((int) ((Common.Height / 100f) * screenHeight));
-                        localLayoutParams.width = (int) screenWidth;
+                        localLayoutParams.width = (int) ((Common.Width / 100f) * screenWidth);
                         localLayoutParams.x = 0;
                         localLayoutParams.y = (int) (((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2));
                     }
@@ -265,7 +265,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.height = ((int) ((Common.Height / 100f) * screenHeight));
-                        localLayoutParams.width = (int) screenWidth;
+                        localLayoutParams.width = (int) ((Common.Width / 100f) * screenWidth);
                         localLayoutParams.x = 0;
                         localLayoutParams.y = (int) (((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2));
                     }
@@ -275,7 +275,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.height = ((int) ((Common.Height / 100f) * screenHeight));
-                        localLayoutParams.width = (int) screenWidth;
+                        localLayoutParams.width = (int) ((Common.Width / 100f) * screenWidth);
                         localLayoutParams.x = 0;
                         localLayoutParams.y = (int) (((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2));
                     }
@@ -285,7 +285,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.width = ((int) ((Common.Height / 100f) * screenWidth));
-                        localLayoutParams.height = (int) screenHeight;
+                        localLayoutParams.height = (int) ((Common.Width / 100f) * screenHeight);
                         localLayoutParams.y = 0;
                         localLayoutParams.x = (int) (((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2));
                     }
@@ -295,7 +295,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.width = ((int) ((Common.Height / 100f) * screenWidth));
-                        localLayoutParams.height = (int) screenHeight;
+                        localLayoutParams.height = (int) ((Common.Width / 100f) * screenHeight);
                         localLayoutParams.x = 0;
                         localLayoutParams.y = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2)) * -1);
                     }
@@ -303,7 +303,7 @@ public class FilterService extends Service {
                     vw.getBackground().setDither(true);
                 } else {
                     localLayoutParams.height = ((int) ((Common.Height / 100f) * screenHeight));
-                    localLayoutParams.width = (int) screenWidth;
+                    localLayoutParams.width = (int) ((Common.Width / 100f) * screenWidth);
                     localLayoutParams.x = 0;
                     localLayoutParams.y = (int) (((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2));
                     vw.setBackgroundColor(i);
@@ -319,7 +319,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
-                        localLayoutParams.height = (int) screenHeight;
+                        localLayoutParams.height = (int) ((Common.Width / 100f) * screenHeight);
                         localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)));
                         localLayoutParams.y = 0;
                     }
@@ -328,7 +328,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
-                        localLayoutParams.height = (int) screenHeight;
+                        localLayoutParams.height = (int) ((Common.Width / 100f) * screenHeight);
                         localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)));
                         localLayoutParams.y = 0;
                     }
@@ -338,7 +338,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
-                        localLayoutParams.height = (int) screenHeight;
+                        localLayoutParams.height = (int) ((Common.Width / 100f) * screenHeight);
                         localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)));
                         localLayoutParams.y = 0;
                     }
@@ -348,7 +348,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
-                        localLayoutParams.width = (int) screenWidth;
+                        localLayoutParams.width = (int) ((Common.Width / 100f) * screenWidth);
                         localLayoutParams.y = (int) (((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2))) * -1);
                         localLayoutParams.x = 0;
                     }
@@ -358,7 +358,7 @@ public class FilterService extends Service {
                         gt.setColors(colors);
                         gt.setDither(true);
                         localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
-                        localLayoutParams.width = (int) screenWidth;
+                        localLayoutParams.width = (int) ((Common.Width / 100f) * screenWidth);
                         localLayoutParams.y = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)));
                         localLayoutParams.x = 0;
                     }
@@ -366,7 +366,7 @@ public class FilterService extends Service {
                     vw.getBackground().setDither(true);
                 } else {
                     localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
-                    localLayoutParams.height = (int) screenHeight;
+                    localLayoutParams.height = (int) ((Common.Width / 100f) * screenHeight);
                     localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)));
                     localLayoutParams.y = 0;
                     vw.setBackgroundColor(i);
