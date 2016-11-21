@@ -419,8 +419,6 @@ public class FilterService extends Service {
 
     private void rotationReceiver() {
         IntentFilter filter = new IntentFilter();
-        filter.addAction("eu.chainfire.supersu.extra.HIDE");
-        filter.addAction("android.intent.action.CONFIGURATION_CHANGED");
         filter.addAction("com.aaahh.yellow.Toggle");
         if (Common.Receiver) {
             registerReceiver(myReceiver, filter);
