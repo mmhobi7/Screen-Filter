@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             FilterService.LocalBinder localLocalBinder = (FilterService.LocalBinder) iBinder;
             MainActivity.this.rService = localLocalBinder.getService();
-            if ((Common.FilterYN) && (FilterService.vw == null)) {
+            if ((Common.FilterYN) && (MainActivity.this.rService.vw == null)) {
                 MainActivity.this.startService(new Intent(MainActivity.this, FilterService.class));
                 MainActivity.this.rService.addView();
             }
@@ -123,7 +123,7 @@ public class MainActivity extends Activity {
         sliderb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 Common.Height = paramAnonymousInt;
-                FilterService.setRotation(mThis);
+                FilterService.setRotation(mThis, MainActivity.this.rService.vw);
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -138,14 +138,14 @@ public class MainActivity extends Activity {
                 if (Common.Height < 1) {
                     Common.Height = 1;
                 }
-                FilterService.setRotation(mThis);
+                FilterService.setRotation(mThis, MainActivity.this.rService.vw);
             }
         });
         sliderc.setMax(150);
         sliderc.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 Common.Area = paramAnonymousInt;
-                FilterService.setRotation(mThis);
+                FilterService.setRotation(mThis, MainActivity.this.rService.vw);
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -157,7 +157,7 @@ public class MainActivity extends Activity {
                 editor.putInt("Area", paramAnonymousSeekBar.getProgress());
                 editor.apply();
                 Common.Area = paramAnonymousSeekBar.getProgress();
-                FilterService.setRotation(mThis);
+                FilterService.setRotation(mThis, MainActivity.this.rService.vw);
 
             }
         });
@@ -167,17 +167,17 @@ public class MainActivity extends Activity {
             DisplayManager.DisplayListener mDisplayListener = new DisplayManager.DisplayListener() {
                 @Override
                 public void onDisplayAdded(int i) {
-                    FilterService.setRotation(mThis);
+                    FilterService.setRotation(mThis, MainActivity.this.rService.vw);
                 }
 
                 @Override
                 public void onDisplayRemoved(int i) {
-                    FilterService.setRotation(mThis);
+                    FilterService.setRotation(mThis, MainActivity.this.rService.vw);
                 }
 
                 @Override
                 public void onDisplayChanged(int i) {
-                    FilterService.setRotation(mThis);
+                    FilterService.setRotation(mThis, MainActivity.this.rService.vw);
                 }
             };
             DisplayManager displayManager = (DisplayManager) mThis.getSystemService(Context.DISPLAY_SERVICE);

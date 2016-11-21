@@ -31,7 +31,6 @@ public class FilterService extends Service {
     private static WindowManager.LayoutParams localLayoutParams;
     private static WindowManager localWindowManager;
     private final IBinder rBinder = new LocalBinder();
-    private final Handler mHandler = new Handler();
     private static NotificationManager n;
     private Notification.Builder localNotification;
     private final BroadcastReceiver myReceiver = new BroadcastReceiver() {
@@ -70,7 +69,7 @@ public class FilterService extends Service {
         if (!Common.Notif) {
             Notification();
         }
-        setRotation(this);
+        setRotation(this, vw);
         rotationReceiver();
     }
 
@@ -115,7 +114,7 @@ public class FilterService extends Service {
         vw.getBackground().setAlpha(paramInt);
     }
 
-    static void setRotation(Context mContext) {
+    static void setRotation(Context mContext, View vw) {
         if (!(vw == null)) {
             DisplayMetrics displaymetrics = new DisplayMetrics();
             ((WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displaymetrics);
@@ -294,7 +293,7 @@ public class FilterService extends Service {
                     localLayoutParams.width = (int) screenWidth;
                     localLayoutParams.x = 0;
                     localLayoutParams.y = (int) (((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2));
-                    FilterService.vw.setBackgroundColor(i);
+                    vw.setBackgroundColor(i);
                 }
             }
             if (Common.O == 3) {

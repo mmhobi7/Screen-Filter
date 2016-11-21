@@ -10,6 +10,8 @@ import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
 
+import static com.aaahh.yellow.FilterService.vw;
+
 /**
  * Created by Aaahh on 9/20/14. Using Holo Color Picker
  */
@@ -34,19 +36,19 @@ public class Color extends Activity {
             @Override
             public void onColorChanged() {
                 Common.Color = picker.getColor();
-                FilterService.setRotation(mContext);
+                FilterService.setRotation(mContext, vw);
             }
         });
     }
 
     public void setCancel(View view) {
         Common.Color = OColor;
-        FilterService.setRotation(this);
+        FilterService.setRotation(this, vw);
         this.finish();
     }
 
     public void setOkay(View view) {
-        FilterService.setRotation(this);
+        FilterService.setRotation(this, vw);
         SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt("Color", Common.Color);
