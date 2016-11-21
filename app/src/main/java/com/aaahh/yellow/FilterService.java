@@ -12,12 +12,10 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Binder;
 import android.os.Build;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -56,15 +54,12 @@ public class FilterService extends Service {
 
     public void addView() {
         vw = new View(this);
-        localLayoutParams = new WindowManager.LayoutParams(1, 1, 2006, 1288, -3);
-        localWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-        vw.setRotation(0);
-        localLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        localLayoutParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, (WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                 | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR
                 | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-                | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-                | Paint.DITHER_FLAG
-                | PixelFormat.RGBA_8888;
+                | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN),
+                PixelFormat.RGBA_8888);
+        localWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         localWindowManager.addView(vw, localLayoutParams);
         if (!Common.Notif) {
             Notification();
@@ -133,6 +128,7 @@ public class FilterService extends Service {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
                         localLayoutParams.width = (int) screenWidth;
                         localLayoutParams.y = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2)) * -1);
@@ -141,6 +137,7 @@ public class FilterService extends Service {
                     if (Common.Gradient == 1) {
                         int colors[] = {b, i, b};
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
                         localLayoutParams.width = (int) screenWidth;
                         localLayoutParams.y = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2)) * -1);
@@ -150,6 +147,7 @@ public class FilterService extends Service {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
                         localLayoutParams.width = (int) screenWidth;
                         localLayoutParams.y = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2)) * -1);
@@ -159,6 +157,7 @@ public class FilterService extends Service {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
                         localLayoutParams.height = (int) screenHeight;
                         localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2)) * -1);
@@ -168,12 +167,14 @@ public class FilterService extends Service {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
                         localLayoutParams.height = (int) screenHeight;
                         localLayoutParams.x = (int) (((((Common.Area - 75) * 2) / 100f)) * (screenHeight / 2));
                         localLayoutParams.y = 0;
                     }
                     vw.setBackground(gt);
+                    vw.getBackground().setDither(true);
                 } else {
                     localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
                     localLayoutParams.width = (int) screenWidth;
@@ -190,6 +191,7 @@ public class FilterService extends Service {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
                         localLayoutParams.height = (int) screenHeight;
                         localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)) * -1);
@@ -198,6 +200,7 @@ public class FilterService extends Service {
                     if (Common.Gradient == 1) {
                         int colors[] = {b, i, b};
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
                         localLayoutParams.height = (int) screenHeight;
                         localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)) * -1);
@@ -207,6 +210,7 @@ public class FilterService extends Service {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
                         localLayoutParams.height = (int) screenHeight;
                         localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)) * -1);
@@ -216,6 +220,7 @@ public class FilterService extends Service {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
                         localLayoutParams.width = (int) screenWidth;
                         localLayoutParams.y = (int) (((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2));
@@ -225,6 +230,7 @@ public class FilterService extends Service {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
                         localLayoutParams.width = (int) screenWidth;
                         localLayoutParams.y = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)) * -1);
@@ -247,6 +253,7 @@ public class FilterService extends Service {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.height = ((int) ((Common.Height / 100f) * screenHeight));
                         localLayoutParams.width = (int) screenWidth;
                         localLayoutParams.x = 0;
@@ -255,6 +262,7 @@ public class FilterService extends Service {
                     if (Common.Gradient == 1) {
                         int colors[] = {b, i, b};
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.height = ((int) ((Common.Height / 100f) * screenHeight));
                         localLayoutParams.width = (int) screenWidth;
                         localLayoutParams.x = 0;
@@ -264,6 +272,7 @@ public class FilterService extends Service {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.height = ((int) ((Common.Height / 100f) * screenHeight));
                         localLayoutParams.width = (int) screenWidth;
                         localLayoutParams.x = 0;
@@ -273,6 +282,7 @@ public class FilterService extends Service {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.width = ((int) ((Common.Height / 100f) * screenWidth));
                         localLayoutParams.height = (int) screenHeight;
                         localLayoutParams.y = 0;
@@ -282,6 +292,7 @@ public class FilterService extends Service {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.width = ((int) ((Common.Height / 100f) * screenWidth));
                         localLayoutParams.height = (int) screenHeight;
                         localLayoutParams.x = 0;
@@ -304,6 +315,7 @@ public class FilterService extends Service {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
                         localLayoutParams.height = (int) screenHeight;
                         localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)));
@@ -312,6 +324,7 @@ public class FilterService extends Service {
                     if (Common.Gradient == 1) {
                         int colors[] = {b, i, b};
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
                         localLayoutParams.height = (int) screenHeight;
                         localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)));
@@ -321,6 +334,7 @@ public class FilterService extends Service {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.LEFT_RIGHT);
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.width = (int) ((Common.Height / 100f) * screenWidth);
                         localLayoutParams.height = (int) screenHeight;
                         localLayoutParams.x = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)));
@@ -330,6 +344,7 @@ public class FilterService extends Service {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
                         localLayoutParams.width = (int) screenWidth;
                         localLayoutParams.y = (int) (((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2))) * -1);
@@ -339,6 +354,7 @@ public class FilterService extends Service {
                         int colors[] = {b, i};
                         gt.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
                         gt.setColors(colors);
+                        gt.setDither(true);
                         localLayoutParams.height = (int) ((Common.Height / 100f) * screenHeight);
                         localLayoutParams.width = (int) screenWidth;
                         localLayoutParams.y = (int) ((((((Common.Area - 75) * 2) / 100f)) * (screenWidth / 2)));
