@@ -60,7 +60,8 @@ public class MainActivity extends Activity {
         requestSystemAlertPermission(mThis);
         SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
         int Alpha = settings.getInt("Alpha", 50);
-        int Area = settings.getInt("Area", 75);
+        int AreaY = settings.getInt("AreaY", 75);
+        int AreaX = settings.getInt("AreaX", 75);
         boolean Boot = settings.getBoolean("Boot", Common.Boot);
         int Color = settings.getInt("Color", -8257792);
         boolean FilterYN = settings.getBoolean("FilterYN", false);
@@ -70,7 +71,8 @@ public class MainActivity extends Activity {
         boolean Hide = settings.getBoolean("Hide", Common.Hide);
         boolean ToHide = settings.getBoolean("ToHide", Common.ToHide);
         Common.Alpha = 200 - Alpha * 2;
-        Common.Area = Area;
+        Common.AreaY = AreaY;
+        Common.AreaX = AreaX;
         Common.Boot = Boot;
         Common.Color = Color;
         Common.FilterYN = FilterYN;
@@ -86,11 +88,13 @@ public class MainActivity extends Activity {
         SeekBar sliderTransparency = ((SeekBar) findViewById(R.id.seekBar));
         SeekBar sliderHeight = ((SeekBar) findViewById(R.id.seekBar4));
         SeekBar sliderWidth = ((SeekBar) findViewById(R.id.seekBar5));
-        SeekBar sliderArea = ((SeekBar) findViewById(R.id.seekBar6));
+        SeekBar sliderAreaY = ((SeekBar) findViewById(R.id.seekBar7));
+        SeekBar sliderAreaX = ((SeekBar) findViewById(R.id.seekBar6));
         sliderTransparency.setProgress(Alpha);
         sliderHeight.setProgress(Height);
         sliderWidth.setProgress(Width);
-        sliderArea.setProgress(Area);
+        sliderAreaY.setProgress(AreaY);
+        sliderAreaX.setProgress(AreaX);
         if (FilterYN) {
             ToggleButton1.setChecked(true);
             ToggleButton2.setEnabled(false);
@@ -127,6 +131,9 @@ public class MainActivity extends Activity {
         sliderHeight.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 Common.Height = paramAnonymousInt;
+                if (Common.Height < 1) {
+                    Common.Height = 1;
+                }
                 FilterService.setRotation(mThis, MainActivity.this.rService.vw);
             }
 
@@ -149,6 +156,9 @@ public class MainActivity extends Activity {
         sliderWidth.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 Common.Width = paramAnonymousInt;
+                if (Common.Width < 1) {
+                    Common.Width = 1;
+                }
                 FilterService.setRotation(mThis, MainActivity.this.rService.vw);
             }
 
@@ -167,10 +177,10 @@ public class MainActivity extends Activity {
                 FilterService.setRotation(mThis, MainActivity.this.rService.vw);
             }
         });
-        sliderArea.setMax(150);
-        sliderArea.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        sliderAreaY.setMax(150);
+        sliderAreaY.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
-                Common.Area = paramAnonymousInt;
+                Common.AreaY = paramAnonymousInt;
                 FilterService.setRotation(mThis, MainActivity.this.rService.vw);
             }
 
@@ -180,9 +190,29 @@ public class MainActivity extends Activity {
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
                 SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putInt("Area", paramAnonymousSeekBar.getProgress());
+                editor.putInt("AreaY", paramAnonymousSeekBar.getProgress());
                 editor.apply();
-                Common.Area = paramAnonymousSeekBar.getProgress();
+                Common.AreaY = paramAnonymousSeekBar.getProgress();
+                FilterService.setRotation(mThis, MainActivity.this.rService.vw);
+
+            }
+        });
+        sliderAreaX.setMax(150);
+        sliderAreaX.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
+                Common.AreaX = paramAnonymousInt;
+                FilterService.setRotation(mThis, MainActivity.this.rService.vw);
+            }
+
+            public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
+            }
+
+            public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
+                SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putInt("AreaY", paramAnonymousSeekBar.getProgress());
+                editor.apply();
+                Common.AreaX = paramAnonymousSeekBar.getProgress();
                 FilterService.setRotation(mThis, MainActivity.this.rService.vw);
 
             }

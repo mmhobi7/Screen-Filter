@@ -12,7 +12,8 @@
     <string name="Transparency">Transparency</string>
     <string name="Height">Height</string>
     <string name="Width">Width</string>
-    <string name="Area">Area</string>
+    <string name="AreaX">Area X-axis</string>
+    <string name="AreaY">Area Y-axis</string>
     <string name="Color_Cancel">Cancel</string>
     <string name="Color_Save">Save</string>
     <string name="action_settings_boot">Start On Boot</string>
