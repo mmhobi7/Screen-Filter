@@ -11,6 +11,7 @@ import com.larswerkman.holocolorpicker.SaturationBar;
 import com.larswerkman.holocolorpicker.ValueBar;
 
 import static com.aaahh.yellow.FilterService.vw;
+import static com.aaahh.yellow.MainActivity.currentlayer;
 
 /**
  * Created by Aaahh on 9/20/14. Using Holo Color Picker
@@ -25,33 +26,39 @@ public class Color extends Activity {
         setContentView(R.layout.color);
         final ColorPicker picker = (ColorPicker) findViewById(R.id.picker);
         getWindow().setFlags(4, 4);
-        OColor = Common.Color;
+        OColor = Common.Color.get(currentlayer);
         SaturationBar saturationBar = (SaturationBar) findViewById(R.id.saturationbar);
         ValueBar valueBar = (ValueBar) findViewById(R.id.valuebar);
         picker.addSaturationBar(saturationBar);
         picker.addValueBar(valueBar);
         picker.setShowOldCenterColor();
-        picker.setColor(Common.Color);
+        picker.setColor(Common.Color.get(currentlayer));
         picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
             @Override
             public void onColorChanged() {
-                Common.Color = picker.getColor();
-                FilterService.setRotation(mContext, vw);
+                Common.Color.set(currentlayer, picker.getColor());
+                if (vw != null) {
+                    FilterService.setRotation(mContext, vw.toArray(new View[vw.size()]));
+                }
             }
         });
     }
 
     public void setCancel(View view) {
-        Common.Color = OColor;
-        FilterService.setRotation(this, vw);
+        Common.Color.set(currentlayer, OColor);
+        if (vw != null) {
+            FilterService.setRotation(this, vw.toArray(new View[vw.size()]));
+        }
         this.finish();
     }
 
     public void setOkay(View view) {
-        FilterService.setRotation(this, vw);
+        if (vw != null) {
+            FilterService.setRotation(this, vw.toArray(new View[vw.size()]));
+        }
         SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putInt("Color", Common.Color);
+        editor.putInt("Color", Common.Color.get(currentlayer));
         editor.apply();
         this.finish();
     }

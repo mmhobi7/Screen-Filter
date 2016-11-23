@@ -17,13 +17,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 public class MainActivity extends Activity {
 
@@ -31,12 +37,16 @@ public class MainActivity extends Activity {
     private ToggleButton ToggleButton2;
     private TextView TextPercent;
     private ToggleButton ToggleButton1;
+    private Button layerButton;
+    public static int currentlayer = 0;
+    public static List<Integer> Layersx;
     private FilterService rService;
     private final ServiceConnection rConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             FilterService.LocalBinder localLocalBinder = (FilterService.LocalBinder) iBinder;
             MainActivity.this.rService = localLocalBinder.getService();
-            if ((Common.FilterYN) && (MainActivity.this.rService.vw == null)) {
+            if ((Common.FilterYN) && (MainActivity.this.rService.vw.size() < 1)) {
+                Log.d(TAG, "onServiceConnected: mom");
                 MainActivity.this.startService(new Intent(MainActivity.this, FilterService.class));
                 MainActivity.this.rService.addView();
             }
@@ -70,15 +80,18 @@ public class MainActivity extends Activity {
         int Width = settings.getInt("Height", 50);
         boolean Hide = settings.getBoolean("Hide", Common.Hide);
         boolean ToHide = settings.getBoolean("ToHide", Common.ToHide);
-        Common.Alpha = 200 - Alpha * 2;
-        Common.AreaY = AreaY;
-        Common.AreaX = AreaX;
+        Layersx = new ArrayList<Integer>();
+        Layersx.add(1);
+        FilterService.vw = new ArrayList<>();
+        Common.Alpha.add(currentlayer, 200 - (Alpha * 2));
+        Common.AreaY.add(currentlayer, AreaY);
+        Common.AreaX.add(currentlayer, AreaX);
         Common.Boot = Boot;
-        Common.Color = Color;
+        Common.Color.add(currentlayer, Color);
         Common.FilterYN = FilterYN;
-        Common.Gradient = Gradient;
-        Common.Height = Height;
-        Common.Width = Width;
+        Common.Gradient.add(currentlayer, Gradient);
+        Common.Height.add(currentlayer, Height);
+        Common.Width.add(currentlayer, Width);
         Common.Hide = Hide;
         Common.ToHide = ToHide;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
@@ -90,6 +103,8 @@ public class MainActivity extends Activity {
         SeekBar sliderWidth = ((SeekBar) findViewById(R.id.seekBar5));
         SeekBar sliderAreaY = ((SeekBar) findViewById(R.id.seekBar7));
         SeekBar sliderAreaX = ((SeekBar) findViewById(R.id.seekBar6));
+        layerButton = ((Button) findViewById(R.id.button));
+        layerButton.setText(getString(R.string.Layer) + " " + getString(R.string.One));
         sliderTransparency.setProgress(Alpha);
         sliderHeight.setProgress(Height);
         sliderWidth.setProgress(Width);
@@ -100,7 +115,7 @@ public class MainActivity extends Activity {
             ToggleButton2.setEnabled(false);
             Common.Receiver = true;
         }
-        if (Common.Gradient > (-1)) {
+        if (Common.Gradient.get(currentlayer) > (-1)) {
             ToggleButton2.setChecked(true);
         } else {
             ToggleButton2.setChecked(false);
@@ -109,8 +124,8 @@ public class MainActivity extends Activity {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
                 String textpercenttext = (paramAnonymousInt + "%");
                 TextPercent.setText(textpercenttext);
-                Common.Alpha = 200 - paramAnonymousInt * 2;
-                rService.setAlpha(Common.Alpha);
+                Common.Alpha.set(currentlayer, 200 - paramAnonymousInt * 2);
+                rService.setAlpha(Common.Alpha.get(currentlayer));
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -119,22 +134,24 @@ public class MainActivity extends Activity {
             public void onStopTrackingTouch(SeekBar paramAnonymousSeekBar) {
                 String textpercenttext = (paramAnonymousSeekBar.getProgress()) + "%";
                 TextPercent.setText(textpercenttext);
-                Common.Alpha = 200 - (paramAnonymousSeekBar.getProgress()) * 2;
+                Common.Alpha.set(currentlayer, 200 - (paramAnonymousSeekBar.getProgress()) * 2);
                 SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putInt("Alpha", (paramAnonymousSeekBar.getProgress()));
                 editor.apply();
-                rService.setAlpha(Common.Alpha);
+                rService.setAlpha(Common.Alpha.get(currentlayer));
             }
         });
         sliderHeight.setMax(100);
         sliderHeight.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
-                Common.Height = paramAnonymousInt;
-                if (Common.Height < 1) {
-                    Common.Height = 1;
+                Common.Height.set(currentlayer, paramAnonymousInt);
+                if (Common.Height.get(currentlayer) < 1) {
+                    Common.Height.set(currentlayer, 1);
                 }
-                FilterService.setRotation(mThis, MainActivity.this.rService.vw);
+                if (FilterService.vw != null) {
+                    FilterService.setRotation(mThis, FilterService.vw.toArray(new View[FilterService.vw.size()]));
+                }
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -145,21 +162,25 @@ public class MainActivity extends Activity {
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putInt("Height", paramAnonymousSeekBar.getProgress());
                 editor.apply();
-                Common.Height = paramAnonymousSeekBar.getProgress();
-                if (Common.Height < 1) {
-                    Common.Height = 1;
+                Common.Height.set(currentlayer, paramAnonymousSeekBar.getProgress());
+                if (Common.Height.get(currentlayer) < 1) {
+                    Common.Height.set(currentlayer, 1);
                 }
-                FilterService.setRotation(mThis, MainActivity.this.rService.vw);
+                if (FilterService.vw != null) {
+                    FilterService.setRotation(mThis, FilterService.vw.toArray(new View[FilterService.vw.size()]));
+                }
             }
         });
         sliderWidth.setMax(100);
         sliderWidth.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
-                Common.Width = paramAnonymousInt;
-                if (Common.Width < 1) {
-                    Common.Width = 1;
+                Common.Width.set(currentlayer, paramAnonymousInt);
+                if (Common.Width.get(currentlayer) < 1) {
+                    Common.Width.set(currentlayer, 1);
                 }
-                FilterService.setRotation(mThis, MainActivity.this.rService.vw);
+                if (FilterService.vw != null) {
+                    FilterService.setRotation(mThis, FilterService.vw.toArray(new View[FilterService.vw.size()]));
+                }
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -170,18 +191,22 @@ public class MainActivity extends Activity {
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putInt("Width", paramAnonymousSeekBar.getProgress());
                 editor.apply();
-                Common.Width = paramAnonymousSeekBar.getProgress();
-                if (Common.Width < 1) {
-                    Common.Width = 1;
+                Common.Width.set(currentlayer, paramAnonymousSeekBar.getProgress());
+                if (Common.Width.get(currentlayer) < 1) {
+                    Common.Width.set(currentlayer, 1);
                 }
-                FilterService.setRotation(mThis, MainActivity.this.rService.vw);
+                if (FilterService.vw != null) {
+                    FilterService.setRotation(mThis, FilterService.vw.toArray(new View[FilterService.vw.size()]));
+                }
             }
         });
         sliderAreaY.setMax(150);
         sliderAreaY.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
-                Common.AreaY = paramAnonymousInt;
-                FilterService.setRotation(mThis, MainActivity.this.rService.vw);
+                Common.AreaY.set(currentlayer, paramAnonymousInt);
+                if (FilterService.vw != null) {
+                    FilterService.setRotation(mThis, FilterService.vw.toArray(new View[FilterService.vw.size()]));
+                }
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -192,16 +217,20 @@ public class MainActivity extends Activity {
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putInt("AreaY", paramAnonymousSeekBar.getProgress());
                 editor.apply();
-                Common.AreaY = paramAnonymousSeekBar.getProgress();
-                FilterService.setRotation(mThis, MainActivity.this.rService.vw);
+                Common.AreaY.set(currentlayer, paramAnonymousSeekBar.getProgress());
+                if (FilterService.vw != null) {
+                    FilterService.setRotation(mThis, FilterService.vw.toArray(new View[FilterService.vw.size()]));
+                }
 
             }
         });
         sliderAreaX.setMax(150);
         sliderAreaX.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             public void onProgressChanged(SeekBar paramAnonymousSeekBar, int paramAnonymousInt, boolean paramAnonymousBoolean) {
-                Common.AreaX = paramAnonymousInt;
-                FilterService.setRotation(mThis, MainActivity.this.rService.vw);
+                Common.AreaX.set(currentlayer, paramAnonymousInt);
+                if (FilterService.vw != null) {
+                    FilterService.setRotation(mThis, FilterService.vw.toArray(new View[FilterService.vw.size()]));
+                }
             }
 
             public void onStartTrackingTouch(SeekBar paramAnonymousSeekBar) {
@@ -212,8 +241,10 @@ public class MainActivity extends Activity {
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putInt("AreaY", paramAnonymousSeekBar.getProgress());
                 editor.apply();
-                Common.AreaX = paramAnonymousSeekBar.getProgress();
-                FilterService.setRotation(mThis, MainActivity.this.rService.vw);
+                Common.AreaX.set(currentlayer, paramAnonymousSeekBar.getProgress());
+                if (FilterService.vw != null) {
+                    FilterService.setRotation(mThis, FilterService.vw.toArray(new View[FilterService.vw.size()]));
+                }
 
             }
         });
@@ -223,17 +254,23 @@ public class MainActivity extends Activity {
             DisplayManager.DisplayListener mDisplayListener = new DisplayManager.DisplayListener() {
                 @Override
                 public void onDisplayAdded(int i) {
-                    FilterService.setRotation(mThis, MainActivity.this.rService.vw);
+                    if (FilterService.vw != null) {
+                        FilterService.setRotation(mThis, FilterService.vw.toArray(new View[FilterService.vw.size()]));
+                    }
                 }
 
                 @Override
                 public void onDisplayRemoved(int i) {
-                    FilterService.setRotation(mThis, MainActivity.this.rService.vw);
+                    if (FilterService.vw != null) {
+                        FilterService.setRotation(mThis, FilterService.vw.toArray(new View[FilterService.vw.size()]));
+                    }
                 }
 
                 @Override
                 public void onDisplayChanged(int i) {
-                    FilterService.setRotation(mThis, MainActivity.this.rService.vw);
+                    if (FilterService.vw != null) {
+                        FilterService.setRotation(mThis, FilterService.vw.toArray(new View[FilterService.vw.size()]));
+                    }
                 }
             };
             DisplayManager displayManager = (DisplayManager) mThis.getSystemService(Context.DISPLAY_SERVICE);
@@ -291,7 +328,7 @@ public class MainActivity extends Activity {
                             .setItems(Lists, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    Common.Gradient = i;
+                                    Common.Gradient.set(currentlayer, i);
                                     SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
                                     SharedPreferences.Editor editor = settings.edit();
                                     editor.putInt("Gradient", i);
@@ -302,7 +339,7 @@ public class MainActivity extends Activity {
                 }
             });
         } else {
-            Common.Gradient = (-1);
+            Common.Gradient.set(currentlayer, -1);
             SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("Gradient", (-1));
@@ -315,11 +352,67 @@ public class MainActivity extends Activity {
         this.startActivity(intent);
     }
 
+    public void update () {
+        FilterService.setRotation(mThis, FilterService.vw.toArray(new View[FilterService.vw.size()]));
+    }
+
+    public void LayerPicker(View view) {
+        final AlertDialog.Builder abuild = new AlertDialog.Builder(mThis);
+        abuild.setTitle(getString(R.string.Layers));
+        final List<CharSequence> layers = new ArrayList<CharSequence>();
+        for (int i = 0; i < Layersx.size(); i++) {
+            layers.add(getString(R.string.Layer) + " " + (i + 1));
+        }
+        abuild.setItems(layers.toArray(new CharSequence[layers.size()]), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String text = getString(R.string.Layer) + " " + (which + 1);
+                currentlayer = which;
+                layerButton.setText(text);
+                update();
+            }
+        });
+        abuild.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // overide
+            }
+        });
+        abuild.setNegativeButton("Cancel", null);
+        final AlertDialog alert = abuild.create();
+        alert.show();
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, ("onClick:" + Layersx.size()));
+                Layersx.add(Layersx.size());
+                String text = getString(R.string.Layer) + " " + (Layersx.size());
+                currentlayer = Layersx.size()-1;
+                layerButton.setText(text);
+                addlayer();
+                mThis.rService.addView();
+                alert.dismiss();
+                LayerPicker(null);
+            }
+        });
+    }
+
     public void onDestroy() {
         super.onDestroy();
         if (Common.Receiver) {
             unbindService(rConnection);
         }
+    }
+
+    public void addlayer(){
+        Common.Alpha.add(50);
+        Common.Height.add(50);
+        Common.Width.add(50);
+        Common.AreaY.add(50);
+        Common.AreaX.add(50);
+        Common.Gradient.add(-1);
+        Common.Color.add(-8257792);
+        Common.FilterYN = true;
     }
 
     public void onPause() {
